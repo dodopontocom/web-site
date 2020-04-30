@@ -1,7 +1,25 @@
-<h2>Our first App!</h2>
-<textarea rows="3" [value]="newPost" #postInput>{{ newPost }}</textarea>
-<hr>
-<button (click)="onAddPost(postInput)">Save Post</button>
-<p>{{ newPost }}</p>
+<mat-card>
+    <mat-form-field appearance='fill'>
+        <mat-label>Nome</mat-label>
+        <input matInput [(ngModel)]="enteredName" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance='fill'>
+        <mat-label>WhatsApp</mat-label>
+        <input matInput [(ngModel)]="enteredPhone" required>
+    </mat-form-field>
+
+    <mat-form-field appearance='fill'>
+        <mat-label>Mensagem Opcional</mat-label>
+        <textarea matInput [(ngModel)]="enteredContent"></textarea>
+    </mat-form-field>
+
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="onAddPost()">Enviar
+    </button>
+
+</mat-card>
 
 
