@@ -1,7 +1,17 @@
 <h2>Our first App!</h2>
-<textarea rows="3" [value]="newPost" #postInput>{{ newPost }}</textarea>
+<mat-card>
+    <mat-form-field>
+        <textarea matInput [(ngModel)]="enteredValue"></textarea>
+    </mat-form-field>
+
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="onAddPost()">Save Post
+    </button>
+
+</mat-card>
 <hr>
-<button (click)="onAddPost(postInput)">Save Post</button>
 <p>{{ newPost }}</p>
 
 
