@@ -1,3 +1,7 @@
 <h2>Our first App!</h2>
-<app-post-create></app-post-create>
+<textarea rows="3" [value]="newPost" #postInput>{{ newPost }}</textarea>
+<hr>
+<button (click)="onAddPost(postInput)">Save Post</button>
+<p>{{ newPost }}</p>
+
 
