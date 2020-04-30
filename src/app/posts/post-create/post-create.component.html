@@ -1,5 +1,16 @@
 <mat-card>
-    <mat-form-field>
+    <mat-form-field appearance='fill'>
+        <mat-label>Nome</mat-label>
+        <input matInput [(ngModel)]="enteredValue" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance='fill'>
+        <mat-label>WhatsApp</mat-label>
+        <input matInput [(ngModel)]="enteredValue" required>
+    </mat-form-field>
+
+    <mat-form-field appearance='fill'>
+        <mat-label>Mensagem Opcional</mat-label>
         <textarea matInput [(ngModel)]="enteredValue"></textarea>
     </mat-form-field>
 
@@ -10,7 +21,5 @@
     </button>
 
 </mat-card>
-<hr>
-<p>{{ newPost }}</p>
 
 
