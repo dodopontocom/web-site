@@ -1,23 +1,23 @@
 <mat-card>
     <mat-form-field appearance='fill'>
         <mat-label>Nome</mat-label>
-        <input matInput [(ngModel)]="enteredValue" required>
+        <input matInput [(ngModel)]="enteredName" required>
     </mat-form-field>
     
     <mat-form-field appearance='fill'>
         <mat-label>WhatsApp</mat-label>
-        <input matInput [(ngModel)]="enteredValue" required>
+        <input matInput [(ngModel)]="enteredPhone" required>
     </mat-form-field>
 
     <mat-form-field appearance='fill'>
         <mat-label>Mensagem Opcional</mat-label>
-        <textarea matInput [(ngModel)]="enteredValue"></textarea>
+        <textarea matInput [(ngModel)]="enteredContent"></textarea>
     </mat-form-field>
 
     <button
         mat-raised-button
         color="primary"
-        (click)="onAddPost()">Save Post
+        (click)="onAddPost()">Enviar
     </button>
 
 </mat-card>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { style } from '@angular/animations';
 
 @Component ({
@@ -6,4 +6,12 @@ import { style } from '@angular/animations';
     templateUrl: './post-list.component.html',
     styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent{}
+export class PostListComponent {
+    // posts = [
+    //     {title: 'First Post', content: 'This is first'},
+    //     {title: 'second Post', content: 'This is second'},
+    //     {title: 'third Post', content: 'This is third'}
+    // ];
+
+    @Input() posts = [];
+}
