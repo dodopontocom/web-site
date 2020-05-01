@@ -22,6 +22,9 @@
                 ngModel
                 minlength="11"
                 required
+                ng-model="phoneNumber"
+                ui-br-phone-number="areaCode"
+                placeholder="(__) ____-____"
                 #phone="ngModel">
             <mat-error *ngIf="phone.invalid">padrão: 1599999999</mat-error>
 
