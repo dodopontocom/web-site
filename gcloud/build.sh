@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 MODULES_PATH=../node_modules
 bkp_run=/tmp/building-docker/
 

@@ -1,10 +1,14 @@
-FROM node:alpine
+FROM node as build-stage
 
 WORKDIR /app
-COPY . ${WORKDIR}
 
-EXPOSE 4200 3000
+COPY . /app
+RUN echo n | npm install
 
-ENTRYPOINT "./gcloud/entrypoint.sh" && /bin/sh
+ARG configuration=production
+RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
-#https://blog.mayadata.io/openebs/steps-to-deploy-angular-application-on-kubernetes
+FROM nginx
+
+COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+COPY ./gcloud/bootstrap/nginx-custom.conf /etc/nginx/conf.d/default.conf
