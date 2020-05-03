@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 echo n | npm install
 echo n | npm install -g --silent --save express
