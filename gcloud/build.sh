@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 MODULES_PATH=../node_modules
 bkp_run=/tmp/building-docker/
