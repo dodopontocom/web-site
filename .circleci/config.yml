@@ -81,7 +81,8 @@ jobs:
           name: "GCP Deploy App"
           command: |
             kubectl apply -f cloud/k8s/app-deployment.yaml
-            kubeclt apply -f cloud/k8s/app-load-balancer-service.yaml
+            kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
+            gcloud container clusters list --filter name:${TF_VAR_cluster_name} --format='value(name)'
             kubectl get svc -owide
   
 workflows:
