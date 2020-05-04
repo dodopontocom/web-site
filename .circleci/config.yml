@@ -1,8 +1,13 @@
 version: 2.1
+
 defaults: &defaults
   working_directory: /root/app
+gcp_image: &gcp_image
   docker:
     - image: google/cloud-sdk
+tf_image: &tf_image
+- image: hashicorp/terraform:light
+
 activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
@@ -38,14 +43,14 @@ non-releasable: &non-releasable
 jobs:
   Prepare Credentials:
     <<: *defaults
+    <<: *gcp_image
     steps:
       - checkout
       - <<: *activate-sa
 
   GCP GKE Node Pool Creation:
-    working_directory: /root/app
-    docker:
-      - image: hashicorp/terraform:light
+    <<: *defaults
+    <<: *tf_image
     steps:
       - checkout
       - run:
@@ -53,59 +58,17 @@ jobs:
           command: |
             for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
             source ${BASH_ENV}
-            echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
             echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
             cd cloud/terraform
             terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
             terraform plan
-            terraform apply --auto-approve
+            terraform apply --auto-approve  
   
-  GCP Bucket Update:
-    <<: *defaults
-    steps:
-      - checkout
-      - <<: *activate-sa
-      - run:
-          name: "GCP Bucket Update"
-          command: |
-            source .circleci/cicd-definitions.sh
-            gsutil acl ch -u AllUsers:R gs://${GCLOUD_PROJECT_BUCKET_NAME}/index.html
   
-  GCP Publish Site:
-    <<: *defaults
-    steps:
-      - checkout
-      - <<: *activate-sa
-      - run:
-          name: "GCP Publish Site"
-          command: |
-            source .circleci/cicd-definitions.sh
-            gsutil web set -m index.html gs://${GCLOUD_PROJECT_BUCKET_NAME}
-
-  GCP Revoke Credentials:
-    <<: *defaults
-    steps:
-      - checkout
-      - <<: *revoke-sa
-
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
-      #- Prepare Credentials
+      - Prepare Credentials
       - GCP GKE Node Pool Creation
-          #requires:
-            #- Prepare Credentials
-      #- GCP Sync:
-          #<<: *only-releasable
-          #requires:
-            #- Prepare Credentials
-      #- GCP Bucket Update:
-          #<<: *only-releasable
-          #requires:
-            #- GCP Sync
-      #- GCP Publish Site:
-          #<<: *only-releasable
-          #requires:
-            #- GCP Bucket Update
