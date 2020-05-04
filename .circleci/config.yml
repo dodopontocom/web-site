@@ -127,8 +127,7 @@ jobs:
 
   Notify:
     docker:
-      image:
-        - image: circleci/node
+      - image: circleci/node
     steps:
       - <<: *send-telegram
 
