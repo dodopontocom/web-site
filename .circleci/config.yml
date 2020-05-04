@@ -8,6 +8,7 @@ activate-sa: &activate-sa
       name: "Activate SA to the Project"
       command: |
         echo $(cat .circleci/cicd-definitions.sh) >> $BASH_ENV
+        export
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
