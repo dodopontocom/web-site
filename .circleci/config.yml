@@ -2,10 +2,10 @@ version: 2.1
 
 defaults: &defaults
   working_directory: /root/app
-gcp_image: &gcp_image
+gcp-image: &gcp-image
   docker:
     - image: google/cloud-sdk
-tf_image: &tf_image
+tf-image: &tf-image
   docker:
     - image: hashicorp/terraform:light
 
@@ -18,7 +18,13 @@ activate-sa: &activate-sa
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
-
+get-credentials: &get-credentials
+    - run:
+        name: "Get Cluster Credentials"
+        command: |
+          for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+          source ${BASH_ENV}
+          gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
 revoke-sa: &revoke-sa
   - run:
       name: "Revoke SA"
@@ -44,14 +50,14 @@ non-releasable: &non-releasable
 jobs:
   Prepare Credentials:
     <<: *defaults
-    <<: *gcp_image
+    <<: *gcp-image
     steps:
       - checkout
       - <<: *activate-sa
 
   GCP GKE Node Pool Creation:
     <<: *defaults
-    <<: *tf_image
+    <<: *tf-image
     steps:
       - checkout
       - run:
@@ -64,7 +70,18 @@ jobs:
             terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
             terraform plan
             terraform apply --auto-approve  
-  
+  GCP Deploy App:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - <<: *activate-sa
+      - <<: *get-credentials
+      - run:
+          name: "GCP Deploy App"
+          command: |
+            kubectl apply -f app-deployment.yaml
+
   
 workflows:
   version: 2.1
