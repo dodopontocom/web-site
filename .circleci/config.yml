@@ -7,7 +7,7 @@ activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
       command: |
-        for v in $(cat .circleci/cicd-definitions.sh | grep -v ^#) do
+        for v in $(cat .circleci/cicd-definitions.sh | grep -v ^#); do
           echo ${v} >> $BASH_ENV
         done
         export
