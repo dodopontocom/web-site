@@ -90,3 +90,6 @@ workflows:
     jobs:
       - Prepare Credentials
       - GCP GKE Node Pool Creation
+      - GCP Deploy App:
+          require:
+            GCP GKE Node Pool Creation
