@@ -48,11 +48,13 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
-      - <<: *activate-sa
       - run:
           name: "GCP GKE Node Pool Creation"
           command: |
-            #echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+            source ${BASH_ENV}
+            echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+            echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
             cd cloud/terraform
             terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
   
