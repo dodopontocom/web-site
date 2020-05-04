@@ -9,9 +9,8 @@ activate-sa: &activate-sa
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do
           echo "${v}" >> ${BASH_ENV}
-          echo ${v}
         done
-        cat ${BASH_ENV}
+        source ${BASH_ENV}
         export
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
