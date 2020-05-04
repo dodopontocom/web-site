@@ -50,6 +50,7 @@ jobs:
       - run:
           name: "GCP Sync to Bucket"
           command: |
+            cd cloud/terraform
             terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
   
   GCP Bucket Update:
