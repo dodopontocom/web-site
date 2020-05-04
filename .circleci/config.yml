@@ -77,7 +77,7 @@ jobs:
               terraform plan
               terraform apply --auto-approve
             else
-              message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
+              message="=== ${CIRCLE_BRANCH} ==="
               for i in ${NOTIFICATION_IDS[@]}; do
                 curl -X POST \
                       -d chat_id=${i} \
