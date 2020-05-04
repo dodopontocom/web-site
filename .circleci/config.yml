@@ -67,9 +67,16 @@ jobs:
             source ${BASH_ENV}
             echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
             cd cloud/terraform
-            terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-            terraform plan
-            terraform apply --auto-approve  
+            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+              echo "======== Attention, destroy flag detected! ========"
+              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
+              echo "======== Destroying GCP Resources ========"
+              terraform destroy --auto-approve
+            else
+              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
+              terraform plan
+              terraform apply --auto-approve
+            fi
   GCP Deploy App:
     <<: *defaults
     <<: *gcp-image
@@ -80,17 +87,27 @@ jobs:
       - run:
           name: "GCP Deploy App"
           command: |
-            kubectl apply -f cloud/k8s/app-deployment.yaml
-            kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
-            gcloud container clusters list --filter name:${TF_VAR_cluster_name} --format='value(name)'
-            while [ "$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')" == "" ]; do
-              echo "[$(date +%H:%M:%S)] - Getting External IP... [pending]"
-              sleep 10
-            done
-            echo "=================================================================================="
-            echo "Access the below URL to test your deployed application for testing porpuses:"
-            echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
-            echo "=================================================================================="
+            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - No App to apply... [aborting]"
+              echo "=================================================================================="
+            else
+              kubectl apply -f cloud/k8s/app-deployment.yaml
+              kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
+              gcloud container clusters list --filter name:${TF_VAR_cluster_name} --format='value(name)'
+              while [ "$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')" == "" ]; do
+                echo "[$(date +%H:%M:%S)] - Getting External IP... [pending]"
+                sleep 10
+              done
+              echo ""
+              echo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
+              echo "=================================================================================="
+              echo "Access the below URL to test your deployed application:"
+              echo ""
+              echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+              echo "=================================================================================="
+            fi
 
 workflows:
   version: 2.1
