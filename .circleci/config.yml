@@ -9,6 +9,7 @@ activate-sa: &activate-sa
       command: |
         for v in $(cat .circleci/cicd-definitions.sh | grep -v ^#); do
           echo ${v} >> $BASH_ENV
+          echo ${v}
         done
         export
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
