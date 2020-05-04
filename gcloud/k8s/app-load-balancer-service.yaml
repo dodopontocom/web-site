@@ -14,6 +14,10 @@ spec:
   selector:
     label-key: deployment-dev
 
+#gcloud container clusters create "cluster-1" --zone "us-central1-c" --no-enable-basic-auth --cluster-version "1.14.10-gke.27" --machine-type "n1-standard-1" --image-type "COS" --disk-type "pd-standard" --disk-size "100"
+#gcloud container clusters get-credentials cluster-1 --zone us-central1-c
+
+
 #for creating a deployment in kubernetes
 #kubectl apply -f spa-deployment.yaml
 #for internal communicating to angualar application
