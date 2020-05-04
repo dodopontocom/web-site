@@ -11,4 +11,4 @@ RUN npm run build -- --output-path=./dist/out --configuration $configuration
 FROM nginx
 
 COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
-COPY ./gcloud/bootstrap/nginx-custom.conf /etc/nginx/conf.d/default.conf
+COPY ./cloud/bootstrap/nginx-custom.conf /etc/nginx/conf.d/default.conf

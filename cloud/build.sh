@@ -9,7 +9,7 @@ mkdir ${bkp_run}
 
 mv ../node_modules ../.node_modules
 cp -rv ../* ${bkp_run}
-cp ${bkp_run}/gcloud/Dockerfile ${bkp_run}
+cp ${bkp_run}/cloud/Dockerfile ${bkp_run}
 mv ../.node_modules ../node_modules
 
 cd ${bkp_run}
