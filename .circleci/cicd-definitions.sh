@@ -19,5 +19,5 @@ export TF_VAR_key="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
 
 # Telegram notification via bot
-export NOTIFICATION_IDS=(11504381)
-declare -p NOTIFICATION_IDS
+declare -a NOTIFICATION_IDS="11504381"
+#declare -p NOTIFICATION_IDS
