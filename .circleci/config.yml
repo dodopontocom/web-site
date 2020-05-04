@@ -19,12 +19,12 @@ activate-sa: &activate-sa
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
 get-credentials: &get-credentials
-    - run:
-        name: "Get Cluster Credentials"
-        command: |
-          for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-          source ${BASH_ENV}
-          gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
+  - run:
+      name: "Get Cluster Credentials"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        source ${BASH_ENV}
+        gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
 revoke-sa: &revoke-sa
   - run:
       name: "Revoke SA"
@@ -98,7 +98,6 @@ jobs:
               echo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
               echo "=================================================================================="
               echo "Access the below URL to test your deployed application:"
-              echo ""
               echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
               echo "=================================================================================="
             fi
