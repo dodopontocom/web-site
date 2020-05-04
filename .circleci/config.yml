@@ -83,11 +83,11 @@ jobs:
             kubectl apply -f cloud/k8s/app-deployment.yaml
             kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
             gcloud container clusters list --filter name:${TF_VAR_cluster_name} --format='value(name)'
-            while [ kubectl get svc -l label-key='deployment-dev' -o=json | jq '.items[0].status.loadBalancer.ingress[0].ip' == "null" ]; do
+            while [ $(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}') == "null" ]; do
               echo "[$(date +%H:%M:%S)]Getting External IP... [pending]"
               sleep 10
             done
-            kubectl get svc -l label-key='deployment-dev' -o=json | jq '.items[0].status.loadBalancer.ingress[0].ip'
+            kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}'
 workflows:
   version: 2.1
   
