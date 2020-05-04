@@ -81,7 +81,8 @@ jobs:
           name: "GCP Deploy App"
           command: |
             kubectl apply -f cloud/k8s/app-deployment.yaml
-
+            kubeclt apply -f cloud/k8s/app-load-balancer-service.yaml
+            kubectl get svc -owide
   
 workflows:
   version: 2.1
