@@ -92,4 +92,4 @@ workflows:
       - GCP GKE Node Pool Creation
       - GCP Deploy App:
           requires:
-            GCP GKE Node Pool Creation
+            - GCP GKE Node Pool Creation
