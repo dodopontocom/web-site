@@ -7,7 +7,9 @@ activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
       command: |
-        echo $(cat .circleci/cicd-definitions.sh) >> $BASH_ENV
+        for v in $(cat .circleci/cicd-definitions.sh | grep -v ^#) do
+          echo ${v} >> $BASH_ENV
+        done
         export
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
