@@ -22,11 +22,14 @@ resource "google_container_cluster" "primary" {
       disable-legacy-endpoints = "true"
     }
 
+/*
     labels = {
       foo = "bar"
     }
 
     tags = ["foo", "bar"]
+*/
+
   }
 
   timeouts {
