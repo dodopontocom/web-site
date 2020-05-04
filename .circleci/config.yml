@@ -6,7 +6,8 @@ gcp_image: &gcp_image
   docker:
     - image: google/cloud-sdk
 tf_image: &tf_image
-- image: hashicorp/terraform:light
+  docker:
+    - image: hashicorp/terraform:light
 
 activate-sa: &activate-sa
   - run:
