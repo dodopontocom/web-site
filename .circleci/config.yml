@@ -48,13 +48,6 @@ non-releasable: &non-releasable
         - master
 
 jobs:
-  Prepare Credentials:
-    <<: *defaults
-    <<: *gcp-image
-    steps:
-      - checkout
-      - <<: *activate-sa
-
   GCP GKE Node Pool Creation:
     <<: *defaults
     <<: *tf-image
