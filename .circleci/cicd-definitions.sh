@@ -13,7 +13,7 @@ export TF_VAR_machine_type="n1-standard-4"
 export TF_VAR_region="${GCLOUD_PROJECT_REGION}"
 export TF_VAR_zone="${GCLOUD_PROJECT_REGION}-a"
 export TF_VAR_cluster_name="gke-cluster-1"
-export TF_VAR_cluster_count=3
+export TF_VAR_cluster_count="3"
 export TF_VAR_key="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
