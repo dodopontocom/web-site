@@ -12,7 +12,8 @@ activate-sa: &activate-sa
         done
         source ${BASH_ENV}
         export
-        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+        #mkdir -p ${GCLOUD_JSON_KEY_PATH}
+        echo ${DODRONES_GCP_MY_LABS_SA} > "${GCLOUD_JSON_KEY_PATH}"
         gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
 
