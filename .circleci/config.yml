@@ -86,6 +86,9 @@ workflows:
   gcloud_workflow:
     jobs:
       - Prepare Credentials
+      - GCP GKE Node Pool Creation:
+          requires:
+            - Prepare Credentials
       - GCP Sync:
           <<: *only-releasable
           requires:
