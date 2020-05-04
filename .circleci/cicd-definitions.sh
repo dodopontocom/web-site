@@ -17,3 +17,6 @@ export TF_VAR_cluster_count="3"
 export TF_VAR_key="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
+
+# Telegram notification via bot
+declare -a NOTIFICATION_IDS=(11504381)

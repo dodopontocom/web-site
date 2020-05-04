@@ -76,6 +76,14 @@ jobs:
               terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
               terraform plan
               terraform apply --auto-approve
+            else
+              message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
+              for i in ${NOTIFICATION_IDS[@]}; do
+                curl -X POST \
+                      -d chat_id=${i} \
+                      -d text="$(echo -e ${message})" \
+                      https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+              done
             fi
   GCP Deploy App:
     <<: *defaults
@@ -110,6 +118,14 @@ jobs:
               echo "Access the below URL to test your deployed application:"
               echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
               echo "=================================================================================="
+
+              message=$(echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}'")
+              for i in ${NOTIFICATION_IDS[@]}; do
+                curl -X POST \
+                      -d chat_id=${i} \
+                      -d text="$(echo -e ${message})" \
+                      https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+              done
             fi
 
 workflows:
