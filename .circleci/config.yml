@@ -93,11 +93,11 @@ workflows:
           #<<: *only-releasable
           #requires:
             #- Prepare Credentials
-      - GCP Bucket Update:
-          <<: *only-releasable
-          requires:
-            - GCP Sync
-      - GCP Publish Site:
-          <<: *only-releasable
-          requires:
-            - GCP Bucket Update
+      #- GCP Bucket Update:
+          #<<: *only-releasable
+          #requires:
+            #- GCP Sync
+      #- GCP Publish Site:
+          #<<: *only-releasable
+          #requires:
+            #- GCP Bucket Update
