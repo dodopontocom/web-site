@@ -65,7 +65,7 @@ jobs:
               terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
               echo "======== Destroying GCP Resources ========"
               terraform destroy --auto-approve
-            else
+            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
               terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
               terraform plan
               terraform apply --auto-approve
@@ -94,7 +94,7 @@ jobs:
                 sleep 10
               done
               echo ""
-              echo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
+              echo "[$(date +%H<<: *only-releasable:%M:%S)] - Getting External IP... [success]"
               echo "=================================================================================="
               echo "Access the below URL to test your deployed application:"
               echo ""
@@ -107,7 +107,9 @@ workflows:
   
   gcloud_workflow:
     jobs:
-      - GCP GKE Node Pool Creation
+      - GCP GKE Node Pool Creation:
+          <<: *only-releasable
       - GCP Deploy App:
+          <<: *only-releasable
           requires:
             - GCP GKE Node Pool Creation
