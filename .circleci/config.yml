@@ -129,6 +129,7 @@ jobs:
     docker:
       - image: circleci/node
     steps:
+      - checkout
       - <<: *send-telegram
 
 workflows:
