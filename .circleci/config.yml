@@ -43,6 +43,7 @@ jobs:
       - <<: *activate-sa
 
   GCP GKE Node Pool Creation:
+    working_directory: /root/app
     docker:
       - image: hashicorp/terraform:light
     steps:
