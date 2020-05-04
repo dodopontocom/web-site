@@ -22,7 +22,6 @@ resource "google_container_cluster" "primary" {
       disable-legacy-endpoints = "true"
     }
 
-/*
     labels = {
       foo = "bar"
     }
@@ -30,7 +29,6 @@ resource "google_container_cluster" "primary" {
     tags = ["foo", "bar"]
   }
 
-*/
   timeouts {
     create = "30m"
     update = "40m"
