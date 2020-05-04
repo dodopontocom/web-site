@@ -89,10 +89,10 @@ workflows:
       - GCP GKE Node Pool Creation:
           requires:
             - Prepare Credentials
-      - GCP Sync:
-          <<: *only-releasable
-          requires:
-            - Prepare Credentials
+      #- GCP Sync:
+          #<<: *only-releasable
+          #requires:
+            #- Prepare Credentials
       - GCP Bucket Update:
           <<: *only-releasable
           requires:
