@@ -80,7 +80,7 @@ jobs:
       - run:
           name: "GCP Deploy App"
           command: |
-            kubectl apply -f app-deployment.yaml
+            kubectl apply -f cloud/k8s/app-deployment.yaml
 
   
 workflows:
