@@ -17,21 +17,23 @@ revoke-sa: &revoke-sa
   - run:
       name: "Revoke SA"
       command: |
-        source .circleci/cicd-definitions.sh
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
-        gcloud auth revoke devops-sa@construtora-2020.iam.gserviceaccount.com
+        gcloud auth revoke devops-sa@terraform-gcp-lab.iam.gserviceaccount.com
 
 only-releasable: &only-releasable
   filters:
     branches:
       only:
-        - release/gcp
+        - develop
+        - master
 non-releasable: &non-releasable
   filters:
     branches:
       ignore:
-        - release/gcp
+        - develop
+        - master
 
 jobs:
   Prepare Credentials:
@@ -40,16 +42,15 @@ jobs:
       - checkout
       - <<: *activate-sa
 
-  GCP Sync:
-    <<: *defaults
+  GCP GKE Node Pool Creation:
+    docker:
+      - image: hashicorp/terraform:light
     steps:
       - checkout
-      - <<: *activate-sa
       - run:
           name: "GCP Sync to Bucket"
           command: |
-            source .circleci/cicd-definitions.sh
-            gsutil -m rsync -c -x '^.*git.*$|^.*circleci.*$|^.*cloud.*$' -r ./ gs://${GCLOUD_PROJECT_BUCKET_NAME}/
+            terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
   
   GCP Bucket Update:
     <<: *defaults
