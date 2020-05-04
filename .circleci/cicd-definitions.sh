@@ -7,7 +7,7 @@ export GCLOUD_PROJECT_BUCKET_NAME="gke-auto"
 export GCLOUD_PROJECT_REGION="us-central1"
 
 # Terraform variables
-export TF_VAR_gcp_bucket="terraform-${GCLOUD_PROJECT_BUCKET_NAME}"
+export TF_VAR_gcp_bucket="${GCLOUD_PROJECT_BUCKET_NAME}"
 export TF_VAR_project_id="${GCLOUD_PROJECT_ID}"
 export TF_VAR_machine_type="n1-standard-4"
 export TF_VAR_region="${GCLOUD_PROJECT_REGION}"
