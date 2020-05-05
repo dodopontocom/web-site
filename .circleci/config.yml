@@ -65,13 +65,13 @@ non-releasable: &non-releasable
         - master
 
 jobs:
-  Development Tests:
+  App Build Image:
     <<: *defaults
     <<: *gcp-image
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          #docker_layer_caching: true
       - run:
           name: "Build and Push"
           command: |
@@ -161,10 +161,12 @@ workflows:
   version: 2.1
   gcloud_workflow:
     jobs:
-      - Development Tests:
-          <<: *only-testing
+      - App Build Image:
+          <<: *only-releasable
       - GCP GKE Node Pool Creation:
           <<: *only-releasable
+          requires:
+            - App Build Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
