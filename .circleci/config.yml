@@ -145,9 +145,9 @@ jobs:
               for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
               source ${BASH_ENV}
               
+              gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
               kubectl get secret ${DOCKER_REGISTRY_SECRET_NAME}
               if [[ "$?" -ne "0" ]]; then
-                gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
                 sa_email=$(gcloud iam service-accounts list --filter="displayName:${GCLOUD_SA_NAME}" --format='value(email)')
                 kubectl create secret docker-registry ${DOCKER_REGISTRY_SECRET_NAME} \
                   --docker-server=https://us.gcr.io --docker-username=_json_key \
