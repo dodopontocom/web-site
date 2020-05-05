@@ -146,7 +146,7 @@ jobs:
               source ${BASH_ENV}
               
               gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
-              sa_email=$(gcloud iam service-accounts list --filter="displayName:devops-sa" --format='value(email)'
+              sa_email=$(gcloud iam service-accounts list --filter="displayName:devops-sa" --format='value(email)')
               kubectl create secret docker-registry gcr-secret \
                 --docker-server=https://gcr.io --docker-username=_json_key \
                 --docker-email=${sa_email} \
