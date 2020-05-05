@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: web-site-deploment-container
-          image: rodolfoneto/web-site:dev
+          image: rodolfoneto/web-site:stable
           imagePullPolicy: Always
           ports:
           - containerPort: 80
