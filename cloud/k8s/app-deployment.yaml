@@ -17,7 +17,7 @@ spec:
           ports:
           - containerPort: 80
       #imagePullSecrets:
-      #  - name: gcr-secret
+      #  - name: gcr-secret # Use secret for private container repository in gcr.io
 
       
         
