@@ -59,11 +59,11 @@ notify-telegram: &notify-telegram
         source ${BASH_ENV}
         apk add --no-cache curl || apt-get install -y curl     
         
-        message="Build *${CIRCLE_BUILD_NUM}* foi iniciada.\n\
-            *Branch:* ${CIRCLE_BRANCH}\n\
-            *Usuário:* ${CIRCLE_PROJECT_USERNAME}\n\
-            *Parte:* ${CIRCLE_JOB}\n\n\
-            *Commit:* $(git log --format=oneline -n 1 ${CIRCLE_SHA1})"
+        message="Build <b>${CIRCLE_BUILD_NUM}</b> foi iniciada.\n\
+          <b>Branch:</b> ${CIRCLE_BRANCH}\n\
+          <b>Usuário:</b> ${CIRCLE_PROJECT_USERNAME}\n\
+          <b>Parte:</b> ${CIRCLE_JOB}\n\n\
+          <b>Commit:</b> $(git log --format=oneline -n 1 ${CIRCLE_SHA1})"
 
         curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
