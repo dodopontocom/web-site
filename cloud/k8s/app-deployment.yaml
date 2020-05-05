@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       labels:
-        label-key : deployment-dev
+        label-key: deployment-dev
     spec:
       serviceAccountName: devops-sa
       containers:
