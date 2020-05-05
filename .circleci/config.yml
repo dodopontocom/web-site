@@ -75,16 +75,28 @@ jobs:
       - run:
           name: "Build and Push"
           command: |
-            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-            source ${BASH_ENV}
-            echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-            gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-            gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
+            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [next: Destroying GCP Resources]"
+              echo "=================================================================================="
+            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
+              for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+              source ${BASH_ENV}
+              echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+              gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
+              gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
             
-            gcloud auth --quiet configure-docker
+              gcloud auth --quiet configure-docker
 
-            docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable" .
-            docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable"
+              docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable" .
+              docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable"
+            else
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [Nothing to do]"
+              echo "=================================================================================="
+            fi
 
   GCP GKE Node Pool Creation:
     <<: *defaults

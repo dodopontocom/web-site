@@ -2,7 +2,6 @@
 #
 
 # APPLICATION INFO
-export APP_NAME="web-site"
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="terraform-gcp-lab"
