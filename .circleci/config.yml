@@ -170,8 +170,7 @@ jobs:
             fi
 
   Notify:
-    docker:
-      - image: circleci/node
+    <<: *gcp-image
     steps:
       - checkout
       - run:
