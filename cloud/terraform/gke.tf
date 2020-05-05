@@ -21,7 +21,6 @@ resource "google_container_cluster" "primary" {
     metadata = {
       disable-legacy-endpoints = "true"
     }
-
 /*
     labels = {
       foo = "bar"
@@ -29,7 +28,6 @@ resource "google_container_cluster" "primary" {
 
     tags = ["foo", "bar"]
 */
-
   }
 
   timeouts {
