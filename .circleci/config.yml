@@ -82,6 +82,7 @@ jobs:
             gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
             
             gcloud auth --quiet configure-docker
+
             docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable" .
             docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable"
 
