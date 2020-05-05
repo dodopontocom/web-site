@@ -151,7 +151,12 @@ jobs:
                   --docker-server=https://us.gcr.io --docker-username=_json_key \
                   --docker-email=${sa_email} \
                   --docker-password="${GCLOUD_JSON_KEY_PATH}" \
-              || true ]]
+              ]] && \
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - Docker secret created..."
+              echo "==================================================================================" \
+              || true
 
               kubectl apply -f cloud/k8s/app-deployment.yaml
               kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
