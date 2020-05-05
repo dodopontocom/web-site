@@ -18,7 +18,6 @@ push-app-docker: &push-app-docker
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
         gcloud auth -q configure-docker
-        gcloud components - q install docker-credential-gcr
 
 activate-sa: &activate-sa
   - run:
@@ -82,6 +81,13 @@ jobs:
     steps:
       - checkout
       - <<: *push-app-docker
+      - run:
+          name: "Build and Push"
+          command: |
+            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+            source ${BASH_ENV}
+            docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable" .
+            docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable"
 
   GCP GKE Node Pool Creation:
     <<: *defaults
