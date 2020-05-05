@@ -17,7 +17,3 @@ spec:
           - containerPort: 80
       imagePullSecrets:
         - name: gcr-secret
-
-# testing (imagePullSecrets)
-# as image now is from google container registry
-# it is needed to authenticate a secret from here to be able to do it
