@@ -9,6 +9,9 @@ export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/crede
 export GCLOUD_PROJECT_BUCKET_NAME="terraform-gke-node"
 export GCLOUD_PROJECT_REGION="us-central1"
 
+DOCKER_REGISTRY_SECRET_NAME="gcr-secret"
+GCLOUD_SA_NAME="devops-sa"
+
 # Terraform variables
 export TF_VAR_gcp_bucket="${GCLOUD_PROJECT_BUCKET_NAME}"
 export TF_VAR_project_id="${GCLOUD_PROJECT_ID}"
