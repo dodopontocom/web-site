@@ -50,16 +50,15 @@ revoke-sa: &revoke-sa
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
-        gcloud auth revoke devops-sa@terraform-gcp-lab.iam.gserviceaccount.com
-
+        gcloud auth revoke ${GCLOUD_SA_EMAIL}
 notify-telegram: &notify-telegram
   - run:
       name: "Send Notification"
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         source ${BASH_ENV}
-        apt-get update
-        apt-get install -y curl
+        yum update
+        yum install -y curl
         
         message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
         curl -X POST \
