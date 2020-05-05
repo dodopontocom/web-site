@@ -108,6 +108,12 @@ jobs:
       - run:
           name: "GCP GKE Node Pool Creation"
           command: |
+            export
+            echo ""
+            echo ""
+            echo ""
+            echo ""
+            echo ""
             for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
             source ${BASH_ENV}
             echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
