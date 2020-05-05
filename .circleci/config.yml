@@ -17,8 +17,8 @@ push-app-docker: &push-app-docker
         source ${BASH_ENV}
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         gcloud config set project ${GCLOUD_PROJECT_ID}
-        echo y | gcloud auth configure-docker
-        echo y | gcloud components install docker-credential-gcr
+        gcloud auth -q configure-docker
+        gcloud components - q install docker-credential-gcr
 
 activate-sa: &activate-sa
   - run:
