@@ -70,7 +70,8 @@ jobs:
     <<: *gcp-image
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "Build and Push"
           command: |
@@ -81,8 +82,8 @@ jobs:
             gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
             
             gcloud auth --quiet configure-docker
-            docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable" .
-            docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable"
+            docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable" .
+            docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable"
 
   GCP GKE Node Pool Creation:
     <<: *defaults

@@ -10,8 +10,8 @@ spec:
         label-key : deployment-dev
     spec:
       containers:
-        - name: web-site-deploment-container
-          image: rodolfoneto/web-site:stable
+        - name: web-site-deployment-container
+          image: us.gcr.io/terraform-gcp-lab/web-site:stable
           imagePullPolicy: Always
           ports:
           - containerPort: 80
