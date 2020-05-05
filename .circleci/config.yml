@@ -9,6 +9,16 @@ tf-image: &tf-image
   docker:
     - image: hashicorp/terraform:light
 
+push-app-docker: &push-app-docker
+  - run:
+      name: "Push app docker image to Google Container Registry"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        source ${BASH_ENV}
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+        gcloud config set project ${GCLOUD_PROJECT_ID}
+        gcloud auth configure-docker
+        
 activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
@@ -46,6 +56,11 @@ send-telegram: &send-telegram
               -d text="$(echo -e ${message})" \
               https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
 
+only-testing: &only-testing
+  filters:
+    branches:
+      only:
+        - feature/gcr
 only-releasable: &only-releasable
   filters:
     branches:
@@ -60,6 +75,13 @@ non-releasable: &non-releasable
         - master
 
 jobs:
+  Development Tests:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - <<: *push-app-docker
+
   GCP GKE Node Pool Creation:
     <<: *defaults
     <<: *tf-image
@@ -136,6 +158,8 @@ workflows:
   version: 2.1
   gcloud_workflow:
     jobs:
+      - Development Tests:
+          <<: *only-testing
       - GCP GKE Node Pool Creation:
           <<: *only-releasable
       - GCP Deploy App:
