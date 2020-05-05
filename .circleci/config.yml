@@ -9,16 +9,6 @@ tf-image: &tf-image
   docker:
     - image: hashicorp/terraform:light
 
-push-app-docker: &push-app-docker
-  - run:
-      name: "Push app docker image to Google Container Registry"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        source ${BASH_ENV}
-        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-        gcloud config set project ${GCLOUD_PROJECT_ID}
-        gcloud auth -q configure-docker
-
 activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
@@ -80,12 +70,17 @@ jobs:
     <<: *gcp-image
     steps:
       - checkout
-      - <<: *push-app-docker
+      - setup_remote_docker
       - run:
           name: "Build and Push"
           command: |
             for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
             source ${BASH_ENV}
+            echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+            
+            gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
+            gcloud auth --quiet configure-docker
+            
             docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable" .
             docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/web-site:stable"
 
