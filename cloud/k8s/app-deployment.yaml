@@ -9,6 +9,7 @@ spec:
       labels:
         label-key : deployment-dev
     spec:
+      serviceAccountName: devops-sa
       containers:
         - name: web-site-deployment-container
           image: us.gcr.io/terraform-gcp-lab/web-site:stable
