@@ -9,6 +9,24 @@ tf-image: &tf-image
   docker:
     - image: hashicorp/terraform:light
 
+only-testing: &only-testing
+    filters:
+      branches:
+        only:
+          - 'feature/.*'
+only-releasable: &only-releasable
+    filters:
+      branches:
+        only:
+          - develop
+          - master
+non-releasable: &non-releasable
+    filters:
+      branches:
+        ignore:
+          - develop
+          - master
+
 activate-sa: &activate-sa
   - run:
       name: "Activate SA to the Project"
@@ -40,29 +58,12 @@ send-telegram: &send-telegram
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         source ${BASH_ENV}
+        
         message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
         curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
               -d text="$(echo -e ${message})" \
               https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-
-only-testing: &only-testing
-  filters:
-    branches:
-      only:
-        - feature/gcr
-only-releasable: &only-releasable
-  filters:
-    branches:
-      only:
-        - develop
-        - master
-non-releasable: &non-releasable
-  filters:
-    branches:
-      ignore:
-        - develop
-        - master
 
 jobs:
   App Build Image:
@@ -173,6 +174,9 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
+      - run:
+          name: "Install curl"
+          command: "apt-get update && apt-get install -y curl"
       - <<: *send-telegram
 
 workflows:
