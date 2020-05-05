@@ -150,7 +150,7 @@ jobs:
                   --docker-server=https://us.gcr.io --docker-username=_json_key \
                   --docker-email=${GCLOUD_SA_EMAIL} \
                   --docker-password="${GCLOUD_JSON_KEY_PATH}" \
-              || true"
+              || true
 
               kubectl apply -f cloud/k8s/app-deployment.yaml
               kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
@@ -179,12 +179,12 @@ workflows:
   version: 2.1
   gcloud_workflow:
     jobs:
-      #- App Build Image:
-      #    <<: *only-releasable
+      - App Build Image:
+          <<: *only-releasable
       - GCP GKE Node Pool Creation:
           <<: *only-releasable
-      #    requires:
-      #      - App Build Image
+          requires:
+            - App Build Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
