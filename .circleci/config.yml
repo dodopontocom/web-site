@@ -177,6 +177,7 @@ jobs:
 
 workflows:
   version: 2.1
+  
   gcloud_workflow:
     jobs:
       #- App Build Image:
