@@ -58,7 +58,7 @@ notify-telegram: &notify-telegram
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         source ${BASH_ENV}
-        apt-get update > /dev/null 2>&1
+        apt-get update
         apt-get install -y curl
         
         message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
