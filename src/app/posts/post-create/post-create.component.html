@@ -1,25 +1,49 @@
 <mat-card>
-    <mat-form-field appearance='fill'>
-        <mat-label>Nome</mat-label>
-        <input matInput [(ngModel)]="enteredName" required>
-    </mat-form-field>
-    
-    <mat-form-field appearance='fill'>
-        <mat-label>WhatsApp</mat-label>
-        <input matInput [(ngModel)]="enteredPhone" required>
-    </mat-form-field>
+    <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+        <mat-form-field appearance='fill'>
+            <mat-label>Nome</mat-label>
+            <input
+                matInput
+                type="text"
+                name="name"
+                ngModel
+                minlength="3"
+                required
+                #name="ngModel">
+            <mat-error *ngIf="name.invalid">Escreva seu nome!</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance='fill'>
+            <mat-label>WhatsApp</mat-label>
+            <input
+                matInput
+                type="text"
+                name="phone"
+                ngModel
+                minlength="11"
+                required
+                ng-model="phoneNumber"
+                ui-br-phone-number="areaCode"
+                placeholder="(__) ____-____"
+                #phone="ngModel">
+            <mat-error *ngIf="phone.invalid">padrão: 1599999999</mat-error>
 
-    <mat-form-field appearance='fill'>
-        <mat-label>Mensagem Opcional</mat-label>
-        <textarea matInput [(ngModel)]="enteredContent"></textarea>
-    </mat-form-field>
+        </mat-form-field>
 
-    <button
-        mat-raised-button
-        color="primary"
-        (click)="onAddPost()">Enviar
-    </button>
+        <mat-form-field appearance='fill'>
+            <mat-label>Mensagem Opcional</mat-label>
+            <textarea 
+                matInput
+                name="content" 
+                ngModel></textarea>
+        </mat-form-field>
 
+        <button
+            mat-raised-button
+            color="accent"
+            type="submit">Enviar
+        </button>
+    </form>
 </mat-card>
 
 

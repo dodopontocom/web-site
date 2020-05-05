@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: web-site-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        label-key : deployment-dev
+    spec:
+      containers:
+        - name: web-site-deploment-container
+          image: rodolfoneto/web-site:stable
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80

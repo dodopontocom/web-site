@@ -1,0 +1,148 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: /root/app
+gcp-image: &gcp-image
+  docker:
+    - image: google/cloud-sdk
+tf-image: &tf-image
+  docker:
+    - image: hashicorp/terraform:light
+
+activate-sa: &activate-sa
+  - run:
+      name: "Activate SA to the Project"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        source ${BASH_ENV}
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+        gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
+        gcloud config set project ${GCLOUD_PROJECT_ID}
+get-credentials: &get-credentials
+  - run:
+      name: "Get Cluster Credentials"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        source ${BASH_ENV}
+        gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
+revoke-sa: &revoke-sa
+  - run:
+      name: "Revoke SA"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+        echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
+        gcloud auth revoke devops-sa@terraform-gcp-lab.iam.gserviceaccount.com
+
+send-telegram: &send-telegram
+  - run:
+      name: "Send Notification"
+      command: |
+        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+        source ${BASH_ENV}
+        message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
+        curl -X POST \
+              -d chat_id=${NOTIFICATION_IDS} \
+              -d text="$(echo -e ${message})" \
+              https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+
+only-releasable: &only-releasable
+  filters:
+    branches:
+      only:
+        - develop
+        - master
+non-releasable: &non-releasable
+  filters:
+    branches:
+      ignore:
+        - develop
+        - master
+
+jobs:
+  GCP GKE Node Pool Creation:
+    <<: *defaults
+    <<: *tf-image
+    steps:
+      - checkout
+      - run:
+          name: "GCP GKE Node Pool Creation"
+          command: |
+            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+            source ${BASH_ENV}
+            echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+
+            cd cloud/terraform
+            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - Terraform Destroy flag detected!... [Destroying GCP Resources]"
+              echo "=================================================================================="
+              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
+              terraform destroy --auto-approve
+            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - Terraform Apply flag detected!... [Updating GCP Resources]"
+              echo "=================================================================================="
+              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
+              terraform plan
+              terraform apply --auto-approve
+            fi
+  GCP Deploy App:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - <<: *activate-sa
+      - run:
+          name: "GCP Deploy App"
+          command: |
+            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+              echo ""
+              echo "=================================================================================="
+              echo "[$(date +%H:%M:%S)] - No App to apply... [aborting]"
+              echo "=================================================================================="
+            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
+              for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+              source ${BASH_ENV}
+              
+              gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
+              
+              kubectl apply -f cloud/k8s/app-deployment.yaml
+              kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
+              
+              while [ "$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')" == "" ]; do
+                echo "[$(date +%H:%M:%S)] - Getting External IP... [pending]"
+                sleep 10
+              done
+              
+              echo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
+              echo "=================================================================================="
+              echo "Access the below URL to test your deployed application:"
+              echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+              echo "=================================================================================="
+
+            fi
+
+  Notify:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - <<: *send-telegram
+
+workflows:
+  version: 2.1
+  
+  gcloud_workflow:
+    jobs:
+      - GCP GKE Node Pool Creation:
+          <<: *only-releasable
+      - GCP Deploy App:
+          <<: *only-releasable
+          requires:
+            - GCP GKE Node Pool Creation
+      - Notify:
+          requires:
+            - GCP Deploy App
