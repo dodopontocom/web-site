@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="terraform-gcp-lab"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
