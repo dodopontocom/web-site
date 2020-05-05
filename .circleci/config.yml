@@ -146,14 +146,12 @@ jobs:
               source ${BASH_ENV}
               
               gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
-              kubectl get secret ${DOCKER_REGISTRY_SECRET_NAME}
-              if [[ "$?" -ne "0" ]]; then
-                sa_email=$(gcloud iam service-accounts list --filter="displayName:${GCLOUD_SA_NAME}" --format='value(email)')
-                kubectl create secret docker-registry ${DOCKER_REGISTRY_SECRET_NAME} \
+              sa_email=$(gcloud iam service-accounts list --filter="displayName:${GCLOUD_SA_NAME}" --format='value(email)')
+              [[ kubectl create secret docker-registry ${DOCKER_REGISTRY_SECRET_NAME} \
                   --docker-server=https://us.gcr.io --docker-username=_json_key \
                   --docker-email=${sa_email} \
                   --docker-password="${GCLOUD_JSON_KEY_PATH}"
-              fi
+              ]] || true
 
               kubectl apply -f cloud/k8s/app-deployment.yaml
               kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
