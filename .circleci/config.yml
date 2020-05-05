@@ -57,9 +57,14 @@ notify-telegram: &notify-telegram
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         source ${BASH_ENV}
-        apk add --no-cache curl || apt-get install -y curl
+        apk add --no-cache curl || apt-get install -y curl     
         
-        message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
+        message="Build ${CIRCLE_BUILD_NUM} foi iniciada.\n"
+        message+="Branch: ${CIRCLE_BRANCH}\n"
+        message+="Usuário: ${CIRCLE_PROJECT_USERNAME}\n"
+        message+="Parte: ${CIRCLE_JOB}\n\n"
+        message+="Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1})"
+        
         curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
               -d text="$(echo -e ${message})" \
@@ -108,12 +113,6 @@ jobs:
       - run:
           name: "GCP GKE Node Pool Creation"
           command: |
-            export
-            echo ""
-            echo ""
-            echo ""
-            echo ""
-            echo ""
             for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
             source ${BASH_ENV}
             echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
