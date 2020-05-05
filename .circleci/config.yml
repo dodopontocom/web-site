@@ -150,7 +150,7 @@ jobs:
               [[ kubectl create secret docker-registry ${DOCKER_REGISTRY_SECRET_NAME} \
                   --docker-server=https://us.gcr.io --docker-username=_json_key \
                   --docker-email=${sa_email} \
-                  --docker-password="${GCLOUD_JSON_KEY_PATH}"
+                  --docker-password="${GCLOUD_JSON_KEY_PATH}" \
               ]] || true
 
               kubectl apply -f cloud/k8s/app-deployment.yaml
