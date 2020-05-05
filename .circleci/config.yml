@@ -46,6 +46,11 @@ send-telegram: &send-telegram
               -d text="$(echo -e ${message})" \
               https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
 
+only-testing: &only-testing
+  filters:
+    branches:
+      only:
+        - feature/gcr
 only-releasable: &only-releasable
   filters:
     branches:
@@ -60,6 +65,26 @@ non-releasable: &non-releasable
         - master
 
 jobs:
+  App Build Image:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          #docker_layer_caching: true
+      - run:
+          name: "Build and Push"
+          command: |
+            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
+            source ${BASH_ENV}
+            echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+            gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
+            gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
+            
+            gcloud auth --quiet configure-docker
+            docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable" .
+            docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}:stable"
+
   GCP GKE Node Pool Creation:
     <<: *defaults
     <<: *tf-image
@@ -136,8 +161,12 @@ workflows:
   version: 2.1
   gcloud_workflow:
     jobs:
+      - App Build Image:
+          <<: *only-releasable
       - GCP GKE Node Pool Creation:
           <<: *only-releasable
+          requires:
+            - App Build Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
