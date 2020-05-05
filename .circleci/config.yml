@@ -52,12 +52,14 @@ revoke-sa: &revoke-sa
         echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
         gcloud auth revoke devops-sa@terraform-gcp-lab.iam.gserviceaccount.com
 
-send-telegram: &send-telegram
+notify-telegram: &notify-telegram
   - run:
       name: "Send Notification"
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         source ${BASH_ENV}
+        apt-get update > /dev/null 2>&1
+        apt-get install -y curl
         
         message="=== ${CIRCLE_BRANCH} - commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1}) ==="
         curl -X POST \
@@ -98,6 +100,7 @@ jobs:
               echo "[$(date +%H:%M:%S)] - Build Image skipped!... [Nothing to do]"
               echo "=================================================================================="
             fi
+      - <<: *notify-telegram
 
   GCP GKE Node Pool Creation:
     <<: *defaults
@@ -128,6 +131,7 @@ jobs:
               terraform plan
               terraform apply --auto-approve
             fi
+      - <<: *notify-telegram
   GCP Deploy App:
     <<: *defaults
     <<: *gcp-image
@@ -166,18 +170,8 @@ jobs:
               echo "Access the below URL to test your deployed application:"
               echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
               echo "=================================================================================="
-
             fi
-
-  Notify:
-    <<: *gcp-image
-    steps:
-      - checkout
-      - run:
-          name: "Install curl"
-          command: "apt-get update && apt-get install -y curl"
-      - <<: *send-telegram
-
+      - <<: *notify-telegram
 workflows:
   version: 2.1
   
@@ -193,6 +187,3 @@ workflows:
           <<: *only-releasable
           requires:
             - GCP GKE Node Pool Creation
-      - Notify:
-          requires:
-            - GCP Deploy App
