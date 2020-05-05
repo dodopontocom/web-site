@@ -134,7 +134,6 @@ jobs:
 
 workflows:
   version: 2.1
-  
   gcloud_workflow:
     jobs:
       - GCP GKE Node Pool Creation:
