@@ -27,7 +27,7 @@ get-credentials: &get-credentials
         gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
 revoke-sa: &revoke-sa
   - run:
-      name: "Revoke SA"
+      name: "Revoke GCP SA"
       command: |
         for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
