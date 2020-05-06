@@ -67,12 +67,14 @@ notify-telegram: &notify-telegram
           gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone} || tag=1
           if [[ -z ${tag} ]]; then
             http_app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
+            Acesso a aplicação:.\n\n\
+            http://${http_app_url}"
           else
-            http_app_url="---------não-disponível----------"
-          fi
-          message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
+            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
             O Deploy da aplicação não foi realizado.\n\n\
             Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
+          fi
           
           curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
