@@ -89,7 +89,8 @@ notify-telegram: &notify-telegram
                 -d chat_id=${NOTIFICATION_IDS} \
                 -d text="$(echo -e ${message})" \
                 https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          else
+          fi
+        else
             message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
               Branch: ${CIRCLE_BRANCH}\n\n\
               Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
@@ -100,7 +101,6 @@ notify-telegram: &notify-telegram
                   -d chat_id=${NOTIFICATION_IDS} \
                   -d text="$(echo -e ${message})" \
                   https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          fi
         fi
 
 jobs:
