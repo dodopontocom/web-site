@@ -156,6 +156,7 @@ jobs:
               terraform apply --auto-approve
             fi
       - <<: *notify-telegram
+
   GCP Deploy App:
     <<: *defaults
     <<: *gcp-image
@@ -196,6 +197,7 @@ jobs:
               echo "=================================================================================="
             fi
       - <<: *notify-telegram
+      
 workflows:
   version: 2.1
   

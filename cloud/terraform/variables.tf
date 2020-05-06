@@ -4,6 +4,5 @@ variable "zone" { }
 variable "key" { }
 variable "gcp_bucket" { }
 variable "machine_type" { }
-variable "node_pool" { }
 variable "cluster_count" { }
 variable "cluster_name" { }
