@@ -67,7 +67,11 @@ notify-telegram: &notify-telegram
 
         curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
-              -d text="$(echo -e ${message})" \
+              -d text="Build <b>${CIRCLE_BUILD_NUM}</b> foi iniciada.\n\
+              <b>Branch:</b> ${CIRCLE_BRANCH}\n\
+              <b>Usuário:</b> ${CIRCLE_PROJECT_USERNAME}\n\
+              <b>Parte:</b> ${CIRCLE_JOB}\n\n\
+              <b>Commit:</b> $(git log --format=oneline -n 1 ${CIRCLE_SHA1})" \
               https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
 
 jobs:
