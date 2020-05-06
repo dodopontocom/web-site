@@ -59,11 +59,11 @@ notify-telegram: &notify-telegram
         source ${BASH_ENV}
         apk add --no-cache curl || apt-get install -y curl  
         
-        if [[ "${CIRCLE_JOB}" -eq "GCP Deploy App" ]]; then
+        if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
           echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
           gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
           gcloud config set project ${GCLOUD_PROJECT_ID}
-          
+
           message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
             Access the below URL to test your deployed application:\n\n\
             http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
@@ -77,7 +77,7 @@ notify-telegram: &notify-telegram
             Branch: ${CIRCLE_BRANCH}\n\n\
             Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
             Parte: ${CIRCLE_JOB}\n\n\
-            Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2)"
+            Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2-)"
 
           curl -X POST \
                 -d chat_id=${NOTIFICATION_IDS} \
