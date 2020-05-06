@@ -71,8 +71,8 @@ notify-telegram: &notify-telegram
             http_app_url="---------não-disponível----------"
           fi
           message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-            Access the below URL to test your deployed application:\n\n\
-            http://${http_app_url}"
+            O Deploy da aplicação não foi realizado.\n\n\
+            Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
           
           curl -X POST \
               -d chat_id=${NOTIFICATION_IDS} \
