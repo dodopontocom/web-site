@@ -64,33 +64,43 @@ notify-telegram: &notify-telegram
           gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
           gcloud config set project ${GCLOUD_PROJECT_ID}
           
-          gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone} || tag=1
-          if [[ -z ${tag} ]]; then
-            http_app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+          if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
             message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-            Acesso a aplicação:.\n\n\
-            http://${http_app_url}"
-          else
-            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-            O Deploy da aplicação não foi realizado.\n\n\
-            Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
-          fi
+              O 'unDeploy' da aplicação foi realizado."
           
-          curl -X POST \
-              -d chat_id=${NOTIFICATION_IDS} \
-              -d text="$(echo -e ${message})" \
-              https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-        else
-          message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-            Branch: ${CIRCLE_BRANCH}\n\n\
-            Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
-            Parte: ${CIRCLE_JOB}\n\n\
-            Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2-)"
-
-          curl -X POST \
+            curl -X POST \
                 -d chat_id=${NOTIFICATION_IDS} \
                 -d text="$(echo -e ${message})" \
                 https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+          else
+            gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone} || tag=1
+            if [[ -z ${tag} ]]; then
+              http_app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
+              Acesso a aplicação:.\n\n\
+              http://${http_app_url}"
+            else
+              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
+              O Deploy da aplicação não foi realizado.\n\n\
+              Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
+            fi
+            
+            curl -X POST \
+                -d chat_id=${NOTIFICATION_IDS} \
+                -d text="$(echo -e ${message})" \
+                https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+          else
+            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
+              Branch: ${CIRCLE_BRANCH}\n\n\
+              Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
+              Parte: ${CIRCLE_JOB}\n\n\
+              Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2-)"
+
+            curl -X POST \
+                  -d chat_id=${NOTIFICATION_IDS} \
+                  -d text="$(echo -e ${message})" \
+                  https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+          fi
         fi
 
 jobs:
