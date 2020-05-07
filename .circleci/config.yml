@@ -217,7 +217,9 @@ jobs:
       - checkout
       - run:
           name: "Load GCP lib"
-          command: "./dolibs-test.sh"
+          command: |
+            apt-get install -y gawk
+            ./dolibs-test.sh
 
 workflows:
   version: 2.1
