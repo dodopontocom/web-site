@@ -1,3 +1,4 @@
+#!/bin/bash
 #    Copyright 2020 Leonardo Andres Morales
 
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,126 +13,72 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-#!/bin/bash
-export DOLIBS_ROOTDIR="$(cd $(dirname ${BASH_SOURCE[0]})/ >/dev/null 2>&1 && pwd)"
-export ROOTDIR="$(cd $(dirname ${BASH_SOURCE[0]})/../ >/dev/null 2>&1 && pwd)"
-
-### DEVOPS LIBS BRANCH ###
-DOLIBS_DEFAULT_MODE="auto"
-DOLIBS_BRANCH="v0.1.2-alpha"
-DOLIBS_REPO="github.com/masterleros/bash-devops-libs.git"
-### DEVOPS LIBS DEFINITIONS ###
+# @file dolibs.sh
+# @brief This is de main entrypoint for the lib and needs to be copied whithin your source files, then it needs to be included
 
 # Validate OS
-if [[ "${BASH}" != *"/bash" ]]; then echo "--- Current OS is not running on bash interpreter ---" >&2; exit -1; fi
+if [ ! "${BASH}" ]; then echo "Current OS is not running on bash interpreter" >&2; exit -1; fi
 
-# Function to clone the lib
-function devOpsLibsClone() {
+### DEVOPS LIBS DEFINITIONS ###
+DOLIBS_MODE="auto"
+DOLIBS_BRANCH="develop"
+### DEVOPS LIBS DEFINITIONS ###
+DOLIBS_ROOTDIR=$(cd $(dirname "${BASH_SOURCE[0]}")/ >/dev/null 2>&1 && pwd)
+DOLIBS_DIR=${DOLIBS_ROOTDIR}/dolibs
+DOLIBS_GIT_BOSTRAP="https://raw.githubusercontent.com/masterleros/bash-devops-libs/${DOLIBS_BRANCH}/boostrap.sh"
+### DEVOPS LIBS DEFINITIONS ###
 
-    # Check and enable set e
-    set_e_enabled=${-//[^e]/}
-    [ ${set_e_enabled} ] || set -e
+# DevOps libs options
+while [ "${1}" != "" ]; do
+    case "${1}" in
+        # clone mode
+        "--online") DOLIBS_MODE="online"; shift 1;;
+        "--auto") DOLIBS_MODE="auto"; shift 1;;
+        "--debug") DOLIBS_DEBUG="${DOLIBS_DEBUG} libs"; shift 1;;
+        "--debug-core") DOLIBS_DEBUG="${DOLIBS_DEBUG} core"; shift 1;;
+        "--offline")
+            # if online mode, use same source as included            
+            DOLIBS_DIR=${DOLIBS_ROOTDIR}
+            DOLIBS_MODE="offline"; shift 1;;
+        # dolibs folder    
+        "-f") DOLIBS_DIR=${2}; shift 2;;
+        # Local source folder (default is git)
+        "-l") DOLIBS_LOCAL_SOURCE_DIR=$(cd $(cd $(dirname "${0}") >/dev/null 2>&1 && pwd)/"${2}" 2>&1 && pwd)
+            if [ ! -d "${DOLIBS_LOCAL_SOURCE_DIR}" ]; then echo "Folder '${2}' does not exist!"; exit -1 ;fi
+            shift 2;;
+        *) echo "ERROR: Option '${1}' not recognized"; exit -1;;
+    esac
+done
 
-    # If clone is local
-    if [ ! "${DOLIBS_LOCAL_MODE_DIR}" ]; then
-        # Check if git is present
-        if [ $(which git &> /dev/null || echo $?) ]; then 
-            echo 'Git command not found, trying installation (this may take few minutes)...'
-            apt-get update &>/dev/null
-            apt-get -y install git &>/dev/null
-        fi
+# If not mode offline
+DOLIBS_BOSTRAP="${DOLIBS_DIR}/boostrap.sh"
+if [ "${DOLIBS_MODE}" != "offline" ]; then
+    # Clone the boostrap if in online mode or it does not exist (auto mode)    
+    if [ "${DOLIBS_MODE}" == "online" ] || [ ! -f "${DOLIBS_BOSTRAP}" ]; then
 
-        ### Clone / update the libraries ###
-        echo "Retrieving DevOps Libs code from '${DOLIBS_REPO}'..."
+        # Create the lib folder
+        [ -d "${DOLIBS_DIR}" ] || mkdir -p "${DOLIBS_DIR}"
+        # If there is a problem, exit
+        if [ ${?} -ne 0 ]; then echo "ERROR: It was not possible to create the lib folder, exiting..."; exit -1; fi    
 
-        # Get the code
-        if [ ! -d ${DOLIBS_TMP_DIR} ]; then
-            git clone -b ${DOLIBS_BRANCH} --single-branch https://git@${DOLIBS_REPO} ${DOLIBS_TMP_DIR}
+        # Get the boostrap
+        if [ "${DOLIBS_LOCAL_SOURCE_DIR}" ]; then
+            cp "${DOLIBS_LOCAL_SOURCE_DIR}/boostrap.sh" "${DOLIBS_BOSTRAP}"
         else
-            git -C ${DOLIBS_TMP_DIR} pull
+            DOLIBS_BOSTRAP="${DOLIBS_DIR}/boostrap-${DOLIBS_BRANCH//\//-}.sh"
+            curl -s -H 'Cache-Control: no-cache' --fail "${DOLIBS_GIT_BOSTRAP}" -o "${DOLIBS_BOSTRAP}"            
         fi
 
-        # Update retrieved lib status
-        cat << EOF > ${DOLIBS_STATUS}
-branch:${DOLIBS_BRANCH}
-hash:$(cd ${DOLIBS_TMP_DIR}; git rev-parse HEAD)
-updated:$(date)
-user:$(git config user.name)
-email:$(git config user.email)
-hostname:$(hostname)
-EOF
-    fi
-
-    echo "Installing Core library code...."
-
-    ### Create dir and copy the Core lib inside the project ###
-    mkdir -p ${DOLIBS_DIR}
-    cp ${DOLIBS_TMP_DIR}/libs/*.* ${DOLIBS_DIR}
-    cp ${DOLIBS_TMP_DIR}/libs/.gitignore ${DOLIBS_DIR}
-
-    # Copy license
-    cp ${DOLIBS_TMP_DIR}/LICENSE ${DOLIBS_DIR}/LICENSE
-    cp ${DOLIBS_TMP_DIR}/NOTICE ${DOLIBS_DIR}/NOTICE
-
-    # Copy the DevOps Libs help
-    cp ${DOLIBS_TMP_DIR}/README.md ${DOLIBS_DIR}/README.md
-
-    [ ${set_e_enabled} ] || set +e # Disable set e
-}
-
-# If Core library was not yet loaded
-if [ ! "${DOLIBS_CORE_FUNCT}" ]; then
-
-    ###############################
-    export DOLIBS_MODE=${1}
-    export DOLIBS_DIR="${DOLIBS_ROOTDIR}/devops-libs"
-    export DOLIBS_TMP_DIR="${DOLIBS_DIR}/.libtmp/${DOLIBS_BRANCH}"
-    export DOLIBS_STATUS="${DOLIBS_DIR}/devops-libs.status"
-    ###############################
-
-    # If it was set to use local tmp folder
-    if [ "${DOLIBS_LOCAL_MODE_DIR}" ]; then
-        if [ ! -d ${DOLIBS_LOCAL_MODE_DIR} ]; then echo 'ERROR: invalid local path to clone!' >&2; exit -1; fi
-        export DOLIBS_TMP_DIR=${DOLIBS_LOCAL_MODE_DIR}
-        export DOLIBS_MODE='local'
-        echo "Using Local mode from '${DOLIBS_LOCAL_MODE_DIR}'"        
-    # Check if operation mode was specified
-    elif [ ! ${DOLIBS_MODE} ]; then # Set default mode case not provided
-        if [ "${CI}" ]; then
-            echo "DevOps Libs running in GitLab! setting to online mode..."
-            export DOLIBS_MODE='online'
-        else
-            export DOLIBS_MODE=${DOLIBS_DEFAULT_MODE}
-        fi
-    fi
-
-    ############## VALIDATE AUTO OPERATION MODE #################
-    if [[ ${DOLIBS_MODE} == 'auto' ]]; then    
-        if [[ ${DOLIBS_MODE} == 'auto' && ! -f ${DOLIBS_DIR}/core.sh ]]; then 
-            echo "DevOps Libs not found! forcing online mode..."
-            export DOLIBS_MODE='online'; 
-        elif [[ $(cat ${DOLIBS_STATUS} | grep branch | awk -F : '{print $NF}') != ${DOLIBS_BRANCH} ]]; then
-            echo "DevOps Lib Branch has changed! forcing online mode..."
-            export DOLIBS_MODE='online'         
-        fi
-    fi
-    #########################################################
-
-    # Show using branch
-    echo "---> DevOps Libs branch: '${DOLIBS_BRANCH}' (${DOLIBS_MODE}) <---"
-
-    # Check if in on line mode
-    if [[ ${DOLIBS_MODE} == 'online' || ${DOLIBS_MODE} == 'local' ]]; then
-        devOpsLibsClone
-    fi
-
-    ### Include DevOps Libs ###
-    if [ -f ${DOLIBS_DIR}/core.sh ]; then
-        echo "Loading core library..."
-        source ${DOLIBS_DIR}/core.sh
-        if [ $? -ne 0 ]; then echo "Could not import DevOps Libs"; exit 1; fi
-    else
-        echo "Could not find DevOps Libs (offline mode?)"
-        exit 1
+        # If there is a problem, exit
+        if [ ${?} -ne 0 ]; then echo "ERROR: It was not possible to retrieve the boostraper (check source), exiting..."; exit -1; fi
     fi
 fi
+
+# Execute the boostrap if is present
+if [ ! -f "${DOLIBS_BOSTRAP}" ]; then
+    echo "ERROR: It was not possible to find the boostrap at '${DOLIBS_BOSTRAP}' (offline mode?)"
+    exit -1
+fi
+
+# Execute the bootstrap
+. "${DOLIBS_BOSTRAP}"
