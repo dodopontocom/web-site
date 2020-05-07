@@ -108,7 +108,7 @@ notify-telegram: &notify-telegram
         fi
 
 jobs:
-  App Build Image:
+  App Build Docker Image:
     <<: *defaults
     <<: *gcp-image
     steps:
@@ -121,7 +121,7 @@ jobs:
             if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
               echo ""
               echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [next: Destroying GCP Resources]"
+              echo "[$(date +%H:%M:%S)] - Build Docker Image skipped!... [next: Destroying GCP Resources]"
               echo "=================================================================================="
             elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
               for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
@@ -137,7 +137,7 @@ jobs:
             else
               echo ""
               echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [Nothing to do]"
+              echo "[$(date +%H:%M:%S)] - Build Docker Image skipped!... [Nothing to do]"
               echo "=================================================================================="
             fi
       - <<: *notify-telegram
@@ -220,22 +220,21 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Load GCP lib"
+          name: "Load GCP lib for testing"
           command: |
-            #apt-get install -y gawk
-            ./dolibs-test.sh
+            ./.circleci/helper.sh
 
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
-      - App Build Image:
+      - App Build Docker Image:
           <<: *only-releasable
       - GCP GKE Provisioning:
           <<: *only-releasable
           requires:
-            - App Build Image
+            - App Build Docker Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
