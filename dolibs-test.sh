@@ -6,7 +6,7 @@ source $(dirname ${BASH_SOURCE[0]})/dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/.circleci/cicd-definitions.sh
 
 # Import required lib
-do.use gcp
+do.import gcp
 
 # Use the lib
 gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
