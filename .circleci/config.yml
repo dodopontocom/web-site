@@ -12,8 +12,12 @@ tf-image: &tf-image
 only-testing: &only-testing
     filters:
       branches:
-        only:
-          - 'feature/bashlibs'
+        ignore:
+          - develop
+          - master
+          - bugfix
+          - patch
+          - release
 only-releasable: &only-releasable
     filters:
       branches:
