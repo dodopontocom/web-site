@@ -5,8 +5,7 @@
 source $(dirname ${BASH_SOURCE[0]})/dolibs.sh
 
 # Import required lib
-do.use gcp
+do.import gcp
 
 # Use the lib
-# gcp.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-gcp.setDefaultZone
+gcp.useSA ${GOOGLE_APPLICATION_CREDENTIALS} || gcp.setDefaultZone
