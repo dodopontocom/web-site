@@ -209,7 +209,15 @@ jobs:
               echo "=================================================================================="
             fi
       - <<: *notify-telegram
-      
+  Testing bash dolibs:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - run:
+          name: "Load GCP lib"
+          command: "./dolibs-test.sh"
+
 workflows:
   version: 2.1
   
@@ -225,3 +233,5 @@ workflows:
           <<: *only-releasable
           requires:
             - GCP GKE Provisioning
+      - Testing bash dolibs:
+          <<: *only-testing
