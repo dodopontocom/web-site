@@ -5,6 +5,8 @@
 source $(dirname ${BASH_SOURCE[0]})/dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/.circleci/cicd-definitions.sh
 
+echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+
 # Import required lib
 do.use gcp.auth
 
