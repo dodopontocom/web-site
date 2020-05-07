@@ -1,10 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/posts", (req, res, next) => {
+app.post("/api/v1/posts", (req, res, next) => {
   const post = req.body;
   console.log(post);
   res.status(201).json({
@@ -27,16 +27,18 @@ app.post("/api/posts", (req, res, next) => {
   });
 });
 
-app.get("/api/posts", (req, res, next) => {
+app.get("/api/v1/posts", (req, res, next) => {
   const posts = [
     {
       id: "fadf12421l",
-      title: "First server-side post",
+      name: "First server-side post",
+      phone: "120938",
       content: "This is coming from the server"
     },
     {
       id: "ksajflaj132",
-      title: "Second server-side post",
+      name: "Second server-side post",
+      phone: "120938000",
       content: "This is coming from the server!"
     }
   ];
