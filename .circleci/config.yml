@@ -138,7 +138,7 @@ jobs:
             fi
       - <<: *notify-telegram
 
-  GCP GKE Node Pool Creation:
+  GCP GKE Provisioning:
     <<: *defaults
     <<: *tf-image
     steps:
@@ -217,11 +217,11 @@ workflows:
     jobs:
       - App Build Image:
           <<: *only-releasable
-      - GCP GKE Node Pool Creation:
+      - GCP GKE Provisioning:
           <<: *only-releasable
           requires:
             - App Build Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
-            - GCP GKE Node Pool Creation
+            - GCP GKE Provisioning
