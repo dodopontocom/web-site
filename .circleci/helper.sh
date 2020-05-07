@@ -11,5 +11,5 @@ do.use gcp.gcr
 do.use gcp
 
 # Use the lib
-gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
+#gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 gcp.gcr.dockerLogin ${GOOGLE_APPLICATION_CREDENTIALS}
