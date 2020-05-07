@@ -12,7 +12,7 @@
                 color="primary">EDIT</button>
             <button
                 mat-button
-                color="warn">DELETE</button>
+                color="warn" (click)="onDelete(item.id)">DELETE</button>
         </mat-action-row>
     </mat-expansion-panel>
 </mat-accordion>
