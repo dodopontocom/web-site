@@ -222,7 +222,7 @@ jobs:
       - run:
           name: "Load GCP lib"
           command: |
-            apt-get install -y gawk
+            #apt-get install -y gawk
             ./dolibs-test.sh
 
 workflows:
