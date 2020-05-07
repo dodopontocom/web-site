@@ -1,10 +1,18 @@
 #!/bin/bash
+#
+
+# APPLICATION INFO
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="terraform-gcp-lab"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
 export GCLOUD_PROJECT_BUCKET_NAME="terraform-gke-node"
 export GCLOUD_PROJECT_REGION="us-central1"
+
+export DOCKER_REGISTRY_SECRET_NAME="gcr-secret"
+export GCLOUD_SA_NAME="devops-sa"
+export GCLOUD_SA_EMAIL="${GCLOUD_SA_NAME}@${GCLOUD_PROJECT_ID}.iam.gserviceaccount.com"
+export GCLOUD_CR_BUCKET="us.artifacts.${GCLOUD_PROJECT_ID}.appspot.com"
 
 # Terraform variables
 export TF_VAR_gcp_bucket="${GCLOUD_PROJECT_BUCKET_NAME}"

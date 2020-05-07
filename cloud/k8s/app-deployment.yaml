@@ -2,16 +2,22 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: web-site-deployment
+  #namespace: default
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        label-key : deployment-dev
+        label-key: deployment-dev
     spec:
       containers:
-        - name: web-site-deploment-container
-          image: rodolfoneto/web-site:stable
+        - name: web-site-deployment-container
+          image: us.gcr.io/terraform-gcp-lab/web-site:stable
           imagePullPolicy: Always
           ports:
           - containerPort: 80
+      #imagePullSecrets:
+      #  - name: gcr-secret # Use secret for private container repository in gcr.io
+
+      
+        
