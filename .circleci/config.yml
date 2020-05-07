@@ -13,7 +13,7 @@ only-testing: &only-testing
     filters:
       branches:
         only:
-          - 'feature/.*'
+          - 'feature/bashlibs'
 only-releasable: &only-releasable
     filters:
       branches:
@@ -209,6 +209,7 @@ jobs:
               echo "=================================================================================="
             fi
       - <<: *notify-telegram
+
   Testing bash dolibs:
     <<: *defaults
     <<: *gcp-image
