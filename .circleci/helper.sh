@@ -11,6 +11,6 @@ do.use gcp.auth
 do.use gcp.gcs
 
 # Use the lib
-gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME} 
+gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 #gcp.gcr.dockerLogin ${GOOGLE_APPLICATION_CREDENTIALS}
