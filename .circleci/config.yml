@@ -219,7 +219,7 @@ jobs:
     <<: *gcp-image
     steps:
       - checkout
-      #- setup_remote_docker
+      - setup_remote_docker
       - run:
           name: "Load GCP lib for testing"
           command: |
