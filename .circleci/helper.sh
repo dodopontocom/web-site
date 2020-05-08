@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[[ which terraform ]] && apk add --no-cache curl
+which terraform && apk add --no-cache curl
 
 source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
