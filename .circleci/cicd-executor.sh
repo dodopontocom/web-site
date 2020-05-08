@@ -24,7 +24,7 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         echoInfo "Terraform destroy flag detected! [Destroying GCP Resources]"
-        terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform destroy --auto-approve
 
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
