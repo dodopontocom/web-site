@@ -172,22 +172,22 @@ jobs:
       - run:
           name: "Load GCP lib for testing"
           command: |
-            ./cicd-helper.sh
+            ./.circleci/cicd-helper.sh
 
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
-      - App Build Docker Image:
-          <<: *only-releasable
-      - GCP GKE Provisioning:
+      # - App Build Docker Image:
+      #     <<: *only-releasable
+      # - GCP GKE Provisioning:
+      #     <<: *only-testing
+      #     #requires:
+      #     #  - App Build Docker Image
+      # - GCP Deploy App:
+      #     <<: *only-testing
+      #     requires:
+      #       - GCP GKE Provisioning
+      - Testing bash dolibs:
           <<: *only-testing
-          #requires:
-          #  - App Build Docker Image
-      - GCP Deploy App:
-          <<: *only-testing
-          requires:
-            - GCP GKE Provisioning
-      #- Testing bash dolibs:
-      #    <<: *only-testing
