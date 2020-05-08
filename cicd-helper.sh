@@ -16,6 +16,7 @@ do.use terraform
 # Terraform Provisioning steps
 #terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
 echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+cd cloud/terraform
 terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
 #terraform destroy --auto-approve
 terraform.init "cloud/terraform"
