@@ -16,10 +16,9 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     # Import required lib
     do.use terraform
 
-    terraform_path="../cloud/terraform"
+    terraform_path="$(dirname ${BASH_SOURCE[0]})/../cloud/terraform"
     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
     
-    cd ${terraform_path}
     #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
     #terraform destroy --auto-approve
     echoInfo "Initializing Terraform with GCP backEnd ${GCLOUD_PROJECT_BUCKET_NAME}"
