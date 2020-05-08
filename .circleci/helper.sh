@@ -12,7 +12,7 @@ do.use gcp.gcs
 do.use gcp.gke
 
 # Terraform Provisioning steps
-createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
+terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
 terraform.init "cloud/terraform"
 terraform.apply "cloud/terraform quiet=true"
 

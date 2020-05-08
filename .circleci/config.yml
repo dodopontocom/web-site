@@ -216,7 +216,7 @@ jobs:
 
   Testing bash dolibs:
     <<: *defaults
-    <<: *gcp-image
+    <<: *tf-image
     steps:
       - checkout
       - setup_remote_docker
