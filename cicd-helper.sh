@@ -6,7 +6,7 @@ source $(dirname ${BASH_SOURCE[0]})/dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/.circleci/cicd-definitions.sh
 
 # Execute Depending on the CircleCi Job(step)
-if [[ "${CIRCLE_JOB}" -eq "GCP GKE Provisioning" ]]; then
+if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
     terraform_path="cloud/terraform"
     # Import required lib
@@ -20,7 +20,7 @@ if [[ "${CIRCLE_JOB}" -eq "GCP GKE Provisioning" ]]; then
     terraform.init "${terraform_path}"
     terraform.apply "${terraform_path} quiet=true"
 fi
-if [[ "${CIRCLE_JOB}" -eq "GCP Deploy App" ]]; then
+if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
     # GCP steps
     #echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
     #do.use gcp.auth
