@@ -17,8 +17,6 @@ telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing 
 # Execute Depending on the CircleCi Job(step)
 if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
-    terraform_path="cloud/terraform"
-    
     # Import required lib
     do.use terraform
 
@@ -27,7 +25,8 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     cd ${terraform_path}
     #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
     #terraform destroy --auto-approve
-    terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+    echoInfo "Initializing Terraform with GCP backEnd ${GCLOUD_PROJECT_BUCKET_NAME}"
+    terraform.init "cloud/terraform" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
     #terraform.apply "${terraform_path}"
 fi
 # if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
