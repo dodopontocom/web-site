@@ -22,7 +22,6 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     
     #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
     #terraform destroy --auto-approve
-    echoInfo "Initializing Terraform with GCP backEnd ${GCLOUD_PROJECT_BUCKET_NAME}"
     terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
     #terraform.apply "${terraform_path}"
 fi
