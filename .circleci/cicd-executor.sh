@@ -19,12 +19,31 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
     terraform_path="${ROOT_DIR}/cloud/terraform"
     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+
+    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+        echoInfo "Terraform destroy flag detected! [Destroying GCP Resources]"
+        terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform destroy --auto-approve
+    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
+        echoInfo Terraform Apply flag detected!... [Updating GCP Resources]"
+        terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.apply "${terraform_path}"
+    fi
     
-    #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-    #terraform destroy --auto-approve
-    terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
-    #terraform.apply "${terraform_path}"
 fi
+
+
+
+
+
+
+
+
+
+
+
+
+
 # if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 
 #     echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
