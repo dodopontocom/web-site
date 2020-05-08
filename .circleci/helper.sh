@@ -11,7 +11,12 @@ do.use gcp.auth
 do.use gcp.gcs
 do.use gcp.gke
 
-# Use the lib
+# Terraform Provisioning steps
+createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
+terraform.init "cloud/terraform"
+terraform.apply "cloud/terraform quiet=true"
+
+# GCP steps
 gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
 gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
