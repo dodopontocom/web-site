@@ -73,10 +73,13 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
         done
 
         echoInfo "Access the below URL to test your deployed application:"
-        echoInfo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+        app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+        echoInfo "http://${app_url}"
 
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
             "Application deployment done on job: ${CIRCLE_JOB}"
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "${app_url}"
     else
         echoInfo "Skipping this step... no flag is set"
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
