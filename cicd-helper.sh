@@ -28,6 +28,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
     do.use gcp.auth
     do.use gcp.gcs
     do.use gcp.gke
+    
     gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
     gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
     gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
