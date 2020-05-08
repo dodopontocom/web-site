@@ -6,7 +6,7 @@ source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
 
 do.use telegram
-telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID}
+telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing from circle ci job: ${CIRCLE_JOB}"
 
 # Execute Depending on the CircleCi Job(step)
 # if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
