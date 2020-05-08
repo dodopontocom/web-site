@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-which terraform && apk add --no-cache curl
+which terraform && apk add --no-cache curl jq
 
 source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
 
-# Use telegram lib and send a message via bot
+# Use telegram lib
 do.use telegram
+
+# Send a message via bot
 telegram.validateToken ${TELEGRAM_BOT_TOKEN}
 telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing from circle ci job: ${CIRCLE_JOB}"
-# ###
 
 # Execute Depending on the CircleCi Job(step)
 # if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
