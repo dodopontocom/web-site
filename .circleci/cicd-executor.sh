@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-export
-which terraform && apk add --no-cache curl jq
+
+if [[ ${CI} ]]; then
+    which apk && apk add --no-cache curl jq
+fi
 
 source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
 source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
@@ -25,7 +27,7 @@ telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing 
 #     terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
 #     #terraform destroy --auto-approve
 #     terraform.init "${terraform_path}"
-#     terraform.apply "${terraform_path} quiet=true"
+#     terraform.apply "${terraform_path}"
 # fi
 # if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 
