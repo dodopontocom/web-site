@@ -10,6 +10,7 @@ source ${ROOT_DIR}/.circleci/cicd-definitions.sh
 
 # Use Telegram lib for sending after notifications
 do.use telegram
+telegram.validateToken ${TELEGRAM_BOT_TOKEN}
 
 # Execute Depending on the CircleCi Job(step)
 if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
@@ -24,10 +25,21 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
         echoInfo "Terraform destroy flag detected! [Destroying GCP Resources]"
         terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform destroy --auto-approve
+
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
+
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-        echoInfo Terraform Apply flag detected!... [Updating GCP Resources]"
+        echoInfo "Terraform Apply flag detected!... [Updating GCP Resources]"
         terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform.apply "${terraform_path}"
+
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
+    else
+        echoInfo "Terraform will not be executed!"
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "Terraform was not executed on job: ${CIRCLE_JOB}"
     fi
     
 fi
@@ -58,9 +70,3 @@ fi
 #     gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
 #     gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
 # fi
-
-
-# AFTER JOBS - SEND NOTIFICATIONS
-
-telegram.validateToken ${TELEGRAM_BOT_TOKEN}
-telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing from circle ci job: ${CIRCLE_JOB}"
