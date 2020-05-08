@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 which terraform && apk add --no-cache curl
 
@@ -9,9 +9,9 @@ echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
 # Import required lib
 do.use terraform
-do.use gcp.auth
-do.use gcp.gcs
-do.use gcp.gke
+#do.use gcp.auth
+#do.use gcp.gcs
+#do.use gcp.gke
 
 # Terraform Provisioning steps
 terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
@@ -19,7 +19,7 @@ terraform.init "cloud/terraform"
 terraform.apply "cloud/terraform quiet=true"
 
 # GCP steps
-gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
-gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
-gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
+#gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
+#gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
+#gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
+#gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}

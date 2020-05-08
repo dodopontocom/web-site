@@ -7,7 +7,7 @@ gcp-image: &gcp-image
     - image: google/cloud-sdk
 tf-image: &tf-image
   docker:
-    - image: hashicorp/terraform:light
+    - image: hashicorp/terraform:full
 
 only-testing: &only-testing
     filters:
