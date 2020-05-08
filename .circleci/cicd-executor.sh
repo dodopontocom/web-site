@@ -4,18 +4,22 @@ if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
 fi
 
-#ROOT_DIR="$(dirname ${BASH_SOURCE[0]})/.."
-#source ${ROOT_DIR}/dolibs.sh
-#source ${ROOT_DIR}/.circleci/cicd-definitions.sh
-source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
-source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
+ROOT_DIR="$(dirname ${BASH_SOURCE[0]})/.."
+source ${ROOT_DIR}/dolibs.sh
+source ${ROOT_DIR}/.circleci/cicd-definitions.sh
+#source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
+#source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
+
+# Use Telegram lib for sending after notifications
+do.use telegram
 
 # Execute Depending on the CircleCi Job(step)
 if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
     # Import required lib
     do.use terraform
-    terraform_path="cloud/terraform"
+
+    terraform_path="${ROOT_DIR}/cloud/terraform"
     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
     
     cd ${terraform_path}
@@ -42,8 +46,6 @@ fi
 
 
 # AFTER JOBS - SEND NOTIFICATIONS
-
-do.use telegram
 
 telegram.validateToken ${TELEGRAM_BOT_TOKEN}
 telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing from circle ci job: ${CIRCLE_JOB}"
