@@ -149,8 +149,7 @@ jobs:
       - checkout
       - run:
           name: "GCP GKE Node Pool Creation"
-          command: "./cicd-helper.sh"
-      - <<: *notify-telegram
+          command: "./cicd-executor.sh"
 
   GCP Deploy App:
     <<: *defaults
@@ -181,8 +180,8 @@ workflows:
     jobs:
       # - App Build Docker Image:
       #     <<: *only-releasable
-      # - GCP GKE Provisioning:
-      #     <<: *only-testing
+      - GCP GKE Provisioning:
+          <<: *only-testing
       #     #requires:
       #     #  - App Build Docker Image
       # - GCP Deploy App:

@@ -15,20 +15,21 @@ telegram.validateToken ${TELEGRAM_BOT_TOKEN}
 telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} "Testing from circle ci job: ${CIRCLE_JOB}"
 
 # Execute Depending on the CircleCi Job(step)
-# if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
+if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
-#     terraform_path="cloud/terraform"
-#     # Import required lib
-#     do.use terraform
-
-#     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+    terraform_path="cloud/terraform"
     
-#     cd ${terraform_path}
-#     terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-#     #terraform destroy --auto-approve
-#     terraform.init "${terraform_path}"
-#     terraform.apply "${terraform_path}"
-# fi
+    # Import required lib
+    do.use terraform
+
+    echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+    
+    cd ${terraform_path}
+    #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
+    #terraform destroy --auto-approve
+    terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+    #terraform.apply "${terraform_path}"
+fi
 # if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 
 #     echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
