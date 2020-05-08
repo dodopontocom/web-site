@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
     which apt-get && apt-get install -y curl jq
