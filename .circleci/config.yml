@@ -223,7 +223,7 @@ jobs:
       - run:
           name: "Load GCP lib for testing"
           command: |
-            ./.circleci/helper.sh
+            ./cicd-helper.sh
 
 workflows:
   version: 2.1

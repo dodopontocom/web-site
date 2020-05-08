@@ -2,8 +2,8 @@
 
 which terraform && apk add --no-cache curl
 
-source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
-source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
+source $(dirname ${BASH_SOURCE[0]})/dolibs.sh
+source $(dirname ${BASH_SOURCE[0]})/.circleci/cicd-definitions.sh
 
 echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
@@ -14,7 +14,7 @@ do.use terraform
 #do.use gcp.gke
 
 # Terraform Provisioning steps
-terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
+#terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
 terraform destroy --auto-approve
 #terraform.init "cloud/terraform"
 #terraform.apply "cloud/terraform quiet=true"
