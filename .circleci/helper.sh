@@ -6,6 +6,7 @@ source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
 echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
 # Import required lib
+do.use terraform
 do.use gcp.auth
 do.use gcp.gcs
 do.use gcp.gke
