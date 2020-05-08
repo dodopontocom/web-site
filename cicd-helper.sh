@@ -12,8 +12,8 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     # Import required lib
     do.use terraform
 
-    # Terraform Provisioning steps
     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
+    
     cd ${terraform_path}
     terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
     #terraform destroy --auto-approve
@@ -21,13 +21,15 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     terraform.apply "${terraform_path} quiet=true"
 fi
 if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
-    # GCP steps
-    #echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-    #do.use gcp.auth
-    #do.use gcp.gcs
-    #do.use gcp.gke
-    #gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-    #gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
-    #gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
-    #gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
+
+    echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+    
+    # Import required lib
+    do.use gcp.auth
+    do.use gcp.gcs
+    do.use gcp.gke
+    gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
+    gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
+    gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
+    gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
 fi
