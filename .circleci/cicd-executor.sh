@@ -1,6 +1,5 @@
-#!/bin/bash
-#/usr/bin/env bash
-
+#!/usr/bin/env bash
+export
 which terraform && apk add --no-cache curl jq
 
 source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
