@@ -79,7 +79,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
             "Application deployment done on job: ${CIRCLE_JOB}"
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
-            "${app_url}"
+            "You can access the App here: ${app_url}"
     else
         echoInfo "Skipping this step... no flag is set"
         telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
