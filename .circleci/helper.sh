@@ -12,5 +12,5 @@ do.use gcp.gcs
 
 # Use the lib
 gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-gcp.gcs.createBucket ${GCLOUD_PROJECT_ID} bucket001 regional ${GCLOUD_PROJECT_REGION}
-gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} bucket001
+gcp.gcs.createBucket ${GCLOUD_PROJECT_ID} los_hermanos regional ${GCLOUD_PROJECT_REGION}
+gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} los_hermanos
