@@ -149,28 +149,7 @@ jobs:
       - checkout
       - run:
           name: "GCP GKE Node Pool Creation"
-          command: |
-            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-            source ${BASH_ENV}
-            echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
-
-            cd cloud/terraform
-            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Terraform Destroy flag detected!... [Destroying GCP Resources]"
-              echo "=================================================================================="
-              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-              terraform destroy --auto-approve
-            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Terraform Apply flag detected!... [Updating GCP Resources]"
-              echo "=================================================================================="
-              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-              terraform plan
-              terraform apply --auto-approve
-            fi
+          command: "./cicd-helper.sh"
       - <<: *notify-telegram
 
   GCP Deploy App:
@@ -233,12 +212,12 @@ workflows:
       - App Build Docker Image:
           <<: *only-releasable
       - GCP GKE Provisioning:
-          <<: *only-releasable
-          requires:
-            - App Build Docker Image
+          <<: *only-testing
+          #requires:
+          #  - App Build Docker Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:
             - GCP GKE Provisioning
-      - Testing bash dolibs:
-          <<: *only-testing
+      #- Testing bash dolibs:
+      #    <<: *only-testing
