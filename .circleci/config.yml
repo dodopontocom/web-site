@@ -186,7 +186,7 @@ workflows:
           #requires:
           #  - App Build Docker Image
       - GCP Deploy App:
-          <<: *only-releasable
+          <<: *only-testing
           requires:
             - GCP GKE Provisioning
       #- Testing bash dolibs:
