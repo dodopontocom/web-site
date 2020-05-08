@@ -2,6 +2,7 @@
 
 if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
+    which apt-get && apt-get install -y curl jq
 fi
 
 ROOT_DIR="$(dirname ${BASH_SOURCE[0]})/.."
@@ -44,29 +45,36 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     
 fi
 
+if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 
-
-
-
-
-
-
-
-
-
-
-
-# if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
-
-#     echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+    echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
     
-#     # Import required lib
-#     do.use gcp.auth
-#     do.use gcp.gcs
-#     do.use gcp.gke
+    # Import required lib
+    do.use gcp.auth
+    do.use gcp.gke
+    do.use k8s
     
-#     gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-#     gcp.gcs.validateBucket ${GCLOUD_PROJECT_ID} ${GCLOUD_PROJECT_BUCKET_NAME}
-#     gcp.gke.describeCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
-#     gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
-# fi
+    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
+        echoInfo "Skipping this step... flag 'destroy' is set"
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "Application deployment was skipped on job: ${CIRCLE_JOB}"
+    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
+
+        echoInfo "Deploying Application to Kubernetes Cluster"
+        gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
+        gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
+
+        k8s.deployYaml "${ROOT_DIR}/cloud/k8s/app-deployment.yaml"
+        k8s.deployYaml "${ROOT_DIR}/cloud/k8s/app-load-balancer-service.yaml"
+
+        while [ "$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')" == "" ]; do
+            echoInfo "[$(date +%H:%M:%S)] - Getting External IP... [pending]"
+            sleep 10
+        done
+
+        echoInfo "Access the below URL to test your deployed application:"
+        echoInfo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
+
+        telegram.sendMessage ${TELEGRAM_BOT_TOKEN} ${TELEGRAM_NOTIFICATION_ID} \
+            "Application deployment done on job: ${CIRCLE_JOB}"
+fi

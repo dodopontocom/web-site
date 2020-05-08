@@ -55,57 +55,6 @@ revoke-sa: &revoke-sa
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
         echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
         gcloud auth revoke ${GCLOUD_SA_EMAIL}
-notify-telegram: &notify-telegram
-  - run:
-      name: "Send Notification"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        source ${BASH_ENV}
-        apk add --no-cache curl || apt-get install -y curl  
-        
-        if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
-          echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-          gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-          gcloud config set project ${GCLOUD_PROJECT_ID}
-          
-          if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              O 'unDeploy' da aplicação foi realizado."
-          
-            curl -X POST \
-                -d chat_id=${NOTIFICATION_IDS} \
-                -d text="$(echo -e ${message})" \
-                https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          else
-            gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone} || tag=1
-            if [[ -z ${tag} ]]; then
-              http_app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
-              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              Acesso a aplicação:.\n\n\
-              http://${http_app_url}"
-            else
-              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              O Deploy da aplicação não foi realizado.\n\n\
-              Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
-            fi
-            
-            curl -X POST \
-                -d chat_id=${NOTIFICATION_IDS} \
-                -d text="$(echo -e ${message})" \
-                https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          fi
-        else
-            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              Branch: ${CIRCLE_BRANCH}\n\n\
-              Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
-              Parte: ${CIRCLE_JOB}\n\n\
-              Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2-)"
-
-            curl -X POST \
-                  -d chat_id=${NOTIFICATION_IDS} \
-                  -d text="$(echo -e ${message})" \
-                  https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-        fi
 
 jobs:
   App Build Docker Image:
@@ -140,7 +89,6 @@ jobs:
               echo "[$(date +%H:%M:%S)] - Build Docker Image skipped!... [Nothing to do]"
               echo "=================================================================================="
             fi
-      - <<: *notify-telegram
 
   GCP GKE Provisioning:
     <<: *defaults
@@ -156,11 +104,9 @@ jobs:
     <<: *gcp-image
     steps:
       - checkout
-      - <<: *activate-sa
       - run:
           name: "GCP Deploy App"
-          command: "./cicd-helper.sh"
-      - <<: *notify-telegram
+          command: "./.circleci/cicd-executor.sh"
 
   Testing bash dolibs:
     <<: *defaults
@@ -184,9 +130,9 @@ workflows:
           <<: *only-testing
       #     #requires:
       #     #  - App Build Docker Image
-      # - GCP Deploy App:
-      #     <<: *only-testing
-      #     requires:
-      #       - GCP GKE Provisioning
-      - Testing bash dolibs:
+      - GCP Deploy App:
           <<: *only-testing
+          requires:
+            - GCP GKE Provisioning
+      #- Testing bash dolibs:
+      #    <<: *only-testing
