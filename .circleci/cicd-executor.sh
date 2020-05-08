@@ -4,8 +4,9 @@ if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
 fi
 
-source $(dirname ${BASH_SOURCE[0]})/../dolibs.sh
-source $(dirname ${BASH_SOURCE[0]})/cicd-definitions.sh
+ROOT_DIR="$(dirname ${BASH_SOURCE[0]})/.."
+source ${ROOT_DIR}/dolibs.sh
+source ${ROOT_DIR}/.circleci/cicd-definitions.sh
 
 # Use Telegram lib for sending after notifications
 do.use telegram
@@ -16,7 +17,7 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
     # Import required lib
     do.use terraform
 
-    terraform_path="$(dirname ${BASH_SOURCE[0]})/../cloud/terraform"
+    terraform_path="${ROOT_DIR}/cloud/terraform"
     echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
     
     #terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
