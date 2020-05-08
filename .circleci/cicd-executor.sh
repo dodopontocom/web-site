@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+#/usr/bin/env bash
 
 which terraform && apk add --no-cache curl jq
 
