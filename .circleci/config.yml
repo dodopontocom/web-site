@@ -149,7 +149,7 @@ jobs:
       - checkout
       - run:
           name: "GCP GKE Node Pool Creation"
-          command: "./cicd-executor.sh"
+          command: "./.circleci/cicd-executor.sh"
 
   GCP Deploy App:
     <<: *defaults
@@ -170,8 +170,8 @@ jobs:
       - setup_remote_docker
       - run:
           name: "Load GCP lib for testing"
-          command: |
-            ./.circleci/cicd-executor.sh
+          command: "./.circleci/cicd-executor.sh"
+            
 
 workflows:
   version: 2.1
