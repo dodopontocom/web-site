@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 #
-if [[ ${CI} ]]; then
-    which apk && apk add --no-cache curl jq
-    which apt-get && apt-get install -y curl jq
-fi
 
 ROOT_DIR="$(dirname ${BASH_SOURCE[0]})/.."
 source ${ROOT_DIR}/dolibs.sh
 source ${ROOT_DIR}/.circleci/cicd-definitions.sh
+
+if [[ ${CI} ]]; then
+    which apk && apk add --no-cache curl jq
+    which apt-get && apt-get install -y curl jq
+else
+    export GOOGLE_APPLICATION_CREDENTIALS=${ROOT_DIR}/cloud/credentials/credential.json
+fi
+
 
 # Use Telegram lib for sending after notifications
 do.use telegram
@@ -86,3 +90,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
             "Application deployment was skipped on job: ${CIRCLE_JOB}"
     fi
 fi
+
+
+do.use gcp.gcr
+gcp.gcr.dockerLogin ${GOOGLE_APPLICATION_CREDENTIALS}
