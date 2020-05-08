@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-mongoose.connect("mongodb+srv://dodo:${MONGODB_CLOUD_PASS}@cluster0-u8x8t.gcp.mongodb.net/node-angular?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://dodo:f5AXZ9fHkijdbUfc@cluster0-u8x8t.gcp.mongodb.net/node-angular?retryWrites=true&w=majority")
   .then(() => {
     console.log("Connected to the database!");
   })
@@ -35,11 +35,13 @@ app.post("/api/v1/posts", (req, res, next) => {
     phone: req.body.phone,
     content: req.body.content
   });
-  post.save();
-  console.log(post);
-  res.status(201).json({
-    message: 'Post added successfully'
+  post.save().then(createdPost => {
+    res.status(201).json({
+      message: "Post added successfully",
+      postId: createdPost._id
+    });
   });
+  
 });
 
 app.get("/api/v1/posts", (req, res, next) => {
