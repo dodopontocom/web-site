@@ -15,8 +15,9 @@ do.use terraform
 
 # Terraform Provisioning steps
 terraform.createBackEndGCP "cloud/terraform" ${GCLOUD_PROJECT_BUCKET_NAME} "terraform"
-terraform.init "cloud/terraform"
-terraform.apply "cloud/terraform quiet=true"
+terraform destroy --auto-approve
+#terraform.init "cloud/terraform"
+#terraform.apply "cloud/terraform quiet=true"
 
 # GCP steps
 #gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
