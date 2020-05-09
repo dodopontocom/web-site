@@ -35,7 +35,7 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
 
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
         echoInfo "Terraform Apply flag detected!... [Updating GCP Resources]"
-        terraform.init "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform.apply "${terraform_path}"
 
         telegram.sendMessage "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
