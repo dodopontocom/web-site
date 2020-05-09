@@ -25,3 +25,9 @@ export TF_VAR_cluster_count="3"
 export TF_VAR_key="${GCLOUD_JSON_KEY_PATH}"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
+
+# Regex for commit message to trigger different job behaviors
+export CIRCLE_COMMIT_APPLY="provisionar-ambiente"
+export CIRCLE_COMMIT_DESTROY="destruir-ambiente"
+export CIRCLE_COMMIT_SKIP_DOCKER="pular-docker"
+export CIRCLE_COMMIT_QUIET="pular-cicd"

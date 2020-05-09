@@ -73,6 +73,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
             sleep 10
         done
 
+        echoInfo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
         echoInfo "Access the below URL to test your deployed application:"
         app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
         echoInfo "http://${app_url}"
@@ -86,7 +87,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 fi
 
 if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
-    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[skip-docker\]")" ]] \
+    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_SKIP_DOCKER}\]")" ]] \
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         echoInfo "Skipping Docker Building..."
         telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
