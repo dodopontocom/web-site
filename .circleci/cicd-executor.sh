@@ -15,7 +15,7 @@ source ${ROOT_DIR}/dolibs.sh
 
 # Use Telegram lib for sending after notifications
 do.use telegram
-telegram.validateToken ${TELEGRAM_BOT_TOKEN}
+telegram.validateToken
 
 # Execute Depending on the CircleCi Job(step)
 if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
