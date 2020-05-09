@@ -2,8 +2,6 @@
 #
 
 ROOT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}")/.. >/dev/null 2>&1 && pwd)"
-source ${ROOT_DIR}/dolibs.sh
-source ${ROOT_DIR}/.circleci/cicd-definitions.sh
 
 if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
@@ -11,6 +9,9 @@ if [[ ${CI} ]]; then
 else
     export GOOGLE_APPLICATION_CREDENTIALS=${ROOT_DIR}/cloud/credentials/credential.json
 fi
+
+source ${ROOT_DIR}/.circleci/cicd-definitions.sh
+source ${ROOT_DIR}/dolibs.sh
 
 # Use Telegram lib for sending after notifications
 do.use telegram
@@ -85,14 +86,17 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 fi
 
 if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
+    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[skip-docker\]")" ]]; then
+        echoInfo "Skipping Docker Building..."
+        telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+    else
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
-    echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-    
-    # Import required lib    
-    do.use gcp.gcr
-    
-    gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
-                "Dockerfile" "web-site" "--no-cache"
-    echoInfo "Building and Pushing the Image to GCP"
-    telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+        # Import required lib    
+        do.use gcp.gcr
+        
+        gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
+                    "Dockerfile" "web-site" "--no-cache"
+        echoInfo "Building and Pushing the Image to GCP"
+        telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
 fi
