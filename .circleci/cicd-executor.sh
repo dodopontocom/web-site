@@ -99,4 +99,5 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
                     "Dockerfile" "web-site" "--no-cache"
         echoInfo "Building and Pushing the Image to GCP"
         telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+    fi
 fi
