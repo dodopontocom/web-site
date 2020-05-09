@@ -86,7 +86,8 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 fi
 
 if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
-    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[skip-docker\]")" ]]; then
+    if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[skip-docker\]")" ]] \
+        || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then; then
         echoInfo "Skipping Docker Building..."
         telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     else
