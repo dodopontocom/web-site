@@ -18,18 +18,21 @@ only-testing: &only-testing
           - bugfix
           - patch
           - release
+          - circleci
 only-releasable: &only-releasable
     filters:
       branches:
         only:
           - develop
           - master
+          - circleci
 non-releasable: &non-releasable
     filters:
       branches:
         ignore:
           - develop
           - master
+          - circleci
 
 jobs:
   App Build Docker Image:
@@ -59,30 +62,18 @@ jobs:
           name: "GCP Deploy App"
           command: "./.circleci/cicd-executor.sh"
 
-  Testing bash dolibs:
-    <<: *defaults
-    <<: *tf-image
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: "Load GCP lib for testing"
-          command: "./.circleci/cicd-executor.sh"
-
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
       - App Build Docker Image:
-          <<: *only-testing
+          <<: *only-releasable
       - GCP GKE Provisioning:
-          <<: *only-testing
+          <<: *only-releasable
           requires:
             - App Build Docker Image
       - GCP Deploy App:
-          <<: *only-testing
+          <<: *only-releasable
           requires:
             - GCP GKE Provisioning
-      #- Testing bash dolibs:
-      #    <<: *only-testing
