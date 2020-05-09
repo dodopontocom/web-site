@@ -90,7 +90,7 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         echoInfo "Skipping Docker Building..."
         telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
-    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]
+    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
         # Import required lib    
@@ -100,6 +100,9 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
                     "Dockerfile" "web-site" "--no-cache"
         echoInfo "Building and Pushing the Image to GCP"
         telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+    else
+        echoInfo "Skipping Docker Building..."
+        telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     fi
 fi
 
