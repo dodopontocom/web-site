@@ -38,33 +38,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-          #docker_layer_caching: true
       - run:
           name: "Build and Push"
-          command: |
-            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Docker Image skipped!... [next: Destroying GCP Resources]"
-              echo "=================================================================================="
-            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-              for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-              source ${BASH_ENV}
-              echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-              gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-              gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
-            
-              gcloud auth --quiet configure-docker
-
-              docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable" .
-              docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable"
-            else
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Docker Image skipped!... [Nothing to do]"
-              echo "=================================================================================="
-            fi
-
+          command: "./.circleci/cicd-executor.sh"
   GCP GKE Provisioning:
     <<: *defaults
     <<: *tf-image
@@ -98,12 +74,12 @@ workflows:
   
   gcloud_workflow:
     jobs:
-      # - App Build Docker Image:
-      #     <<: *only-releasable
+      - App Build Docker Image:
+          <<: *only-testing
       - GCP GKE Provisioning:
           <<: *only-testing
-      #     #requires:
-      #     #  - App Build Docker Image
+          requires:
+            - App Build Docker Image
       - GCP Deploy App:
           <<: *only-testing
           requires:
