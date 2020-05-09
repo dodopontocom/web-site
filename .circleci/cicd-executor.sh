@@ -102,3 +102,5 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
         telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
     fi
 fi
+
+#
