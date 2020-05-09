@@ -86,6 +86,8 @@ fi
 
 if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
 
+    echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+    
     # Import required lib    
     do.use gcp.gcr
     
