@@ -2,6 +2,7 @@
 #
 
 ROOT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}")/.. >/dev/null 2>&1 && pwd)"
+source ${ROOT_DIR}/.circleci/cicd-definitions.sh
 
 if [[ ${CI} ]]; then
     which apk && apk add --no-cache curl jq
@@ -10,12 +11,11 @@ else
     export GOOGLE_APPLICATION_CREDENTIALS=${ROOT_DIR}/cloud/credentials/credential.json
 fi
 
-source ${ROOT_DIR}/.circleci/cicd-definitions.sh
 source ${ROOT_DIR}/dolibs.sh
 
 # Use Telegram lib for sending after notifications
-do.use telegram
-telegram.validateToken
+do.use notifications.telegram
+notifications.telegram.validateToken
 
 # Execute Depending on the CircleCi Job(step)
 if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
@@ -31,17 +31,17 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
         terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform destroy --auto-approve
 
-        telegram.sendMessage "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
 
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
         echoInfo "Terraform Apply flag detected!... [Updating GCP Resources]"
         terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
         terraform.apply "${terraform_path}"
 
-        telegram.sendMessage "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
     else
         echoInfo "Terraform will not be executed!"
-        telegram.sendMessage "Terraform was not executed on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Terraform was not executed on job: ${CIRCLE_JOB}"
     fi
     
 fi
@@ -57,7 +57,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
     
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         echoInfo "Skipping this step... flag 'destroy' is set"
-        telegram.sendMessage "Application deployment was skipped on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Application deployment was skipped on job: ${CIRCLE_JOB}"
 
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
 
@@ -78,11 +78,11 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
         app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
         echoInfo "http://${app_url}"
 
-        telegram.sendMessage "Application deployment done on job: ${CIRCLE_JOB}"
-        telegram.sendMessage "You can access the App here: ${app_url}"
+        notifications.telegram.sendMessage "Application deployment done on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "You can access the App here: ${app_url}"
     else
         echoInfo "Skipping this step... no flag is set"
-        telegram.sendMessage "Application deployment was skipped on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Application deployment was skipped on job: ${CIRCLE_JOB}"
     fi
 fi
 
@@ -90,7 +90,7 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_SKIP_DOCKER}\]")" ]] \
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         echoInfo "Skipping Docker Building..."
-        telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
         echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
@@ -98,13 +98,25 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
         do.use gcp.gcr
         
         gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
-                    "Dockerfile" "web-site" "--no-cache"
+                    "Dockerfile" "web-site"
         echoInfo "Building and Pushing the Image to GCP"
-        telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
     else
         echoInfo "Skipping Docker Building..."
-        telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        notifications.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     fi
 fi
 
 #
+
+# Import required lib    
+# do.use gcp.gcr
+
+# echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+
+# gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
+#         "Dockerfile" "web-site"
+# echoInfo "Building and Pushing the Image to GCP"
+
+do.use notifications.slack
+notifications.slack.sendMessageToChannel "bashlibs" "job name from circleci: ${CIRCLE_JOB}"
