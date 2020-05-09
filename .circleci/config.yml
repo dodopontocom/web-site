@@ -7,137 +7,43 @@ gcp-image: &gcp-image
     - image: google/cloud-sdk
 tf-image: &tf-image
   docker:
-    - image: hashicorp/terraform:light
+    - image: hashicorp/terraform:full
 
 only-testing: &only-testing
     filters:
       branches:
-        only:
-          - 'feature/.*'
+        ignore:
+          - develop
+          - master
+          - bugfix
+          - patch
+          - release
+          - circleci
 only-releasable: &only-releasable
     filters:
       branches:
         only:
           - develop
           - master
+          - circleci
 non-releasable: &non-releasable
     filters:
       branches:
         ignore:
           - develop
           - master
-
-activate-sa: &activate-sa
-  - run:
-      name: "Activate SA to the Project"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        source ${BASH_ENV}
-        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-        gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-        gcloud config set project ${GCLOUD_PROJECT_ID}
-get-credentials: &get-credentials
-  - run:
-      name: "Get Cluster Credentials"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        source ${BASH_ENV}
-        gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
-revoke-sa: &revoke-sa
-  - run:
-      name: "Revoke GCP SA"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-        echo "${GCLOUD_JSON_KEY_PATH}" grep "client_email" | awk '{print $2}' | grep -o '".*"' | sed 's/"//g'
-        gcloud auth revoke ${GCLOUD_SA_EMAIL}
-notify-telegram: &notify-telegram
-  - run:
-      name: "Send Notification"
-      command: |
-        for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-        source ${BASH_ENV}
-        apk add --no-cache curl || apt-get install -y curl  
-        
-        if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
-          echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-          gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-          gcloud config set project ${GCLOUD_PROJECT_ID}
-          
-          if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              O 'unDeploy' da aplicação foi realizado."
-          
-            curl -X POST \
-                -d chat_id=${NOTIFICATION_IDS} \
-                -d text="$(echo -e ${message})" \
-                https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          else
-            gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone} || tag=1
-            if [[ -z ${tag} ]]; then
-              http_app_url="$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
-              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              Acesso a aplicação:.\n\n\
-              http://${http_app_url}"
-            else
-              message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              O Deploy da aplicação não foi realizado.\n\n\
-              Use '[tf-apply]' no comentário do 'commit' para que o deploy seja completo."
-            fi
-            
-            curl -X POST \
-                -d chat_id=${NOTIFICATION_IDS} \
-                -d text="$(echo -e ${message})" \
-                https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-          fi
-        else
-            message="Build ${CIRCLE_BUILD_NUM} foi concluída com sucesso.\n\n\
-              Branch: ${CIRCLE_BRANCH}\n\n\
-              Usuário: ${CIRCLE_PROJECT_USERNAME}\n\n\
-              Parte: ${CIRCLE_JOB}\n\n\
-              Commit: $(git log --format=oneline -n 1 ${CIRCLE_SHA1} | cut -d' ' -f2-)"
-
-            curl -X POST \
-                  -d chat_id=${NOTIFICATION_IDS} \
-                  -d text="$(echo -e ${message})" \
-                  https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
-        fi
+          - circleci
 
 jobs:
-  App Build Image:
+  App Build Docker Image:
     <<: *defaults
     <<: *gcp-image
     steps:
       - checkout
       - setup_remote_docker
-          #docker_layer_caching: true
       - run:
           name: "Build and Push"
-          command: |
-            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [next: Destroying GCP Resources]"
-              echo "=================================================================================="
-            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-              for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-              source ${BASH_ENV}
-              echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
-              gcloud auth activate-service-account --key-file=${GCLOUD_JSON_KEY_PATH}
-              gcloud config set project --quiet ${GCLOUD_PROJECT_ID}
-            
-              gcloud auth --quiet configure-docker
-
-              docker build -t "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable" .
-              docker push "us.gcr.io/${GCLOUD_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:stable"
-            else
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Build Image skipped!... [Nothing to do]"
-              echo "=================================================================================="
-            fi
-      - <<: *notify-telegram
-
+          command: "./.circleci/cicd-executor.sh"
   GCP GKE Provisioning:
     <<: *defaults
     <<: *tf-image
@@ -145,82 +51,28 @@ jobs:
       - checkout
       - run:
           name: "GCP GKE Node Pool Creation"
-          command: |
-            for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-            source ${BASH_ENV}
-            echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
-
-            cd cloud/terraform
-            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Terraform Destroy flag detected!... [Destroying GCP Resources]"
-              echo "=================================================================================="
-              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-              terraform destroy --auto-approve
-            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - Terraform Apply flag detected!... [Updating GCP Resources]"
-              echo "=================================================================================="
-              terraform init -backend-config="bucket=${TF_VAR_gcp_bucket}" -backend-config="prefix=terraform"
-              terraform plan
-              terraform apply --auto-approve
-            fi
-      - <<: *notify-telegram
+          command: "./.circleci/cicd-executor.sh"
 
   GCP Deploy App:
     <<: *defaults
     <<: *gcp-image
     steps:
       - checkout
-      - <<: *activate-sa
       - run:
           name: "GCP Deploy App"
-          command: |
-            if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
-              echo ""
-              echo "=================================================================================="
-              echo "[$(date +%H:%M:%S)] - No App to apply... [aborting]"
-              echo "=================================================================================="
-            elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
-              for v in "$(cat .circleci/cicd-definitions.sh | grep -v ^#)"; do echo "${v}" >> ${BASH_ENV}; done
-              source ${BASH_ENV}
-              
-              gcloud container clusters get-credentials ${TF_VAR_cluster_name} --zone ${TF_VAR_zone}
-              kubectl create secret docker-registry ${DOCKER_REGISTRY_SECRET_NAME} \
-                  --docker-server=https://us.gcr.io --docker-username=_json_key \
-                  --docker-email=${GCLOUD_SA_EMAIL} \
-                  --docker-password="${GCLOUD_JSON_KEY_PATH}" \
-              || true
+          command: "./.circleci/cicd-executor.sh"
 
-              kubectl apply -f cloud/k8s/app-deployment.yaml
-              kubectl apply -f cloud/k8s/app-load-balancer-service.yaml
-              
-              while [ "$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')" == "" ]; do
-                echo "[$(date +%H:%M:%S)] - Getting External IP... [pending]"
-                sleep 10
-              done
-              
-              echo "[$(date +%H:%M:%S)] - Getting External IP... [success]"
-              echo "=================================================================================="
-              echo "Access the below URL to test your deployed application:"
-              echo "http://$(kubectl get services -l label-key='deployment-dev' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
-              echo "=================================================================================="
-            fi
-      - <<: *notify-telegram
-      
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
-      - App Build Image:
+      - App Build Docker Image:
           <<: *only-releasable
       - GCP GKE Provisioning:
           <<: *only-releasable
           requires:
-            - App Build Image
+            - App Build Docker Image
       - GCP Deploy App:
           <<: *only-releasable
           requires:

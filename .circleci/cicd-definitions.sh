@@ -25,6 +25,3 @@ export TF_VAR_cluster_count="3"
 export TF_VAR_key="${GCLOUD_JSON_KEY_PATH}"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
-
-# Telegram notification via bot
-export NOTIFICATION_IDS="11504381"
