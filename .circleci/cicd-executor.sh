@@ -123,7 +123,7 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
         do.use gcp.gcr
         
         gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
-                    "Dockerfile" "web-site"
+                    "Dockerfile" "web-site" "--no-cache"
 
         echoInfo "Building and Pushing the Image to GCP"
         notifications.telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
