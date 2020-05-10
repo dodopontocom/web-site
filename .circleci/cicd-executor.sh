@@ -37,7 +37,7 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
         terraform destroy --auto-approve
 
         notifications.telegram.sendMessage "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
 
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
     
@@ -46,13 +46,13 @@ if [[ "${CIRCLE_JOB}" == "GCP GKE Provisioning" ]]; then
         terraform.apply "${terraform_path}"
 
         notifications.telegram.sendMessage "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
     
     else
     
         echoInfo "Terraform will not be executed!"
         notifications.telegram.sendMessage "Terraform was not executed on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Terraform was not executed on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Terraform was not executed on job: ${CIRCLE_JOB}"
     
     fi
     
@@ -71,7 +71,7 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
     
         echoInfo "Skipping this step... flag 'destroy' is set"
         notifications.telegram.sendMessage "Application deployment was skipped on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Application deployment was skipped on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Application deployment was skipped on job: ${CIRCLE_JOB}"
 
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
 
@@ -94,8 +94,8 @@ if [[ "${CIRCLE_JOB}" == "GCP Deploy App" ]]; then
 
         notifications.telegram.sendMessage "Application deployment done on job: ${CIRCLE_JOB}"
         notifications.telegram.sendMessage "You can access the App here: ${app_url}"
-        notifications.slack.sendMessageToChannel "Application deployment done on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "You can access the App here: ${app_url}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Application deployment done on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "You can access the App here: ${app_url}"
     
     else
     
@@ -111,7 +111,7 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
         
         echoInfo "Skipping Docker Building..."
         notifications.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
         
@@ -127,13 +127,13 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
 
         echoInfo "Building and Pushing the Image to GCP"
         notifications.telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
     
     else
     
         echoInfo "Skipping Docker Building..."
         notifications.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
-        notifications.slack.sendMessageToChannel "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        notifications.slack.sendMessageToChannel "bashlibs" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     
     fi
 fi
