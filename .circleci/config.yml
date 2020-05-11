@@ -80,7 +80,7 @@ workflows:
       - Circle Testing:
           <<: *only-testing
       - App Build Docker Image:
-          <<: *only-releasable
+          <<: *only-testing
       - GCP GKE Provisioning:
           <<: *only-releasable
           requires:
