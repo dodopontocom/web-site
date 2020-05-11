@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 #
-executor.testing() {
+executor.Circle_Testing() {
     echoInfo "worked!"
 }

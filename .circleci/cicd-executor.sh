@@ -23,6 +23,14 @@ for f in ${function_list[@]}; do
     source ${f}
 done
 
+#  cmd=$1
+#     array=(${cmd})
+#     array[0]="/linux"
+#     cmd=${array[@]:1}
+
+arr=(${CIRCLE_JOBS})
+echo "--- ${arr[0]}"
+
 # Use (globally) Common libs ##########################################
 ## Use utils token work with tokens in file
 do.use utils.tokens
@@ -35,13 +43,9 @@ integrations.telegram.validateToken
 
 # Execute functions according to the Job names
 ## Set it on cicd-definitions.sh file
-case ${CIRCLE_JOB} in
-    ${CIRCLE_JOB_TESTING}) executor.testing;
-    ;;
-    ${CIRCLE_JOB_DOCKER_BUILD}) executor.docker_build;
-    ;;
-    ${CIRCLE_JOB_GCP_PROVISIONING}) executor.gke_provisioning;
-    ;;
-    ${CIRCLE_JOB_GCP_DEPLOY_APP}) executor.deploy_app;
-    ;;
-esac
+for j in ${arr[@]}; do
+    case ${CIRCLE_JOB} in
+        ${j}) executor.${j};
+        ;;
+    esac
+done

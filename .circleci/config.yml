@@ -37,7 +37,7 @@ non-releasable: &non-releasable
           - release
 
 jobs:
-  App Build Docker Image:
+  App_Build_Docker_Image:
     <<: *defaults
     <<: *gcp-image
     steps:
@@ -46,7 +46,7 @@ jobs:
       - run:
           name: "Build and Push"
           command: "./.circleci/cicd-executor.sh"
-  GCP GKE Provisioning:
+  GCP_GKE_Provisioning:
     <<: *defaults
     <<: *tf-image
     steps:
@@ -55,7 +55,7 @@ jobs:
           name: "GCP GKE Node Pool Creation"
           command: "./.circleci/cicd-executor.sh"
 
-  GCP Deploy App:
+  GCP_Deploy_App:
     <<: *defaults
     <<: *gcp-image
     steps:
@@ -63,7 +63,7 @@ jobs:
       - run:
           name: "GCP Deploy App"
           command: "./.circleci/cicd-executor.sh"
-  Circle Testing:
+  Circle_Testing:
     <<: *defaults
     <<: *gcp-image
     steps:
@@ -77,15 +77,15 @@ workflows:
   
   gcloud_workflow:
     jobs:
-      - Circle Testing:
+      - Circle_Testing:
           <<: *only-testing
-      - App Build Docker Image:
+      - App_Build_Docker_Image:
           <<: *only-testing
-      - GCP GKE Provisioning:
-          <<: *only-testing
-          requires:
-            - App Build Docker Image
-      - GCP Deploy App:
+      - GCP_GKE_Provisioning:
           <<: *only-testing
           requires:
-            - GCP GKE Provisioning
+            - App_Build_Docker_Image
+      - GCP_Deploy_App:
+          <<: *only-testing
+          requires:
+            - GCP_GKE_Provisioning

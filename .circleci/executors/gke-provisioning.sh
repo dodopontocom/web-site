@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-executor.gke_provisioning() {
+executor.GCP_GKE_Provisioning() {
 
     # Import required lib
     do.use terraform

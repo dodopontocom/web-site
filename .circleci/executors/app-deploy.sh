@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-executor.deploy_app() {
+executor.GCP_Deploy_App() {
 
     echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
     

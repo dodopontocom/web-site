@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-executor.docker_build() {
+executor.App_Build_Docker_Image() {
 
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_SKIP_DOCKER}\]")" ]] \
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_DESTROY}\]")" ]]; then
