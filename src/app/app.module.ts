@@ -19,6 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { environment } from '../environments/environment';
 
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
+
+
 
 @NgModule({
   declarations: [
@@ -37,7 +41,9 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatExpansionModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RouterModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
