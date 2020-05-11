@@ -4,7 +4,7 @@
 # APPLICATION INFO
 
 # GCLOUD ENV VARS
-export GCLOUD_PROJECT_ID="terraform-gcp-lab"
+export GCLOUD_PROJECT_ID="xxx"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
 export GCLOUD_PROJECT_BUCKET_NAME="terraform-gke-node"
 export GCLOUD_PROJECT_REGION="us-central1"

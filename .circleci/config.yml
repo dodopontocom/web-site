@@ -63,12 +63,22 @@ jobs:
       - run:
           name: "GCP Deploy App"
           command: "./.circleci/cicd-executor.sh"
-
+  Circle Testing:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - run:
+          name: "For testing porpuses"
+          command: "./.circleci/cicd-executor.sh"
+          
 workflows:
   version: 2.1
   
   gcloud_workflow:
     jobs:
+      - Circle Testing:
+          <<: *only-testing
       - App Build Docker Image:
           <<: *only-releasable
       - GCP GKE Provisioning:
