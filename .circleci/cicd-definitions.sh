@@ -26,9 +26,13 @@ export TF_VAR_key="${GCLOUD_JSON_KEY_PATH}"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
 
-# Regex for commit message to trigger different job behaviors
+# Circle ci references
 export CIRCLE_COMMIT_APPLY="provisionar-ambiente"
 export CIRCLE_COMMIT_DESTROY="destruir-ambiente"
 export CIRCLE_COMMIT_SKIP_DOCKER="pular-docker"
 export CIRCLE_COMMIT_QUIET="pular-cicd"
+
 export CIRCLE_TESTING_JOB="Circle Testing"
+export CIRCLE_DOCKER_BUILD_JOB="App Build Docker Image"
+export CIRCLE_GCP_PROVISIONING_JOB="GCP GKE Provisioning"
+export CIRCLE_GCP_DEPLOY_APP_JOB="GCP Deploy App"

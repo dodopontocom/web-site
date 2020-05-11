@@ -146,6 +146,12 @@ fi
 case ${CIRCLE_JOB} in
     ${CIRCLE_TESTING_JOB}) executor.testing;
     ;;
+    ${CIRCLE_DOCKER_BUILD_JOB}) executor.docker_build;
+    ;;
+    ${CIRCLE_GCP_PROVISIONING_JOB}) executor.gke_provisioning;
+    ;;
+    ${CIRCLE_GCP_DEPLOY_APP_JOB}) executor.deploy_app;
+    ;;
 esac
 
 #
