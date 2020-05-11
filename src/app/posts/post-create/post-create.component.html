@@ -20,7 +20,7 @@
                 matInput
                 type="text"
                 name="phone"
-                ngModel
+                [ngModel]="post?.phone"
                 minlength="11"
                 required
                 ng-model="phoneNumber"
@@ -35,8 +35,11 @@
             <mat-label>Mensagem Opcional</mat-label>
             <textarea 
                 matInput
+                rows="4"
                 name="content" 
-                ngModel></textarea>
+                [ngModel]="post?.content"
+                placeholder="Descrição do imóvel"
+                #content="ngModel"></textarea>
         </mat-form-field>
 
         <button
