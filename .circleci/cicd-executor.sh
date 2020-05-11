@@ -140,7 +140,7 @@ fi
 executor.testing() {
     echoInfo "worked!"
 }
-case in ${CIRCLE_JOB} in
+case ${CIRCLE_JOB} in
     ${CIRCLE_TESTING_JOB}) executor.testing;
     ;;
 esac
