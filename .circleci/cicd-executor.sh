@@ -29,8 +29,6 @@ for f in ${function_list[@]}; do
 done
 
 # Execute functions according to the Job names
-## Set it on cicd-definitions.sh file
-
 case ${CIRCLE_JOB} in
     ${CIRCLE_JOB}) do.use integrations.telegram
         do.use integrations.slack
