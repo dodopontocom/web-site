@@ -6,7 +6,7 @@ executor.docker_build() {
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-destroy\]")" ]]; then
         
         echoInfo "Skipping Docker Building..."
-        integrations.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[tf-apply\]")" ]]; then
@@ -22,13 +22,13 @@ executor.docker_build() {
                     "Dockerfile" "web-site" "--no-cache"
 
         echoInfo "Building and Pushing the Image to GCP"
-        integrations.telegram.sendMessage "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
+        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
     
     else
     
         echoInfo "Skipping Docker Building..."
-        integrations.telegram.sendMessage "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
+        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     
     fi
