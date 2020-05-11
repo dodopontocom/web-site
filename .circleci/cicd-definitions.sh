@@ -30,11 +30,3 @@ export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
 export CIRCLE_COMMIT_APPLY="tf-apply"
 export CIRCLE_COMMIT_DESTROY="tf-destroy"
 export CIRCLE_COMMIT_SKIP_DOCKER="skip-docker"
-#export CIRCLE_COMMIT_QUIET= <Note: for this just use [skip-ci]>
-
-export CIRCLE_JOB_TESTING="Circle Testing"
-export CIRCLE_JOB_DOCKER_BUILD="App Build Docker Image"
-export CIRCLE_JOB_GCP_PROVISIONING="GCP GKE Provisioning"
-export CIRCLE_JOB_GCP_DEPLOY_APP="GCP Deploy App"
-
-export CIRCLE_JOBS="local Circle_Testing App_Build_Docker_Image GCP_GKE_Provisioning GCP_Deploy_App"

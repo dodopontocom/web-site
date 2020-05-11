@@ -31,15 +31,10 @@ done
 # Execute functions according to the Job names
 ## Set it on cicd-definitions.sh file
 
-checkVars CIRCLE_JOBS || return ${?}
-
-arr=(${CIRCLE_JOBS})
-for j in ${arr[@]}; do
-    case ${CIRCLE_JOB} in
-        ${j}) do.use integrations.telegram
-                do.use integrations.slack
-                integrations.telegram.validateToken
-                executor.${j}                
-        ;;
-    esac
-done
+case ${CIRCLE_JOB} in
+    ${CIRCLE_JOB}) do.use integrations.telegram
+        do.use integrations.slack
+        integrations.telegram.validateToken
+        executor.${CIRCLE_JOB}
+    ;;
+esac
