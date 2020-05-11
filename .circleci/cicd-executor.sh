@@ -11,11 +11,16 @@ if [[ ${CI} ]]; then
     which apt-get && apt-get install -y curl jq
     which yum && yum install -y curl jq
 else
+    CIRCLE_JOB="local"
     export GOOGLE_APPLICATION_CREDENTIALS=${ROOT_DIR}/cloud/credentials/credential.json
 fi
 
 # Import dolibs to the execution
 source ${ROOT_DIR}/dolibs.sh
+
+# Use (globally) Common libs ##########################################
+## Use utils token work with tokens in file
+do.use utils.tokens
 
 # Import executor functions
 function_list=($(find ${ROOT_DIR}/.circleci/executors -name "*.sh"))
@@ -23,29 +28,18 @@ for f in ${function_list[@]}; do
     source ${f}
 done
 
-#  cmd=$1
-#     array=(${cmd})
-#     array[0]="/linux"
-#     cmd=${array[@]:1}
-
-arr=(${CIRCLE_JOBS})
-echo "--- ${arr[0]}"
-
-# Use (globally) Common libs ##########################################
-## Use utils token work with tokens in file
-do.use utils.tokens
-
-## Use Telegram & Slack lib for sending after notifications
-do.use integrations.telegram
-do.use integrations.slack
-integrations.telegram.validateToken
-############################################################
-
 # Execute functions according to the Job names
 ## Set it on cicd-definitions.sh file
+
+checkVars CIRCLE_JOBS || return ${?}
+
+arr=(${CIRCLE_JOBS})
 for j in ${arr[@]}; do
     case ${CIRCLE_JOB} in
-        ${j}) executor.${j};
+        ${j}) do.use integrations.telegram
+                do.use integrations.slack
+                integrations.telegram.validateToken
+                executor.${j}                
         ;;
     esac
 done

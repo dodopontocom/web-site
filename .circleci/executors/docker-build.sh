@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 #
 executor.App_Build_Docker_Image() {
-
+    
+    local loc
+    loc=$1
+    
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_SKIP_DOCKER}\]")" ]] \
         || [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_DESTROY}\]")" ]]; then
         
@@ -9,11 +12,12 @@ executor.App_Build_Docker_Image() {
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Docker Image Build skipped successfully on job: ${CIRCLE_JOB}"
     
-    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_APPLY}\]")" ]]; then
+    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_APPLY}\]")" ]] \
+        || [[ -n ${loc} ]]; then
         
         #utils.tokens.replaceFromFileToFile "${ROOT_DIR}/backend/app.js" "${ROOT_DIR}/backend/app.js"
         
-        echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
+        checkVars loc || echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
         # Import required lib    
         do.use gcp.gcr

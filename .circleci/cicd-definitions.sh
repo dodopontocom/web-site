@@ -37,4 +37,4 @@ export CIRCLE_JOB_DOCKER_BUILD="App Build Docker Image"
 export CIRCLE_JOB_GCP_PROVISIONING="GCP GKE Provisioning"
 export CIRCLE_JOB_GCP_DEPLOY_APP="GCP Deploy App"
 
-export CIRCLE_JOBS="Circle_Testing App_Build_Docker_Image GCP_GKE_Provisioning GCP_Deploy_App"
+export CIRCLE_JOBS="local Circle_Testing App_Build_Docker_Image GCP_GKE_Provisioning GCP_Deploy_App"
