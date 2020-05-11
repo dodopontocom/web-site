@@ -1,6 +1,6 @@
 <mat-card>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+    <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
         <mat-form-field appearance='fill'>
             <mat-label>Nome</mat-label>
             <input

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-import { PostsService } from '../posts.service';
+
+import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
 
 
@@ -12,7 +13,8 @@ import { Post } from "../post.model";
 })
 export class PostCreateComponent implements OnInit {
   
-  enteredTitle = "";
+  enteredName = "";
+  enteredhone = "";
   enteredContent = "";
   post: Post;
   isLoading = false;
@@ -30,7 +32,7 @@ export class PostCreateComponent implements OnInit {
             this.mode = "edit";
             this.postId = paramMap.get("postId");
             this.isLoading = true;
-            this.postsService.getPosts(this.postId).subscribe(postData => {
+            this.postsService.getPost(this.postId).subscribe(postData => {
               this.isLoading = false;
               this.post = {
                   id: postData._id,
