@@ -137,6 +137,13 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
     
     fi
 fi
+executor.testing() {
+    echoInfo "worked!"
+}
+case in ${CIRCLE_JOB} in
+    ${CIRCLE_TESTING_JOB}) executor.testing;
+    ;;
+esac
 
 #
 
