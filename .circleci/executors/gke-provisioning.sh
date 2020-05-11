@@ -10,6 +10,7 @@ executor.GCP_GKE_Provisioning() {
     do.use terraform
 
     terraform_path="${ROOT_DIR}/cloud/terraform"
+    TF_VAR_key=${GOOGLE_APPLICATION_CREDENTIALS}
     checkVars loc || echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
 
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_DESTROY}\]")" ]] \
