@@ -3,11 +3,16 @@ const bodyParser = require("body-parser");
 const Post = require("./models/post")
 const mongoose = require("mongoose");
 
+const postsRoutes = require("./routes/posts");
+
 const app = express();
 
-mongoose.connect("mongodb+srv://dodo:f5AXZ9fHkijdbUfc@cluster0-u8x8t.gcp.mongodb.net/node-angular?retryWrites=true&w=majority")
+mongoose
+  .connect(
+    process.env.MONGO_CONN_STRING
+  )
   .then(() => {
-    console.log("Connected to the database!");
+    console.log("Connected to database!");
   })
   .catch(() => {
     console.log("Connection failed!");
