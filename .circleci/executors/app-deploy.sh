@@ -43,6 +43,7 @@ executor.deploy_app() {
     
         echoInfo "Skipping this step... no flag is set"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment was skipped on job: ${CIRCLE_JOB}"
+        integrations.slack.sendMessageToChannel "bashlibs" "Application deployment was skipped on job: ${CIRCLE_JOB}"
     
     fi
 }
