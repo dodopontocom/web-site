@@ -1,12 +1,13 @@
 <mat-card>
-    <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
         <mat-form-field appearance='fill'>
             <mat-label>Nome</mat-label>
             <input
                 matInput
                 type="text"
                 name="name"
-                ngModel
+                [ngModel]="post?.name"
                 minlength="3"
                 required
                 #name="ngModel">
