@@ -82,10 +82,10 @@ workflows:
       - App Build Docker Image:
           <<: *only-testing
       - GCP GKE Provisioning:
-          <<: *only-releasable
+          <<: *only-testing
           requires:
             - App Build Docker Image
       - GCP Deploy App:
-          <<: *only-releasable
+          <<: *only-testing
           requires:
             - GCP GKE Provisioning
