@@ -13,6 +13,11 @@ fi
 
 source ${ROOT_DIR}/dolibs.sh
 
+function_list=($(find ${ROOT_DIR}/.circleci/executors -name "*.sh"))
+for f in ${function_list[@]}; do
+    source ${f}
+done
+
 # Use utils token work with tokens in file
 do.use utils.tokens
 
@@ -137,9 +142,7 @@ if [[ "${CIRCLE_JOB}" == "App Build Docker Image" ]]; then
     
     fi
 fi
-executor.testing() {
-    echoInfo "worked!"
-}
+
 case ${CIRCLE_JOB} in
     ${CIRCLE_TESTING_JOB}) executor.testing;
     ;;
