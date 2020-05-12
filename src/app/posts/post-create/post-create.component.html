@@ -1,12 +1,13 @@
 <mat-card>
-    <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
         <mat-form-field appearance='fill'>
             <mat-label>Nome</mat-label>
             <input
                 matInput
                 type="text"
                 name="name"
-                ngModel
+                [ngModel]="post?.name"
                 minlength="3"
                 required
                 #name="ngModel">
@@ -19,7 +20,7 @@
                 matInput
                 type="text"
                 name="phone"
-                ngModel
+                [ngModel]="post?.phone"
                 minlength="11"
                 required
                 ng-model="phoneNumber"
@@ -34,8 +35,11 @@
             <mat-label>Mensagem Opcional</mat-label>
             <textarea 
                 matInput
+                rows="4"
                 name="content" 
-                ngModel></textarea>
+                [ngModel]="post?.content"
+                placeholder="Descrição do imóvel"
+                #content="ngModel"></textarea>
         </mat-form-field>
 
         <button
