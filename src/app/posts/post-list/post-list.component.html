@@ -9,7 +9,8 @@
         <mat-action-row>
             <button 
                 mat-button
-                color="primary">EDIT</button>
+                color="primary"
+                [routerLink]="['/edit', item.id]">EDIT</button>
             <button
                 mat-button
                 color="warn" (click)="onDelete(item.id)">DELETE</button>
