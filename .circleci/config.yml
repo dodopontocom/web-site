@@ -1,0 +1,91 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: /root/app
+gcp-image: &gcp-image
+  docker:
+    - image: google/cloud-sdk
+tf-image: &tf-image
+  docker:
+    - image: hashicorp/terraform:full
+
+only-testing: &only-testing
+    filters:
+      branches:
+        ignore:
+          - develop
+          - master
+          - bugfix
+          - patch
+          - release
+          - circleci
+only-releasable: &only-releasable
+    filters:
+      branches:
+        only:
+          - develop
+          - master
+          - circleci
+          - release
+non-releasable: &non-releasable
+    filters:
+      branches:
+        ignore:
+          - develop
+          - master
+          - circleci
+          - release
+
+jobs:
+  App_Build_Docker_Image:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: "Build and Push"
+          command: "./.circleci/cicd-executor.sh"
+  GCP_GKE_Provisioning:
+    <<: *defaults
+    <<: *tf-image
+    steps:
+      - checkout
+      - run:
+          name: "GCP GKE Node Pool Creation"
+          command: "./.circleci/cicd-executor.sh"
+
+  GCP_Deploy_App:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - run:
+          name: "GCP Deploy App"
+          command: "./.circleci/cicd-executor.sh"
+  Circle_Testing:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - run:
+          name: "For testing porpuses"
+          command: "./.circleci/cicd-executor.sh"
+          
+workflows:
+  version: 2.1
+  
+  gcloud_workflow:
+    jobs:
+      - Circle_Testing:
+          <<: *only-testing
+      - App_Build_Docker_Image:
+          <<: *only-testing
+      - GCP_GKE_Provisioning:
+          <<: *only-testing
+          requires:
+            - App_Build_Docker_Image
+      - GCP_Deploy_App:
+          <<: *only-testing
+          requires:
+            - GCP_GKE_Provisioning
