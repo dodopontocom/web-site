@@ -28,7 +28,6 @@
                 placeholder="(__) ____-____"
                 #phone="ngModel">
             <mat-error *ngIf="phone.invalid">padrão: 1599999999</mat-error>
-
         </mat-form-field>
 
         <mat-form-field appearance='fill'>
@@ -42,6 +41,13 @@
                 #content="ngModel"></textarea>
         </mat-form-field>
 
+        <div>
+            <button mat-raised-button type="submmit"
+            color="primary" (click)="filePicker.click()">Carregar Imagens</button>
+            <input type="file" multiple #filePicker>
+        </div>
+        
+        <span class="spacer"></span>
         <button
             mat-raised-button
             color="accent"
