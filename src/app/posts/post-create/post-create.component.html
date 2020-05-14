@@ -1,17 +1,13 @@
 <mat-card>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+    <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
         <mat-form-field appearance='fill'>
             <mat-label>Nome</mat-label>
             <input
                 matInput
                 type="text"
-                name="name"
-                [ngModel]="post?.name"
-                minlength="3"
-                required
-                #name="ngModel">
-            <mat-error *ngIf="name.invalid">Escreva seu nome!</mat-error>
+                formControlName="name">
+                <mat-error *ngIf="form.get('name').invalid">Escreva seu nome!</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance='fill'>
@@ -19,29 +15,33 @@
             <input
                 matInput
                 type="text"
-                name="phone"
-                [ngModel]="post?.phone"
-                minlength="11"
-                required
-                ng-model="phoneNumber"
                 ui-br-phone-number="areaCode"
                 placeholder="(__) ____-____"
-                #phone="ngModel">
-            <mat-error *ngIf="phone.invalid">padrão: 1599999999</mat-error>
-
+                formControlName="phone">
+                <mat-error *ngIf="form.get('phone').invalid">padrão: 1599999999</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance='fill'>
-            <mat-label>Mensagem Opcional</mat-label>
+            <mat-label>Mensagem</mat-label>
             <textarea 
                 matInput
                 rows="4"
-                name="content" 
-                [ngModel]="post?.content"
-                placeholder="Descrição do imóvel"
-                #content="ngModel"></textarea>
+                formControlName="content" 
+                placeholder="Descrição do imóvel"></textarea>
+                <mat-error *ngIf="form.get('content').invalid">Escreva uma mensagem</mat-error>
         </mat-form-field>
 
+        <div>
+            <button mat-raised-button type="button"
+            color="primary"
+            (click)="filePicker.click()">Carregar Imagens</button>
+            <input type="file" multiple #filePicker (change)="onImagePicked($event)">
+        </div>
+        <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+            <img [src]="imagePreview" [alt]="form.value.fileTitle">
+        </div>
+        
+        <span class="spacer"></span>
         <button
             mat-raised-button
             color="accent"
@@ -49,5 +49,4 @@
         </button>
     </form>
 </mat-card>
-
 
