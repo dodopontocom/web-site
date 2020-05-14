@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: web-site-deployment-container
-          image: us.gcr.io/terraform-gcp-lab/web-site${K8S_DEPLOYMENT_TAG}
+          image: us.gcr.io/${GCLOUD_PROJECT_ID}/web-site${K8S_DEPLOYMENT_TAG}
           imagePullPolicy: Always
           ports:
           - containerPort: 80
