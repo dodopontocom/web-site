@@ -18,6 +18,8 @@ fi
 # Import dolibs to the execution
 source ${ROOT_DIR}/dolibs.sh
 
+checkVars APP_NAME || exitOnError ${?}
+
 # Use (globally) Common libs
 ## Use utils token work with tokens in file
 do.use utils.tokens

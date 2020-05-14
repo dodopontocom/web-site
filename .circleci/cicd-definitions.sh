@@ -2,7 +2,7 @@
 #
 
 # APPLICATION INFO
-export APP_NAME="$(basename $(which git &>/dev/null | git rev-parse --show-toplevel | sed "s#/\|_\|\.#-#g" | tr '[:upper:]' '[:lower:]'))"
+export APP_NAME="$(basename -- $(which git &>/dev/null | git rev-parse --show-toplevel | sed "s#/\|_\|\.#-#g" | tr '[:upper:]' '[:lower:]'))"
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="continual-voice-276914"
