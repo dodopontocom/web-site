@@ -36,8 +36,8 @@ executor.GCP_Deploy_App() {
 
         utils.tokens.replaceFromFileToFile "${ROOT_DIR}/cloud/k8s/app-deployment.yaml" "${ROOT_DIR}/cloud/k8s/app-deployment.yaml"
 
-        while read file; do
-            echoInfo "${file}"
+        while read line; do
+            echoInfo "${line}"
         done < ${ROOT_DIR}/cloud/k8s/app-deployment.yaml
 
         k8s.deployYaml "${ROOT_DIR}/cloud/k8s/app-deployment.yaml"
