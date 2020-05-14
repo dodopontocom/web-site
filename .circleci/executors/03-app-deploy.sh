@@ -30,7 +30,7 @@ executor.GCP_Deploy_App() {
         K8S_DEPLOYMENT_TAG=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
             K8S_DEPLOYMENT_TAG="${CIRCLE_BRANCH}"
-            export GCLOUD_CONTAINER_IMAGE=$(echo "${GCLOUD_CONTAINER_IMAGE}:${K8S_DEPLOYMENT_TAG}")
+            GCLOUD_CONTAINER_IMAGE=$(echo "${GCLOUD_CONTAINER_IMAGE}:${K8S_DEPLOYMENT_TAG}")
         fi
         if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             K8S_DEPLOYMENT_TAG="build-${CIRCLE_BUILD_NUM}"
