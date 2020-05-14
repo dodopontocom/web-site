@@ -26,7 +26,7 @@ executor.App_Build_Docker_Image() {
         #            "Dockerfile" "${APP_NAME}" "--build-arg \"mongo_conn_string ${MONGO_CONN_STRING}\""
 
         #TODO - use regex to replace special chars for dash (-) and all lower case
-        # add condition when branch is master (copy from deployment step)
+        #TODO - add condition when branch is master (copy from deployment step)
         docker build -t ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH} \
             -f Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" ${ROOT_DIR}
 
