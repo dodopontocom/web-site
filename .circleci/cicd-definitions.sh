@@ -4,9 +4,9 @@
 # APPLICATION INFO
 
 # GCLOUD ENV VARS
-export GCLOUD_PROJECT_ID="xxx"
+export GCLOUD_PROJECT_ID="continual-voice-276914"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
-export GCLOUD_PROJECT_BUCKET_NAME="terraform-gke-node"
+export GCLOUD_PROJECT_BUCKET_NAME="tf-bkend"
 export GCLOUD_PROJECT_REGION="us-central1"
 
 export DOCKER_REGISTRY_SECRET_NAME="gcr-secret"

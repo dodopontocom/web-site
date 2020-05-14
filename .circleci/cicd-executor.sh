@@ -18,7 +18,7 @@ fi
 # Import dolibs to the execution
 source ${ROOT_DIR}/dolibs.sh
 
-# Use (globally) Common libs ##########################################
+# Use (globally) Common libs
 ## Use utils token work with tokens in file
 do.use utils.tokens
 
@@ -30,8 +30,10 @@ done
 
 # Execute functions according to the Job names
 case ${CIRCLE_JOB} in
-    ${CIRCLE_JOB}) do.use integrations.telegram
+    ${CIRCLE_JOB})
+        do.use integrations.telegram
         do.use integrations.slack
+        
         integrations.telegram.validateToken
         executor.${CIRCLE_JOB}
     ;;

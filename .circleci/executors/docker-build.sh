@@ -14,9 +14,7 @@ executor.App_Build_Docker_Image() {
     
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_APPLY}\]")" ]] \
         || [[ -n ${loc} ]]; then
-        
-        #utils.tokens.replaceFromFileToFile "${ROOT_DIR}/backend/app.js" "${ROOT_DIR}/backend/app.js"
-        
+                
         checkVars loc || echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
 
         # Import required lib    

@@ -26,6 +26,20 @@ executor.GCP_Deploy_App() {
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
         gcp.gke.loginCluster ${TF_VAR_cluster_name} ${TF_VAR_zone} ${GCLOUD_PROJECT_ID}
 
+        K8S_DEPLOYMENT_TAG=""
+        if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
+            K8S_DEPLOYMENT_TAG=":${CIRCLE_BRANCH}"
+        fi
+        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+            K8S_DEPLOYMENT_TAG=":build-${CIRCLE_BUILD_NUM}"
+        fi
+
+        utils.tokens.replaceFromFileToFile "${ROOT_DIR}/cloud/k8s/app-deployment.yaml" "${ROOT_DIR}/cloud/k8s/app-deployment.yaml"
+
+        while read file; do
+            echoInfo "${file}"
+        done < ${ROOT_DIR}/cloud/k8s/app-deployment.yaml
+
         k8s.deployYaml "${ROOT_DIR}/cloud/k8s/app-deployment.yaml"
         k8s.deployYaml "${ROOT_DIR}/cloud/k8s/app-load-balancer-service.yaml"
 
