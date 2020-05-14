@@ -21,7 +21,7 @@ executor.App_Build_Docker_Image() {
         do.use gcp.gcr
         
         gcp.gcr.buildAndPublish "${GCLOUD_PROJECT_ID}" "${ROOT_DIR}/" \
-                    "Dockerfile" "web-site" "--no-cache"
+                    "Dockerfile" "web-site" "--build-arg mongo_conn_string=${MONGO_CONN_STRING}"
 
         echoInfo "Building and Pushing the Image to GCP"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
