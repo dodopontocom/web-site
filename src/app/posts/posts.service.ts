@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 
 //const BACKEND_URL = environment.apiUrl + "/posts/";
-const BACKEND_URL = process.env.BACKEND_URL
+//const BACKEND_URL = process.env.BACKEND_URL;
 //const BACKEND_URL = environment.apiUrl;
 
 @Injectable({ providedIn: "root" })
@@ -21,7 +21,7 @@ export class PostsService {
   getPosts() {
     this.http
       .get<{ message: string; posts: any }>(
-        BACKEND_URL + "/posts"
+        process.env.BACKEND_URL + "/posts"
       )
       .pipe(map((postData) => {
         return postData.posts.map(post => {
@@ -47,7 +47,7 @@ export class PostsService {
 
   getPost(id: string) {
     return this.http.get<{ _id: string; name: string; phone: string; content: string, imagePath: string }>(
-      BACKEND_URL + "/posts/" + id
+      process.env.BACKEND_URL + "/posts/" + id
     );
   }
 
@@ -59,7 +59,7 @@ export class PostsService {
     postData.append("image", image, name);
     this.http
       .post<{ message: string, post: Post }>(
-        BACKEND_URL + "/posts",
+        process.env.BACKEND_URL + "/posts",
         postData
       )
       .subscribe(responseData => {
@@ -96,7 +96,7 @@ export class PostsService {
       };
     }
     this.http
-      .put(BACKEND_URL + "/posts/" + id, postData)
+      .put(process.env.BACKEND_URL + "/posts/" + id, postData)
       .subscribe(response => {
         const updatedPosts = [...this.posts];
         const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
@@ -115,7 +115,7 @@ export class PostsService {
   }
 
   deletePost(postId: string) {
-    this.http.delete(BACKEND_URL + "/posts/" + postId)
+    this.http.delete(process.env.BACKEND_URL + "/posts/" + postId)
       .subscribe(() => {
         const updatedPosts = this.posts.filter(post => post.id !== postId);
         this.posts = updatedPosts;
