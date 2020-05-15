@@ -32,7 +32,15 @@ executor.GCP_GKE_Provisioning() {
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
-    
+    elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_TF_DRY_RUN}\]")" ]]; then
+        
+        echoInfo "Terraform Plan flag detected!... [Executing dry-run mode]"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        cd "${terraform_path}"
+        terraform plan
+
+        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
+        integrations.slack.sendMessageToChannel "bashlibs" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
     else
     
         echoInfo "Terraform will not be executed!"

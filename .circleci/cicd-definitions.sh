@@ -32,5 +32,6 @@ export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
 
 # Circle ci references
 export CIRCLE_COMMIT_APPLY="tf-apply"
+export CIRCLE_COMMIT_TF_DRY_RUN="tf-plan"
 export CIRCLE_COMMIT_DESTROY="tf-destroy"
 export CIRCLE_COMMIT_SKIP_DOCKER="skip-docker"
