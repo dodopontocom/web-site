@@ -21,7 +21,7 @@ export class PostsService {
   getPosts() {
     this.http
       .get<{ message: string; posts: any }>(
-        process.env.BACKEND_URL + "/posts"
+        "http://localhost:3000/api/v1/posts"
       )
       .pipe(map((postData) => {
         return postData.posts.map(post => {
@@ -47,7 +47,7 @@ export class PostsService {
 
   getPost(id: string) {
     return this.http.get<{ _id: string; name: string; phone: string; content: string, imagePath: string }>(
-      process.env.BACKEND_URL + "/posts/" + id
+      "http://localhost:3000/api/v1/posts/" + id
     );
   }
 
@@ -59,7 +59,7 @@ export class PostsService {
     postData.append("image", image, name);
     this.http
       .post<{ message: string, post: Post }>(
-        process.env.BACKEND_URL + "/posts",
+        "http://localhost:3000/api/v1/posts",
         postData
       )
       .subscribe(responseData => {
@@ -96,7 +96,7 @@ export class PostsService {
       };
     }
     this.http
-      .put(process.env.BACKEND_URL + "/posts/" + id, postData)
+      .put("http://localhost:3000/api/v1/posts/" + id, postData)
       .subscribe(response => {
         const updatedPosts = [...this.posts];
         const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
@@ -115,7 +115,7 @@ export class PostsService {
   }
 
   deletePost(postId: string) {
-    this.http.delete(process.env.BACKEND_URL + "/posts/" + postId)
+    this.http.delete("http://localhost:3000/api/v1/posts/" + postId)
       .subscribe(() => {
         const updatedPosts = this.posts.filter(post => post.id !== postId);
         this.posts = updatedPosts;
