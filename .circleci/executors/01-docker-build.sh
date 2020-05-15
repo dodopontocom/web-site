@@ -28,7 +28,8 @@ executor.App_Build_Docker_Image() {
         #TODO - use regex to replace special chars for dash (-) and all lower case
         #TODO - add condition when branch is master (copy from deployment step)
         docker build -t ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH} \
-            -f Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" ${ROOT_DIR}
+            -f Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" \
+                            --build-arg "backend_url=${BACKEND_URL}" ${ROOT_DIR}
 
         docker push ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH}
 
