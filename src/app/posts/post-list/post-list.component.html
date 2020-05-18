@@ -10,7 +10,7 @@
         <p>{{ item.phone }}</p>
         <hr>
         <p>{{ item.content }}</p>
-        <mat-action-row>
+        <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
             <button 
                 mat-button
                 color="primary"

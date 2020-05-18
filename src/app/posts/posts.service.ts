@@ -5,7 +5,8 @@ import { map } from "rxjs/operators";
 
 import { Post } from "./post.model";
 import { Router } from "@angular/router";
-import { environment } from "../../environments/environment";
+
+//import { environment } from "../../environments/environment";
 
 //const BACKEND_URL = environment.apiUrl + "/posts/";
 //const BACKEND_URL = process.env.BACKEND_URL;
@@ -32,7 +33,8 @@ export class PostsService {
                 name: post.name,
                 phone: post.phone,
                 content: post.content,
-                imagePath: post.imagePath
+                imagePath: post.imagePath,
+                creator: post.creator
               };
             }),
             maxPosts: postData.maxPosts
@@ -53,8 +55,14 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.http.get<{ _id: string; name: string; phone: string; content: string, imagePath: string }>(
-      "http://localhost:3000/api/v1/posts/" + id
+    return this.http.get<{
+      _id: string;
+      name: string;
+      phone: string;
+      content: string;
+      imagePath: string;
+      creator: string;
+    }>("http://localhost:3000/api/v1/posts/" + id
     );
   }
 
@@ -90,7 +98,8 @@ export class PostsService {
         name: name,
         phone: phone,
         content: content,
-        imagePath: image
+        imagePath: image,
+        creator: null
       };
     }
     this.http

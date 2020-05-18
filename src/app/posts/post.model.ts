@@ -4,4 +4,5 @@ export interface Post {
   phone: string;
   content: string;
   imagePath: string;
+  creator: string;
 }
