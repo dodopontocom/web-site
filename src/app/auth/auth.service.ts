@@ -32,6 +32,7 @@ export class AuthService {
       .post("http://localhost:3000/api/v1/user/signup", authData)
       .subscribe(response => {
         console.log(response);
+        this.router.navigate(["/login"]);
       });
   }
 
