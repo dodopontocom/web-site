@@ -14,14 +14,14 @@ import { environment } from "../../environments/environment";
 @Injectable({ providedIn: "root" })
 export class PostsService {
   private posts: Post[] = [];
-  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postsUpdated = new Subject<{posts: Post[]; postCount: number}>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   getPosts(postsPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
     this.http
-      .get<{ message: string; posts: any, maxPosts: number }>(
+      .get<{ message: string; posts: any; maxPosts: number }>(
         "http://localhost:3000/api/v1/posts" + queryParams)
       .pipe(
         map(postData => {
