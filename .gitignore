@@ -1,6 +1,8 @@
+credential*.json
 backend/images
 dolibs
 .terraform
+.env
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
@@ -48,5 +50,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-credential*.json

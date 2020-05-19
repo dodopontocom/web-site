@@ -2,15 +2,15 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
 
 const app = express();
+require('dotenv').config();
 
 mongoose
   .connect(
-    process.env.MONGO_CONN_STRING
+    process.env.MONGO_ATLAS_STRING
   )
   .then(() => {
     console.log("Connected to database!");

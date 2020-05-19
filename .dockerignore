@@ -1,2 +1,6 @@
-dolibs
 node_modules
+credential*.json
+backend/images
+dolibs
+.terraform
+.env
