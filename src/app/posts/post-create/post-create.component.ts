@@ -14,6 +14,7 @@ import { mimeType } from "./mime-type.validator";
 export class PostCreateComponent implements OnInit {
   
   enteredName = "";
+  enteredRefName = "";
   enteredhone = "";
   enteredContent = "";
   post: Post;
@@ -32,6 +33,9 @@ export class PostCreateComponent implements OnInit {
         this.form = new FormGroup({
           name: new FormControl(null, {
             validators: [Validators.required, Validators.minLength(3)]
+          }),
+          refName: new FormControl(null, {
+            validators: [Validators.required]
           }),
           phone: new FormControl(null, {
             validators: [Validators.required, Validators.minLength(11)]
@@ -52,6 +56,7 @@ export class PostCreateComponent implements OnInit {
               this.post = {
                   id: postData._id,
                   name: postData.name,
+                  refName: postData.refName,
                   phone: postData.phone,
                   content: postData.content,
                   imagePath: postData.imagePath,
@@ -59,6 +64,7 @@ export class PostCreateComponent implements OnInit {
                 };
                 this.form.setValue({
                   name: this.post.name,
+                  refName: postData.refName,
                   phone: this.post.phone,
                   content: this.post.content,
                   image: this.post.imagePath
@@ -90,6 +96,7 @@ export class PostCreateComponent implements OnInit {
         if (this.mode === "adicionar") {
           this.postsService.addPost(
             this.form.value.name,
+            this.form.value.refName,
             this.form.value.phone,
             this.form.value.content,
             this.form.value.image
@@ -98,6 +105,7 @@ export class PostCreateComponent implements OnInit {
           this.postsService.updatePost(
             this.postId,
             this.form.value.name,
+            this.form.value.refName,
             this.form.value.phone,
             this.form.value.content,
             this.form.value.image

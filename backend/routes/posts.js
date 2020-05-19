@@ -12,6 +12,9 @@ const MIME_TYPE_MAP = {
   "image/jpg": "jpg"
 };
 
+const dateObj = new Date();
+const year = dateObj.getUTCFullYear();
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
@@ -41,6 +44,7 @@ router.post(
     const url = req.protocol + "://" + req.get("host");
     const post = new Post({
       name: req.body.name,
+      refName: "ref_" + year + "_" + (Math.floor(Math.random()*90000) + 9999),
       phone: req.body.phone,
       content: req.body.content,
       imagePath: url + "/images/" + req.file.filename,
@@ -71,6 +75,7 @@ router.put(
     const post = new Post({
       _id: req.body.id,
       name: req.body.name,
+      refName: "ref_" + year + "_" + (Math.floor(Math.random()*90000) + 9999),
       phone: req.body.phone,
       content: req.body.content,
       imagePath: imagePath,
