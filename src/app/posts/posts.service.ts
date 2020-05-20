@@ -30,7 +30,6 @@ export class PostsService {
               return {
                 id: post._id,
                 name: post.name,
-                refName: post.refName,
                 phone: post.phone,
                 content: post.content,
                 imagePath: post.imagePath,
@@ -58,7 +57,6 @@ export class PostsService {
     return this.http.get<{
       _id: string;
       name: string;
-      refName: string;
       phone: string;
       content: string;
       imagePath: string;
@@ -67,10 +65,9 @@ export class PostsService {
     );
   }
 
-  addPost(name: string, refName: string, phone: string, content: string, image: File) {
+  addPost(name: string, phone: string, content: string, image: File) {
     const postData = new FormData();
     postData.append("name", name);
-    postData.append("refName", refName);
     postData.append("phone", phone);
     postData.append("content", content);
     postData.append("image", image, name);
@@ -85,13 +82,12 @@ export class PostsService {
   }
 
 
-  updatePost(id: string, name: string, refName: string, phone: string, content: string, image: File | string) {
+  updatePost(id: string, name: string, phone: string, content: string, image: File | string) {
     let postData: Post | FormData;
     if (typeof image === "object") {
       postData = new FormData();
       postData.append("id", id);
       postData.append("name", name);
-      postData.append("refName", refName);
       postData.append("phone", phone);
       postData.append("content", content);
       postData.append("image", image, name);
@@ -99,7 +95,6 @@ export class PostsService {
       postData = {
         id: id,
         name: name,
-        refName: refName,
         phone: phone,
         content: content,
         imagePath: image,

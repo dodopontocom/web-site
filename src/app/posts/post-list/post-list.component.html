@@ -2,7 +2,7 @@
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
     <mat-expansion-panel *ngFor="let item of posts">
         <mat-expansion-panel-header>
-            {{ item.refName + " - " + item.name }}
+            {{ item.name }}
         </mat-expansion-panel-header>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
