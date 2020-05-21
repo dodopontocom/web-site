@@ -5,11 +5,12 @@
             {{ item.id }} - {{ item.title }}
         </mat-expansion-panel-header>
         
-        <p>{{ item.imagePath }}</p>
+        <p>Fotos do Anúncio</p>
         <hr>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
         </div>
+        <p>Preço:</p>
         <p>{{ item.price }}</p>
         <hr>
         <p>{{ item.city }}</p>
