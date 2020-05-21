@@ -2,25 +2,56 @@
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
     <mat-expansion-panel *ngFor="let item of posts">
         <mat-expansion-panel-header>
-            {{ item.name }}
+            <mat-panel-title>
+                {{ item.title }}
+            </mat-panel-title>
+            <mat-panel-description>
+                {{ item.refNumber }}
+                <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+            
         </mat-expansion-panel-header>
+        
+        <p>Fotos do Anúncio</p>
+        <hr>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
         </div>
-        <p>{{ item.phone }}</p>
+        <p>Preço:</p>
+        <p>{{ item.price }}</p>
         <hr>
-        <p>{{ item.content }}</p>
+        <p>{{ item.city }}</p>
+        <hr>
+        <p>{{ item.address }}</p>
+        <hr>
+        <p>{{ item.metragem }}</p>
+        <hr>
+        <p>{{ item.rooms }}</p>
+        <hr>
+        <p>{{ item.baths }}</p>
+        <hr>
+        <p>{{ item.permuta }}</p>
+        <hr>
+        <p>{{ item.type }}</p>
+        <hr>
+        <p>{{ item.owner }}</p>
+        <hr>
+        <p>{{ item.contact }}</p>
+        <hr>
+        <p>{{ item.description }}</p>
+        
         <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
             <button 
                 mat-button
                 color="primary"
-                [routerLink]="['/edit', item.id]">EDIT</button>
+                [routerLink]="['/edit', item.id]">EDITAR</button>
             <button
                 mat-fab
                 color="warn" (click)="onDelete(item.id)">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-action-row>
+
     </mat-expansion-panel>
 </mat-accordion>
 <mat-paginator

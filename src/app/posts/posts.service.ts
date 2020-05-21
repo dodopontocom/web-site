@@ -29,9 +29,21 @@ export class PostsService {
             posts: postData.posts.map(post => {
               return {
                 id: post._id,
-                name: post.name,
-                phone: post.phone,
-                content: post.content,
+
+                title: post.title,
+                price: post.price,
+                city: post.city,
+                address: post.address,
+                metragem: post.metragem,
+                rooms: post.rooms,
+                baths: post.baths,
+                permuta: post.permuta,
+                type: post.type,
+                owner: post.owner,
+                contact: post.contact,
+                description: post.description,
+                refNumber: post.refNumber,
+                
                 imagePath: post.imagePath,
                 creator: post.creator
               };
@@ -56,21 +68,59 @@ export class PostsService {
   getPost(id: string) {
     return this.http.get<{
       _id: string;
-      name: string;
-      phone: string;
-      content: string;
+      
+      title: string;
+      price: string;
+      city: string;
+      address: string;
+      metragem: string;
+      rooms: string;
+      baths: string;
+      permuta: string;
+      type: string;
+      owner: string;
+      contact: string;
+      description: string;
+      refNumber: string;
+
       imagePath: string;
       creator: string;
     }>(BACKEND_URL + id
     );
   }
 
-  addPost(name: string, phone: string, content: string, image: File) {
+  addPost(title: string,
+          price: string,
+          city: string,
+          address: string,
+          metragem: string,
+          rooms: string,
+          baths: string,
+          permuta: string,
+          type: string,
+          owner: string,
+          contact: string,
+          description: string,
+          refNumber: string,
+          image: File) {
+
     const postData = new FormData();
-    postData.append("name", name);
-    postData.append("phone", phone);
-    postData.append("content", content);
-    postData.append("image", image, name);
+    
+    postData.append("title", title);
+    postData.append("price", price);
+    postData.append("city", city);
+    postData.append("address", address);
+    postData.append("metragem", metragem);
+    postData.append("rooms", rooms);
+    postData.append("baths", baths);
+    postData.append("permuta", permuta);
+    postData.append("type", type);
+    postData.append("owner", owner);
+    postData.append("contact", contact);
+    postData.append("description", description);
+    postData.append("refNumber", refNumber);
+
+    postData.append("image", image, title);
     this.http
       .post<{ message: string, post: Post }>(
         BACKEND_URL,
@@ -82,21 +132,60 @@ export class PostsService {
   }
 
 
-  updatePost(id: string, name: string, phone: string, content: string, image: File | string) {
+  updatePost(id: string,
+            title: string,
+            price: string,
+            city: string,
+            address: string,
+            metragem: string,
+            rooms: string,
+            baths: string,
+            permuta: string,
+            type: string,
+            owner: string,
+            contact: string,
+            description: string,
+            refNumber: string,
+            image: File | string) {
+
     let postData: Post | FormData;
     if (typeof image === "object") {
       postData = new FormData();
       postData.append("id", id);
-      postData.append("name", name);
-      postData.append("phone", phone);
-      postData.append("content", content);
-      postData.append("image", image, name);
+      
+      postData.append("title", title);
+      postData.append("price", price);
+      postData.append("city", city);
+      postData.append("address", address);
+      postData.append("metragem", metragem);
+      postData.append("rooms", rooms);
+      postData.append("baths", baths);
+      postData.append("permuta", permuta);
+      postData.append("type", type);
+      postData.append("owner", owner);
+      postData.append("contact", contact);
+      postData.append("description", description);
+      postData.append("refNumber", refNumber);
+
+      postData.append("image", image, title);
     } else {
       postData = {
         id: id,
-        name: name,
-        phone: phone,
-        content: content,
+        
+        title: title,
+        price: price,
+        city: city,
+        address: address,
+        metragem: metragem,
+        rooms: rooms,
+        baths: baths,
+        permuta: permuta,
+        type: type,
+        owner: owner,
+        contact: contact,
+        description: description,
+        refNumber: refNumber,
+
         imagePath: image,
         creator: null
       };

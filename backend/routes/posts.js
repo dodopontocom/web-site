@@ -12,9 +12,6 @@ const MIME_TYPE_MAP = {
   "image/jpg": "jpg"
 };
 
-const dateObj = new Date();
-const year = dateObj.getUTCFullYear();
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
@@ -40,12 +37,24 @@ router.post(
   //multer({ storage: storage }).array("image", 2),
   multer({ storage: storage }).single("image"),
   (req, res, next) => {
-    //const files = req.files;
+    const refRandom = "ref20" + Math.floor((Math.random()*100000)+1);
     const url = req.protocol + "://" + req.get("host");
     const post = new Post({
-      name: req.body.name,
-      phone: req.body.phone,
-      content: req.body.content,
+      
+      title: req.body.title,
+      price: req.body.price,
+      city: req.body.city,
+      address: req.body.address,
+      metragem: req.body.metragem,
+      rooms: req.body.rooms,
+      baths: req.body.baths,
+      permuta: req.body.permuta,
+      type: req.body.type,
+      owner: req.body.owner,
+      contact: req.body.contact,
+      description: req.body.description,
+      refNumber: refRandom,
+           
       imagePath: url + "/images/" + req.file.filename,
       creator: req.userData.userId
     });
@@ -73,9 +82,21 @@ router.put(
     }
     const post = new Post({
       _id: req.body.id,
-      name: req.body.name,
-      phone: req.body.phone,
-      content: req.body.content,
+      
+      title: req.body.title,
+      price: req.body.price,
+      city: req.body.city,
+      address: req.body.address,
+      metragem: req.body.metragem,
+      rooms: req.body.rooms,
+      baths: req.body.baths,
+      permuta: req.body.permuta,
+      type: req.body.type,
+      owner: req.body.owner,
+      contact: req.body.contact,
+      description: req.body.description,
+      refNumber: refRandom,
+
       imagePath: imagePath,
       creator: req.userData.userId
     });
