@@ -83,8 +83,8 @@ workflows:
           <<: *only-releasable
       - GCP_GKE_Provisioning:
           <<: *only-testing
-          requires:
-            - App_Build_Docker_Image
+          #requires:
+          #  - App_Build_Docker_Image
       - GCP_Deploy_App:
           <<: *only-releasable
           requires:
