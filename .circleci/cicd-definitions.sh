@@ -5,6 +5,7 @@
 #export APP_NAME="$(basename -- $(which git &>/dev/null | git rev-parse --show-toplevel | sed "s#/\|_\|\.#-#g" | tr '[:upper:]' '[:lower:]'))"
 export APP_NAME="web-site"
 export BACKEND_URL="http://35.193.137.237/api/v1"
+export STARTUP_SCRIPT="init-app.sh"
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="continual-voice-276914"
@@ -27,6 +28,14 @@ export TF_VAR_zone="${GCLOUD_PROJECT_REGION}-a"
 export TF_VAR_cluster_name="gke-cluster-1"
 export TF_VAR_cluster_count="3"
 export TF_VAR_key="${GCLOUD_JSON_KEY_PATH}"
+
+export TF_VAR_compute_instance_environment="dev"
+export TF_VAR_ubuntu_image="ubuntu-os-cloud/ubuntu-1804-lts"
+export TF_VAR_startup_script="${CIRCLE_WORKING_DIRECTORY}/cloud/scripts/${STARTUP_SCRIPT}"
+export TF_VAR_ssd_name="data-ssd"
+
+export TF_VAR_MONGO_ATLAS_STRING="${MONGO_ATLAS_STRING}"
+export TF_VAR_JWT_KEY="${JWT_KEY}"
 
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_VAR_key}
 

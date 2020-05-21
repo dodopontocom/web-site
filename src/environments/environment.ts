@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://192.168.1.109:3000/api/v1"
+  apiUrl: "${VM_EXTERNAL_IP}"
 };
 
 /*
