@@ -81,6 +81,7 @@ export class PostCreateComponent implements OnInit {
                   owner: postData.owner,
                   contact: postData.contact,
                   description: postData.description,
+                  refNumber: postData.refNumber,
 
                   imagePath: postData.imagePath,
                   creator: postData.creator
@@ -141,6 +142,7 @@ export class PostCreateComponent implements OnInit {
             this.form.value.owner,
             this.form.value.contact,
             this.form.value.description,
+            this.form.value.refNumber,
 
             this.form.value.image
           );
@@ -160,6 +162,7 @@ export class PostCreateComponent implements OnInit {
             this.form.value.owner,
             this.form.value.contact,
             this.form.value.description,
+            this.form.value.refNumber,
 
             this.form.value.image
           );

@@ -2,7 +2,7 @@
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
     <mat-expansion-panel *ngFor="let item of posts">
         <mat-expansion-panel-header>
-            {{ item.id }} - {{ item.title }}
+            {{ item.refNumber }} - {{ item.title }}
         </mat-expansion-panel-header>
         
         <p>Fotos do Anúncio</p>

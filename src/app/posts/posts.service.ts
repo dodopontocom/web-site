@@ -42,6 +42,7 @@ export class PostsService {
                 owner: post.owner,
                 contact: post.contact,
                 description: post.description,
+                refNumber: post.refNumber,
                 
                 imagePath: post.imagePath,
                 creator: post.creator
@@ -80,6 +81,7 @@ export class PostsService {
       owner: string;
       contact: string;
       description: string;
+      refNumber: string;
 
       imagePath: string;
       creator: string;
@@ -99,6 +101,7 @@ export class PostsService {
           owner: string,
           contact: string,
           description: string,
+          refNumber: string,
           image: File) {
 
     const postData = new FormData();
@@ -115,6 +118,7 @@ export class PostsService {
     postData.append("owner", owner);
     postData.append("contact", contact);
     postData.append("description", description);
+    postData.append("refNumber", refNumber);
 
     postData.append("image", image, title);
     this.http
@@ -141,6 +145,7 @@ export class PostsService {
             owner: string,
             contact: string,
             description: string,
+            refNumber: string,
             image: File | string) {
 
     let postData: Post | FormData;
@@ -160,6 +165,7 @@ export class PostsService {
       postData.append("owner", owner);
       postData.append("contact", contact);
       postData.append("description", description);
+      postData.append("refNumber", refNumber);
 
       postData.append("image", image, title);
     } else {
@@ -178,6 +184,7 @@ export class PostsService {
         owner: owner,
         contact: contact,
         description: description,
+        refNumber: refNumber,
 
         imagePath: image,
         creator: null

@@ -12,6 +12,7 @@ export interface Post {
   owner: string;
   contact: string;
   description: string;
+  refNumber: string;
   imagePath: string;
   creator: string;
 }
