@@ -13,9 +13,19 @@ import { mimeType } from "./mime-type.validator";
 })
 export class PostCreateComponent implements OnInit {
   
-  enteredName = "";
-  enteredhone = "";
-  enteredContent = "";
+  enteredTitle = "";
+  enteredpPrice = "";
+  enteredCity = "";
+  enteredAddress = "";
+  enteredMetragem = "";
+  enteredRooms = "";
+  enteredBaths = "";
+  enteredPermuta = "";
+  enteredType = "";
+  enteredOwner = "";
+  enteredContact = "";
+  enteredDescription = "";
+  
   post: Post;
   isLoading = false;
   form: FormGroup;
@@ -30,13 +40,20 @@ export class PostCreateComponent implements OnInit {
 
     ngOnInit() {
         this.form = new FormGroup({
-          name: new FormControl(null, {
-            validators: [Validators.required, Validators.minLength(3)]
-          }),
-          phone: new FormControl(null, {
-            validators: [Validators.required, Validators.minLength(11)]
-          }),
-          content: new FormControl(null, { validators: [Validators.required] }),
+
+          title: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          price: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          city: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          address: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          metragem: new FormControl(null, { validators: [Validators.required] }),
+          rooms: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          baths: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+          permuta: new FormControl(null, { validators: [Validators.required] }),
+          type: new FormControl(null, { validators: [Validators.required] }),
+          owner: new FormControl(null, { validators: [Validators.required] }),
+          contact: new FormControl(null, { validators: [Validators.required] }),
+          description: new FormControl(null, { validators: [Validators.required] }),
+
           image: new FormControl(null, {
             validators: [Validators.required],
             asyncValidators: [mimeType]
@@ -51,16 +68,38 @@ export class PostCreateComponent implements OnInit {
               this.isLoading = false;
               this.post = {
                   id: postData._id,
-                  name: postData.name,
-                  phone: postData.phone,
-                  content: postData.content,
+                  
+                  title: postData.title,
+                  price: postData.price,
+                  city: postData.city,
+                  address: postData.address,
+                  metragem: postData.metragem,
+                  rooms: postData.rooms,
+                  baths: postData.baths,
+                  permuta: postData.permuta,
+                  type: postData.type,
+                  owner: postData.owner,
+                  contact: postData.contact,
+                  description: postData.description,
+
                   imagePath: postData.imagePath,
                   creator: postData.creator
                 };
                 this.form.setValue({
-                  name: this.post.name,
-                  phone: this.post.phone,
-                  content: this.post.content,
+                  
+                  title: this.post.title,
+                  price: this.post.price,
+                  city: this.post.city,
+                  address: this.post.address,
+                  metragem: this.post.metragem,
+                  rooms: this.post.rooms,
+                  baths: this.post.baths,
+                  permuta: this.post.permuta,
+                  type: this.post.type,
+                  owner: this.post.owner,
+                  contact: this.post.contact,
+                  description: this.post.description,
+
                   image: this.post.imagePath
                 });
             });
@@ -89,17 +128,39 @@ export class PostCreateComponent implements OnInit {
         this.isLoading = true;
         if (this.mode === "adicionar") {
           this.postsService.addPost(
-            this.form.value.name,
-            this.form.value.phone,
-            this.form.value.content,
+            
+            this.form.value.title,
+            this.form.value.price,
+            this.form.value.city,
+            this.form.value.address,
+            this.form.value.metragem,
+            this.form.value.rooms,
+            this.form.value.baths,
+            this.form.value.permuta,
+            this.form.value.type,
+            this.form.value.owner,
+            this.form.value.contact,
+            this.form.value.description,
+
             this.form.value.image
           );
         } else {
           this.postsService.updatePost(
             this.postId,
-            this.form.value.name,
-            this.form.value.phone,
-            this.form.value.content,
+            
+            this.form.value.title,
+            this.form.value.price,
+            this.form.value.city,
+            this.form.value.address,
+            this.form.value.metragem,
+            this.form.value.rooms,
+            this.form.value.baths,
+            this.form.value.permuta,
+            this.form.value.type,
+            this.form.value.owner,
+            this.form.value.contact,
+            this.form.value.description,
+
             this.form.value.image
           );
         }

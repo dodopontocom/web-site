@@ -43,9 +43,20 @@ router.post(
     //const files = req.files;
     const url = req.protocol + "://" + req.get("host");
     const post = new Post({
-      name: req.body.name,
-      phone: req.body.phone,
-      content: req.body.content,
+      
+      title: req.body.title,
+      price: req.body.price,
+      city: req.body.city,
+      address: req.body.address,
+      metragem: req.body.metragem,
+      rooms: req.body.rooms,
+      baths: req.body.baths,
+      permuta: req.body.permuta,
+      type: req.body.type,
+      owner: req.body.owner,
+      contact: req.body.contact,
+      description: req.body.description,
+           
       imagePath: url + "/images/" + req.file.filename,
       creator: req.userData.userId
     });
@@ -73,9 +84,20 @@ router.put(
     }
     const post = new Post({
       _id: req.body.id,
-      name: req.body.name,
-      phone: req.body.phone,
-      content: req.body.content,
+      
+      title: req.body.title,
+      price: req.body.price,
+      city: req.body.city,
+      address: req.body.address,
+      metragem: req.body.metragem,
+      rooms: req.body.rooms,
+      baths: req.body.baths,
+      permuta: req.body.permuta,
+      type: req.body.type,
+      owner: req.body.owner,
+      contact: req.body.contact,
+      description: req.body.description,
+
       imagePath: imagePath,
       creator: req.userData.userId
     });
