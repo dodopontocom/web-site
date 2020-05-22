@@ -4,8 +4,9 @@ project_name="web-site"
 git_clone_url="https://github.com/dodopontocom/${project_name}.git"
 
 #VM_EXTERNAL_IP=${1:-$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)}
-export MONGO_ATLAS_STRING=${TF_VAR_MONGO_ATLAS_STRING}
-export JWT_KEY=${TF_VAR_JWT_KEY}
+export MONGO_ATLAS_STRING=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/attributes/MONGO_ATLAS_STRING)
+export JWT_KEY=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/attributes/JWT_KEY)
+
 
 #install docker
 sudo apt-get update
