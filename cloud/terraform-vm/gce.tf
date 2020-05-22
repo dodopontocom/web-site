@@ -33,7 +33,7 @@ resource "google_compute_instance" "gcp_lab_instance" {
     JWT_KEY = "${var.JWT_KEY}"
   }
 
-  metadata_startup_script = "${file("${var.startup_script}")}"
+  metadata_startup_script = file(var.startup_script)
 
   network_interface {
     network = "default"
