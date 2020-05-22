@@ -31,7 +31,6 @@ echo n | npm install -g --silent @angular/cli
 git clone ${git_clone_url}
 cd ${project_name}
 git checkout terraform-v2
-
 sed -i 's/${VM_EXTERNAL_IP}/'${VM_EXTERNAL_IP}/ src/environments/environment.ts
 
 echo n | npm install
