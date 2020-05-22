@@ -29,6 +29,7 @@ echo n | npm install -g --silent @angular/cli
 
 #clone odroid-contas repository
 git clone ${git_clone_url}
+git checkout terraform-v2
 cd ${project_name}
 
 sed -i 's/${VM_EXTERNAL_IP}/'${VM_EXTERNAL_IP}/ src/environments/environment.ts
