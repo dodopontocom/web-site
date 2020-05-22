@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 executor.Circle_Testing() {
-    echoInfo "I'm maybe running local or on CI"
+    echoInfo "This is a circle testing message"
     integrations.slack.sendMessageToChannel "bashlibs" "Hello from testing job: ${CIRCLE_JOB}"
 }
 
