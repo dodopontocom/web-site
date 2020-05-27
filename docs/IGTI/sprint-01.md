@@ -40,4 +40,5 @@ IMPORTANTE
 GCP - VPC: https://www.youtube.com/watch?v=cNb7xKyya5c
 GCP - VPC - terraform: https://www.youtube.com/watch?v=TTe4IDmofT0
 reference: https://github.com/CloudNativeTech/gdg-terraform-gcp-workshop/blob/master/03-project/project.tf#L23
+    https://medium.com/@mike.ensor/trouble-with-eventual-consistency-terraform-and-google-cloud-1dde51b9a3e9
     
