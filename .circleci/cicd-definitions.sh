@@ -2,15 +2,13 @@
 #
 
 # APPLICATION INFO
-#export APP_NAME="$(basename -- $(which git &>/dev/null | git rev-parse --show-toplevel | sed "s#/\|_\|\.#-#g" | tr '[:upper:]' '[:lower:]'))"
 export APP_NAME="web-site"
-export BACKEND_URL="http://35.193.137.237/api/v1"
 export STARTUP_SCRIPT="init-app.sh"
 
 # GCLOUD ENV VARS
-export GCLOUD_PROJECT_ID="continual-voice-276914"
+export GCLOUD_PROJECT_ID="pa-igti"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
-export GCLOUD_PROJECT_BUCKET_NAME="tf-bkend"
+export GCLOUD_PROJECT_BUCKET_NAME="terraform-backend-bucket"
 export GCLOUD_PROJECT_REGION="us-central1"
 
 export DOCKER_REGISTRY_SECRET_NAME="gcr-secret"
@@ -20,7 +18,7 @@ export GCLOUD_CONTAINER_REGISTRY_BUCKET="us.artifacts.${GCLOUD_PROJECT_ID}.appsp
 export GCLOUD_CONTAINER_IMAGE="us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}"
 
 # Terraform variables
-export TF_VAR_gcp_bucket="${GCLOUD_PROJECT_BUCKET_NAME}"
+export TF_VAR_tf_backend_bucket_name="${GCLOUD_PROJECT_BUCKET_NAME}"
 export TF_VAR_project_id="${GCLOUD_PROJECT_ID}"
 export TF_VAR_machine_type="n1-standard-4"
 export TF_VAR_region="${GCLOUD_PROJECT_REGION}"
@@ -28,6 +26,7 @@ export TF_VAR_zone="${GCLOUD_PROJECT_REGION}-a"
 export TF_VAR_cluster_name="gke-cluster-1"
 export TF_VAR_cluster_count="3"
 export TF_VAR_key="${GCLOUD_JSON_KEY_PATH}"
+export TF_VAR_vpc_name="${GCLOUD_PROJECT_ID}-vpc"
 
 export TF_VAR_compute_instance_environment="dev"
 export TF_VAR_ubuntu_image="ubuntu-os-cloud/ubuntu-1804-lts"
