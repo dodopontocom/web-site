@@ -39,4 +39,5 @@ IMPORTANTE
 
 GCP - VPC: https://www.youtube.com/watch?v=cNb7xKyya5c
 GCP - VPC - terraform: https://www.youtube.com/watch?v=TTe4IDmofT0
+reference: https://github.com/CloudNativeTech/gdg-terraform-gcp-workshop/blob/master/03-project/project.tf#L23
     
