@@ -30,6 +30,8 @@ for f in ${function_list[@]}; do
     source ${f}
 done
 
+git diff --dirstat=files,0 HEAD~1
+
 # Execute functions according to the Job names
 case ${CIRCLE_JOB} in
     ${CIRCLE_JOB})
