@@ -1,7 +1,6 @@
 FROM node as build-stage
 
 WORKDIR /app
-
 COPY . /app
 RUN echo n | npm install
 

@@ -3,6 +3,7 @@
 
 # APPLICATION INFO
 export APP_NAME="web-site"
+export APP_FOLDERS=".circleci backend cloud docs src"
 export STARTUP_SCRIPT="init-app.sh"
 
 # GCLOUD ENV VARS

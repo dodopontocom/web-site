@@ -30,7 +30,13 @@ for f in ${function_list[@]}; do
     source ${f}
 done
 
-git diff --dirstat=files,0 HEAD~1
+#changed_folders=($(git diff --name-status HEAD~1 | awk '{print $2}'))
+changed_folders=($(git diff --dirstat=files,0 HEAD~1 | awk '{print $2}'))
+for f in "${changed_folders[@]}"; do
+    if [[ "$(echo ${changed_folders[@]} | grep -o ${f})" ]]; then
+        echo "----- ${f}"
+    fi
+done
 
 # Execute functions according to the Job names
 case ${CIRCLE_JOB} in
