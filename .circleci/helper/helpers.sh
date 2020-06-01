@@ -13,5 +13,5 @@ helper.gitDirChanges() {
 }
 
 helper.another() {
-  echo another
+  echo another_one
 }
