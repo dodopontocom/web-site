@@ -11,6 +11,7 @@ FROM nginx
 
 ARG mongo_conn_string
 ARG backend_url
+
 ENV MONGO_CONN_STRING $mongo_conn_string
 ENV BACKEND_URL $backend_url
 
