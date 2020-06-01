@@ -3,6 +3,7 @@
 
 ROOT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}")/.. >/dev/null 2>&1 && pwd)"
 source ${ROOT_DIR}/.circleci/cicd-definitions.sh
+source ${ROOT_DIR}/.circleci/helper/helpers.sh
 
 # In CI environment the Linux distribution may vary
 ## adding some dependencies (curl, jq)
@@ -28,14 +29,6 @@ do.use utils.tokens
 function_list=($(find ${ROOT_DIR}/.circleci/executors -name "*.sh"))
 for f in ${function_list[@]}; do
     source ${f}
-done
-
-changed_folders=($(git diff --name-status HEAD~1 | awk '{print $2}'))
-#changed_folders=($(git diff --dirstat=files,0 HEAD~1 | awk '{print $2}'))
-for f in "${changed_folders[@]}"; do
-    if [[ "$(echo ${changed_folders[@]} | grep -o ${f})" ]]; then
-        echo "----- ${f}"
-    fi
 done
 
 # Execute functions according to the Job names
