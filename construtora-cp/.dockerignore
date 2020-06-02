@@ -1,6 +1,6 @@
 node_modules
 credential*.json
-backend/images
+construtora-cp/backend/images
 dolibs
 .terraform
 .env
