@@ -1,9 +1,11 @@
 FROM node as build-stage
 
 WORKDIR /app
-COPY . /app
-RUN echo n | npm install
 ARG configuration=production
+
+COPY ./package.json /app
+RUN echo n | npm install
+COPY . /app
 
 RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
