@@ -36,7 +36,7 @@ executor.App_Build_Docker_Image() {
         cp ${CIRCLE_WORKING_DIRECTORY}/cloud/bootstrap/nginx-custom.conf ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/
         
         docker build -t ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH} \
-            -f Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" \
+            -f construtora-cp/Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" \
                             --build-arg "backend_url=${BACKEND_URL}" ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/
 
         docker push ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH}
