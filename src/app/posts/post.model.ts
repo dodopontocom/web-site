@@ -1,7 +1,18 @@
 export interface Post {
   id: string;
-  name: string;
-  phone: string;
-  content: string;
+  title: string;
+  price: string;
+  city: string;
+  address: string;
+  metragem: string;
+  rooms: string;
+  baths: string;
+  permuta: string;
+  type: string;
+  owner: string;
+  contact: string;
+  description: string;
+  refNumber: string;
   imagePath: string;
+  creator: string;
 }
