@@ -9,7 +9,7 @@ executor.GCP_GKE_Provisioning() {
     # Import required lib
     do.use terraform
 
-    terraform_path="${ROOT_DIR}/cloud/terraform-vpc"
+    terraform_path="${ROOT_DIR}/cloud/terraform-k8s"
     TF_VAR_key=${GOOGLE_APPLICATION_CREDENTIALS}
     checkVars loc || echo ${DODRONES_GCP_MY_LABS_SA} > ${TF_VAR_key}
 
