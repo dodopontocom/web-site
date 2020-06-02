@@ -27,6 +27,15 @@ executor.App_Build_Docker_Image() {
 
         #TODO - use regex to replace special chars for dash (-) and all lower case
         #TODO - add condition when branch is master (copy from deployment step)
+        
+        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/.env
+        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/.env
+
+        cat ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/.env
+
+        cp ${CIRCLE_WORKING_DIRECTORY}/cloud/bootstrap/nginx-custom.conf ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/
+        cd ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/
+        
         docker build -t ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH} \
             -f Dockerfile --build-arg "mongo_conn_string=${MONGO_CONN_STRING}" \
                             --build-arg "backend_url=${BACKEND_URL}" ${ROOT_DIR}

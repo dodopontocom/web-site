@@ -44,18 +44,3 @@ export CIRCLE_COMMIT_APPLY="tf-apply"
 export CIRCLE_COMMIT_TF_DRY_RUN="tf-plan"
 export CIRCLE_COMMIT_DESTROY="tf-destroy"
 export CIRCLE_COMMIT_SKIP_DOCKER="skip-docker"
-
-# AZURE ENV VARS
-export ARM_SUBSCRIPTION_ID="00201a7b-5583-44e1-a52a-a4e35224fc37"
-#azure app az-terraform
-#export ARM_CLIENT_ID="badf26f9-1610-46da-9947-d2d37680f56a"
-#azure devops msi
-export ARM_CLIENT_ID="e48e114e-6e70-4ec9-b163-23372d022b73"
-export ARM_CLIENT_SECRET="_fN1hJv_M0m-Vx4kD-f1pdkZ8N-oP~aS00"
-export ARM_TENANT_ID="0d5e9566-201e-4e28-a1d7-8932024d8305"
-
-export TF_VAR_subscription_id="${ARM_SUBSCRIPTION_ID}"
-export TF_VAR_client_id="${ARM_CLIENT_ID}"
-export TF_VAR_client_secret="${ARM_CLIENT_SECRET}"
-export TF_VAR_tenant_id="${ARM_TENANT_ID}"
-
