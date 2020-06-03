@@ -66,6 +66,11 @@ router.post(
           id: createdPost._id
         }
       });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Erro ao criar anúncio!"
+      })
     });
   }
 );
@@ -105,10 +110,15 @@ router.put(
       post
     ).then(result => {
       if (result.nModified > 0) {
-        res.status(200).json({ message: "Update successful!" });
+        res.status(200).json({ message: "Atualizado com sucesso!" });
       } else {
-        res.status(401).json({ message: "Not authorized!" });
+        res.status(401).json({ message: "Sem autorização!" });
       }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Não foi possível atualizar o anúncio!"
+      })
     });
   }
 );
@@ -135,6 +145,11 @@ router.get("", (req, res, next) => {
         posts: fetchedPosts,
         maxPosts: count
     });
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: "Erro ao buscar os anúncios!"
+    })
   });
 });
 
@@ -145,6 +160,11 @@ router.get("/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Post not found!" });
     }
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: "Erro ao buscar o anúncio!"
+    })
   });
 });
 
@@ -158,7 +178,12 @@ router.delete("/:id", checkAuth, (req, res, next) => {
         res.status(401).json({ message: "Not authorized!" });
       }
     }
-  );
+  )
+  .catch(err => {
+    res.status(500).json({
+      message: "Erro ao excluir o anúncio!"
+    })
+  });
 });
 
 module.exports = router;
