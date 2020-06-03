@@ -2,7 +2,7 @@
 #
 executor.Circle_Testing() {
     echoInfo "This is a circle testing message"
-    #integrations.slack.sendMessageToChannel "bashlibs" "Hello from testing job: ${CIRCLE_JOB}"
+    integrations.slack.sendMessageToChannel "bashlibs" "Hello from testing job: ${CIRCLE_JOB}"
 }
 
 # When script is called locally
