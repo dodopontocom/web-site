@@ -59,7 +59,7 @@ exports.updatePost = (req, res, next) => {
     owner: req.body.owner,
     contact: req.body.contact,
     description: req.body.description,
-    refNumber: refRandom,
+    refNumber: req.body.refRandom,
 
     imagePath: imagePath,
     creator: req.userData.userId
