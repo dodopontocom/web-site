@@ -7,7 +7,7 @@ import { AuthData } from "./auth-data.model";
 
 import { environment } from "../../environments/environment";
 
-const BACKEND_URL = environment.apiUrl;
+const BACKEND_URL = environment.apiUrl + "/user";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -38,7 +38,7 @@ export class AuthService {
   createUser(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post(BACKEND_URL + "/user/signup", authData)
+      .post(BACKEND_URL + "/signup", authData)
       .subscribe(response => {
         console.log(response);
         this.router.navigate(["/auth/login"]);
@@ -51,7 +51,7 @@ export class AuthService {
     const authData: AuthData = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number, userId: string }>(
-        BACKEND_URL + "/user/login",
+        BACKEND_URL + "/login",
         authData
       )
       .subscribe(response => {
