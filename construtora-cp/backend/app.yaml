@@ -1,0 +1,5 @@
+service: backend
+runtime: nodejs12
+instance_class: B1
+manual_scaling:
+  instances: 1
