@@ -17,6 +17,8 @@ executor.GAE_Deploy_App() {
 
         echoInfo "Deploying Application in Google App Engine"
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
+
+        APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
@@ -26,10 +28,10 @@ executor.GAE_Deploy_App() {
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
         fi
 
-        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend/.env
-        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend/.env
+        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
+        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
 
-        gcp.gae.deploy "${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend/" "version=${GAE_DEPLOYMENT_VERSION}"
+        gcp.gae.deploy "${APP_PATH}/app.yaml" "version=${GAE_DEPLOYMENT_VERSION}"
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"
