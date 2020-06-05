@@ -29,7 +29,7 @@ executor.GAE_Deploy_App() {
         if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
         fi
-        if [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         fi
 
@@ -51,11 +51,9 @@ executor.GAE_Deploy_App() {
         fi
 
         cd ${ROOT_DIR}/construtora-cp
-        ls -lrt
         echo n | npm install
         npm run build --prod
-        ls -lrt
-        cd ${ROOT_DIR}/dist/construtora-cp
+        cd dist/construtora-cp
         gsutil -m rsync -c -x -r ./ gs://${GCLOUD_APP_BUCKET_NAME}/
         gsutil web set -m index.html gs://${GCLOUD_APP_BUCKET_NAME}
 
