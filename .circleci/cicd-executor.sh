@@ -8,9 +8,9 @@ source ${ROOT_DIR}/.circleci/helper/helpers.sh
 # In CI environment the Linux distribution may vary
 ## adding some dependencies (curl, jq)
 if [[ ${CI} ]]; then
-    which apk && apk add --no-cache curl jq
-    which apt-get && apt-get install -y curl jq
-    which yum && yum install -y curl jq
+    which apk && apk add --no-cache curl jq nodejs npm
+    which apt-get && apt-get install -y curl jq nodejs npm
+    which yum && yum install -y curl jq nodejs npm
 else
     CIRCLE_JOB="local"
     export GOOGLE_APPLICATION_CREDENTIALS=${ROOT_DIR}/cloud/credentials/credential.json

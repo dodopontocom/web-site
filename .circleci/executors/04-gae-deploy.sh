@@ -28,7 +28,7 @@ executor.GAE_Deploy_App() {
         fi
         if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
-        elif [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+        elif [[ "${CIRCLE_BRANCH}" -e "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         fi
 
@@ -38,6 +38,8 @@ executor.GAE_Deploy_App() {
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
+        gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
+
         gcp.gcs.validateBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}"
         if [[ "$?" -eq "0" ]]; then
             gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
@@ -46,6 +48,13 @@ executor.GAE_Deploy_App() {
             gcp.gcs.enableVersioning "${GCLOUD_APP_BUCKET_NAME}"
             gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
         fi
+
+        cd ${ROOT_DIR}/construtora-cp
+        echo n | npm install
+        npm run build --prod
+        cd ${ROOT_DIR}/dist/construtora-cp
+        gsutil -m rsync -c -x -r ./ gs://${GCLOUD_APP_BUCKET_NAME}/
+        gsutil web set -m index.html gs://${GCLOUD_APP_BUCKET_NAME}
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"
