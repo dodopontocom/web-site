@@ -28,7 +28,7 @@ executor.GAE_Deploy_App() {
         fi
         if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
-        elif [[ "${CIRCLE_BRANCH}" -e "master" ]]; then
+        elif [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         fi
 
