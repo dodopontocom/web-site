@@ -52,9 +52,10 @@ executor.GAE_Deploy_App() {
 
         cd ${ROOT_DIR}/construtora-cp
         echo n | npm install
-        npm run build --prod
-        cd dist/web-site
+        npm run build -- --output-path=./dist/out --prod
+        cd dist/out
         gsutil -m rsync -c -x -r ./ gs://${GCLOUD_APP_BUCKET_NAME}/
+        gsutil acl ch -u AllUsers:R gs://${GCLOUD_APP_BUCKET_NAME}/*
         gsutil web set -m index.html gs://${GCLOUD_APP_BUCKET_NAME}
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
