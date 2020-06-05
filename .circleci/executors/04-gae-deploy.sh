@@ -9,6 +9,7 @@ executor.GAE_Deploy_App() {
     checkVars loc || echo ${DODRONES_GCP_MY_LABS_SA} > ${GCLOUD_JSON_KEY_PATH}
     
     # Import required lib
+    do.use gcp
     do.use gcp.auth
     do.use gcp.gae
     
