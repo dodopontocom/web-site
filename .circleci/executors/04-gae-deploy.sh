@@ -31,6 +31,7 @@ executor.GAE_Deploy_App() {
         echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
         echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
 
+        gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
