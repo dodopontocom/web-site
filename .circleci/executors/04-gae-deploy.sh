@@ -12,6 +12,7 @@ executor.GAE_Deploy_App() {
     do.use gcp
     do.use gcp.auth
     do.use gcp.gae
+    do.use gcp.gcs
     
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_GAE}\]")" ]] \
         || [[ -n ${loc} ]] && [[ -z ${destroy} ]]; then
@@ -36,6 +37,15 @@ executor.GAE_Deploy_App() {
 
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
+
+        gcp.gcs.validateBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}"
+        if [[ "$?" -eq "0" ]]; then
+            gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
+        else
+            gcp.gcs.createBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}" "${GCLOUD_APP_BUCKET_CLASS}" "${GCLOUD_PROJECT_REGION}"
+            gcp.gcs.enableVersioning "${GCLOUD_APP_BUCKET_NAME}"
+            gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
+        fi
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:3000/api/v1"
+  apiUrl: "https://backend-dot-continual-voice-276914.uc.r.appspot.com/api/v1"
 };

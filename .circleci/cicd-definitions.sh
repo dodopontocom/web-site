@@ -6,8 +6,8 @@ export APP_NAME="web-site"
 export APP_FOLDERS=".circleci backend cloud docs src"
 export STARTUP_SCRIPT="init-app.sh"
 
-## TODO remove from here and develop it dynamically
-GAE_ENV="develop"
+export GCLOUD_APP_BUCKET_NAME="web-construtora-cp-bucket"
+export GCLOUD_APP_BUCKET_CLASS="standard"
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="continual-voice-276914"
