@@ -21,12 +21,14 @@ executor.GAE_Deploy_App() {
 
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
-        GAE_DEPLOYMENT_VERSION=""
+        GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+        GAE_ENV=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
-            GAE_DEPLOYMENT_VERSION="${CIRCLE_BRANCH}"
-        fi
-        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+            export GAE_ENV="${CIRCLE_BRANCH}"
+        elif [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+            export GAE_ENV="prod"
+        else
+            export GAE_ENV="standard"
         fi
 
         echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
