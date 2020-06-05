@@ -10,7 +10,7 @@ executor.GAE_Deploy_App() {
     
     # Import required lib
     do.use gcp.auth
-    do.use gae
+    do.use gcp.gae
     
     if [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_GAE}\]")" ]] \
         || [[ -n ${loc} ]] && [[ -z ${destroy} ]]; then
