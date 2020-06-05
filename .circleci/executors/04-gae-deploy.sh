@@ -29,9 +29,9 @@ executor.GAE_Deploy_App() {
         if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
         fi
-        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        fi
+        #if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+        #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        #fi
 
         echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
         echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
@@ -53,7 +53,7 @@ executor.GAE_Deploy_App() {
         cd ${ROOT_DIR}/construtora-cp
         echo n | npm install
         npm run build --prod
-        cd dist/construtora-cp
+        cd dist/web-site
         gsutil -m rsync -c -x -r ./ gs://${GCLOUD_APP_BUCKET_NAME}/
         gsutil web set -m index.html gs://${GCLOUD_APP_BUCKET_NAME}
 
