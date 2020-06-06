@@ -20,6 +20,10 @@ executor.GAE_Deploy_App() {
         echoInfo "Deploying Application in Google App Engine"
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 
+        cd ${ROOT_DIR}/construtora-cp
+        echo n | npm install
+        npm run build -- --output-path=./backend/angular --prod
+
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
         GAE_DEPLOYMENT_VERSION=""
@@ -40,23 +44,6 @@ executor.GAE_Deploy_App() {
         gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
         gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
-
-        gcp.gcs.validateBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}"
-        if [[ "$?" -eq "0" ]]; then
-            gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
-        else
-            gcp.gcs.createBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}" "${GCLOUD_APP_BUCKET_CLASS}" "${GCLOUD_PROJECT_REGION}"
-            gcp.gcs.enableVersioning "${GCLOUD_APP_BUCKET_NAME}"
-            gcp.gcs.setUserACL "${GCLOUD_APP_BUCKET_NAME}" "AllUsers" "R"
-        fi
-
-        cd ${ROOT_DIR}/construtora-cp
-        echo n | npm install
-        npm run build -- --output-path=./dist/out --prod
-        cd dist/out
-        gsutil -m rsync -c -x -r ./ gs://${GCLOUD_APP_BUCKET_NAME}/
-        gsutil acl ch -u AllUsers:R gs://${GCLOUD_APP_BUCKET_NAME}/*
-        gsutil web set -m index.html gs://${GCLOUD_APP_BUCKET_NAME}
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"
