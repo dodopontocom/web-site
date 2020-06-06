@@ -1,5 +1,4 @@
 credential*.json
-construtora-cp/backend/images
 dolibs
 .terraform
 .env
