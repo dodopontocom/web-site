@@ -37,6 +37,7 @@ app.use("/", express.static(path.join(__dirname, "angular")));
 //   next();
 // });
 
+
 app.use("/api/v1/posts", postsRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use((req, res, next) => {
