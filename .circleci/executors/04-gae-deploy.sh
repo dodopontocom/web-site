@@ -22,24 +22,24 @@ executor.GAE_Deploy_App() {
 
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
-        GAE_DEPLOYMENT_VERSION=""
-        if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
-            GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
-        fi
-        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
-        fi
-        #if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
-        #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        #fi
+        # GAE_DEPLOYMENT_VERSION=""
+        # if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
+        #     GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
+        # fi
+        # if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+        #     GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+        # fi
+        # #if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+        # #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        # #fi
 
-        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
-        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
+        # echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
+        # echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
 
-        gcp.useProject "${GCLOUD_PROJECT_ID}"
-        gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
+        # gcp.useProject "${GCLOUD_PROJECT_ID}"
+        # gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
-        gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
+        # gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
 
         gcp.gcs.validateBucket "${GCLOUD_PROJECT_ID}" "${GCLOUD_APP_BUCKET_NAME}"
         if [[ "$?" -eq "0" ]]; then
