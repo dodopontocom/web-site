@@ -46,10 +46,10 @@ executor.GAE_Deploy_App() {
         gcloud config set gcloudignore/enabled false
         gcp.gae.deploy "${APP_PATH}/backend/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
-        gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
+        message=$(gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION})
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
-        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"
+        integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${message}"
         integrations.slack.sendMessageToChannel "bashlibs" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "You can access the App here: ${app_url}"
     
