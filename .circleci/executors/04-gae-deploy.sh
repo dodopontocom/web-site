@@ -29,7 +29,7 @@ executor.GAE_Deploy_App() {
         cd ${APP_PATH}
         echo n | npm install
         npm run build -- --configuration production
-        cd ${APP_PATH}/backend/angular
+        ls -lrta ${APP_PATH}/backend/angular
         
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
