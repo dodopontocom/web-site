@@ -44,7 +44,7 @@ executor.GAE_Deploy_App() {
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcp.gae.deploy "${APP_PATH}/backend/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
-        gcloud app browse --no-launch-browser -s default -v ${GAE_DEPLOYMENT_VERSION}
+        gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "You can access the App here: ${app_url}"
