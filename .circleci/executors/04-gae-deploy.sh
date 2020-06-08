@@ -22,7 +22,7 @@ executor.GAE_Deploy_App() {
 
         cd ${ROOT_DIR}/construtora-cp
         echo n | npm install
-        npm run build -- --output-path=./backend/angular --configuration production
+        npm run build -- --configuration production
 
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
