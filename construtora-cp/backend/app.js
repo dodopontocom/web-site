@@ -37,8 +37,8 @@ app.use("/", express.static(path.join(__dirname, "angular")));
 //   next();
 // });
 
-app.use("/api/v1/posts", postsRoutes);
-app.use("/api/v1/user", userRoutes);
+app.use("/api/posts", postsRoutes);
+app.use("/api/user", userRoutes);
 // app.use("/^(?!.*_ah).*$/",(req, res, next) => {
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "angular", "index.html"));

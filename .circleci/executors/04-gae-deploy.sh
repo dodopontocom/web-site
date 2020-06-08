@@ -42,6 +42,7 @@ executor.GAE_Deploy_App() {
         #fi
 
         gcp.useProject "${GCLOUD_PROJECT_ID}"
+        gcloud config set gcloudignore/enabled false
         gcp.gae.deploy "${APP_PATH}/backend/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
         gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION}
