@@ -20,11 +20,15 @@ executor.GAE_Deploy_App() {
         echoInfo "Deploying Application in Google App Engine"
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 
-        cd ${ROOT_DIR}/construtora-cp
+        
+        APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
+
+        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
+        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
+
+        cd ${APP_PATH}
         echo n | npm install
         npm run build -- --configuration production
-
-        APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp/backend"
         
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
@@ -37,11 +41,8 @@ executor.GAE_Deploy_App() {
         #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         #fi
 
-        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
-        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
-
         gcp.useProject "${GCLOUD_PROJECT_ID}"
-        gcp.gae.deploy "${APP_PATH}/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
+        gcp.gae.deploy "${APP_PATH}/backend/app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
         gcloud app browse --no-launch-browser -s default -v ${GAE_DEPLOYMENT_VERSION}
 
