@@ -31,7 +31,7 @@ exports.createPost = (req, res, next) => {
       }
     });
   })
-  .catch(err => {
+  .catch(error => {
     res.status(500).json({
       message: "Erro ao criar anúncio!"
     })
@@ -76,7 +76,7 @@ exports.updatePost = (req, res, next) => {
       res.status(401).json({ message: "Sem autorização!" });
     }
   })
-  .catch(err => {
+  .catch(error => {
     res.status(500).json({
       message: "Não foi possível atualizar o anúncio!"
     })
@@ -106,7 +106,7 @@ exports.getPosts = (req, res, next) => {
         maxPosts: count
     });
   })
-  .catch(err => {
+  .catch(error => {
     res.status(500).json({
       message: "Erro ao buscar os anúncios!"
     })
