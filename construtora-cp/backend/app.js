@@ -41,7 +41,7 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
 // app.use("/^(?!.*_ah).*$/",(req, res, next) => {
 app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "angular", "/index.html"));
+  res.sendFile(path.join(__dirname, "angular", "index.html"));
 });
 
 module.exports = app;
