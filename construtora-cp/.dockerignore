@@ -1,0 +1,6 @@
+node_modules
+credential*.json
+construtora-cp/backend/images
+dolibs
+.terraform
+.env

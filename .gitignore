@@ -1,5 +1,4 @@
 credential*.json
-backend/images
 dolibs
 .terraform
 .env
@@ -7,21 +6,21 @@ dolibs
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+construtora-cp/dist
+construtora-cp/tmp
+construtora-cp/out-tsc
 # Only exists if Bazel was run
-/bazel-out
+construtora-cp/bazel-out
 
 # dependencies
-/node_modules
+node_modules
 
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json
 
 # IDEs and editors
-/.idea
+construtora-cp/.idea
 .project
 .classpath
 .c9/
@@ -38,14 +37,14 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+construtora-cp/.sass-cache
+construtora-cp/connect.lock
+construtora-cp/coverage
+construtora-cp/libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+construtora-cp/typings
 
 # System Files
 .DS_Store

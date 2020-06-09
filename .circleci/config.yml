@@ -63,6 +63,14 @@ jobs:
       - run:
           name: "GCP Deploy App"
           command: "./.circleci/cicd-executor.sh"
+  GAE_Deploy_App:
+    <<: *defaults
+    <<: *gcp-image
+    steps:
+      - checkout
+      - run:
+          name: "GAE Deploy App"
+          command: "./.circleci/cicd-executor.sh"
   Circle_Testing:
     <<: *defaults
     <<: *gcp-image
@@ -89,3 +97,5 @@ workflows:
           <<: *only-releasable
           requires:
             - GCP_GKE_Provisioning
+      - GAE_Deploy_App:
+          <<: *only-releasable

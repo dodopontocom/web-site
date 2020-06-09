@@ -16,6 +16,8 @@ spec:
           imagePullPolicy: Always
           ports:
           - containerPort: 80
+          - containerPort: 3000
+      dnsPolicy: Default
       #imagePullSecrets:
       #  - name: gcr-secret # Use secret for private container repository in gcr.io
 
