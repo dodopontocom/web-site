@@ -23,8 +23,8 @@ executor.GAE_Deploy_App() {
         
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
 
-        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/.env
-        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/.env
+        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/backend/.env
+        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/backend/.env
 
         cd ${APP_PATH}
         echo n | npm install
