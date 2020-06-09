@@ -23,14 +23,14 @@ executor.GAE_Deploy_App() {
         
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
 
-        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/backend/.env
-        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/backend/.env
-
         cd ${APP_PATH}
         echo n | npm install
         npm run build -- --configuration production
-        ls -lrta ${APP_PATH}/backend/angular
         
+        echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/backend/.env
+        echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/backend/.env
+        ls -lrta ${APP_PATH}/backend
+
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
