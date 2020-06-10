@@ -17,7 +17,7 @@ executor.GCP_GKE_Provisioning() {
         || [[ -n ${destroy} ]]; then
     
         echoInfo "Terraform destroy flag detected! [Destroying GCP Resources]"
-        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_TF_BUCKET_NAME}" "terraform"
         terraform destroy --auto-approve
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Terraform destroy successfully executed on job: ${CIRCLE_JOB}"
@@ -27,7 +27,7 @@ executor.GCP_GKE_Provisioning() {
         || [[ -n ${loc} ]]; then
     
         echoInfo "Terraform Apply flag detected!... [Updating GCP Resources]"
-        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_TF_BUCKET_NAME}" "terraform"
         terraform.apply "${terraform_path}"
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Terraform apply successfully executed on job: ${CIRCLE_JOB}"
@@ -35,7 +35,7 @@ executor.GCP_GKE_Provisioning() {
     elif [[ "$(git log --format=oneline -n 1 ${CIRCLE_SHA1} | grep -E "\[${CIRCLE_COMMIT_TF_DRY_RUN}\]")" ]]; then
         
         echoInfo "Terraform Plan flag detected!... [Executing dry-run mode]"
-        terraform.init_gcp "${terraform_path}" "${GCLOUD_PROJECT_BUCKET_NAME}" "terraform"
+        terraform.init_gcp "${terraform_path}" "${GCLOUD_TF_BUCKET_NAME}" "terraform"
         cd "${terraform_path}"
         terraform plan
 

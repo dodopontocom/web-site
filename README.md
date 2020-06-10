@@ -2,7 +2,7 @@
 
 # WebSite - Construtora CP - Cloud
 
-Me myself Studying MEAN stack + k8s + terraform + CircleCi
+Me myself Studying MEAN stack + k8s + Google Cloud + Terraform + CircleCi
 
 ## (to be edited)
 

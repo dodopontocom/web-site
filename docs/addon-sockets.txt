@@ -1,0 +1,185 @@
+Cheers
+
+
+BACK-END SIDE
+
+
+npm i -S http
+
+npm i -S socket.io
+
+
+
+var express = require('express');
+var http = require('http');
+var socketIO = require('socket.io');
+ 
+var app = express();
+var httpServer = http.createServer(app);
+var socketIOServer = socketIO.listen(httpServer);
+ 
+httpServer.listen(3000, () => {
+  console.log('Server started at http://localhost:3000');
+});
+ 
+socketIOServer.sockets.on('connection', (socket) => {
+  console.log('Socket connected');
+  
+  socket.on('createPost', (post) => {
+    socketIOServer.emit('createPost', post);
+    console.log('Create Post socket emitted');
+  });
+ 
+  socket.on('updatePost', (post) => {
+    socketIOServer.emit('updatePost', post);
+    console.log('Update Post socket emitted');
+  });
+ 
+  socket.on('deletePost', (post) => {
+    socketIOServer.emit('deletePost', post);
+    console.log('Delete Post socket emitted');
+  });
+});    
+
+
+FRONT-END SIDE
+
+npm i -S ngx-socket-io
+
+Add this in PostsModule
+
+
+
+...
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { PostSocketService } from './post-socket.service';
+ 
+const socketIoConfig: SocketIoConfig = {
+  url: 'http://localhost:3000', options: {}
+};
+ 
+...
+imports: [
+  ...
+  SocketIoModule.forRoot(socketIoConfig)
+]
+providers: [
+  ...
+  PostSocketService
+]
+
+
+Define PostSocketService
+
+
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+ 
+import { Post } from './post.model';
+ 
+@Injectable()
+export class PostSocketService {
+  constructor(
+    private socket: Socket) {
+  }
+ 
+  emitCreatePostSocket(post: Post) {
+    this.socket.emit('createPost', post);
+  }
+ 
+  receiveCreatePostSocket() {
+    return Observable.create((observer: any) => {
+      this.socket.on('createPost', (post: Post) => {
+        observer.next(post);
+      });
+    });
+  }
+ 
+  emitUpdatePostSocket(post: Post) {
+    this.socket.emit('updatePost', post);
+  }
+ 
+  receiveUpdatePostSocket() {
+    return Observable.create((observer: any) => {
+      this.socket.on('updatePost', (post: Post) => {
+        observer.next(post);
+      });
+    });
+  }
+ 
+  emitDeletePostSocket(post: Post) {
+    this.socket.emit('deletePost', post);
+  }
+ 
+  receiveDeletePostSocket() {
+    return Observable.create((observer: any) => {
+      this.socket.on('deletePost', (post: Post) => {
+        observer.next(post);
+      });
+    });
+  }
+}
+
+
+Add this in PostsService
+
+Note: In observePostSocket(), getPosts() method is called to Back-End to refresh the posts. Otherwise, as the socket emit a dedicated event for create, update and delete,
+PostsService.posts could be directly altered by pushing, updating or splicing regarding the case.
+
+
+
+import { PostSocketService } from './post-socket.service';
+...
+ 
+constructor(
+  ...
+  private postSocketService: PostSocketService) {
+    ...
+    this.observePostSocket();
+}
+ 
+createPost(...) {
+  this.httpClient.post
+  ...
+  .subscribe((response) => {
+    ...
+    this.postSocketService.emitCreatePostSocket(response.post);
+  });
+}
+ 
+updatePost(...) {
+  this.httpClient.put
+  ...
+  .subscribe((response) => {
+    ...
+    this.postSocketService.emitUpdatePostSocket(response.post);
+  });
+}
+ 
+deletePost(...) {
+  this.httpClient.delete
+  ...
+  .subscribe((response) => {
+    ...
+    this.postSocketService.emitDeletePostSocket(response.post);
+  });
+}
+ 
+private observePostSocket() {
+  this.postSocketService.receiveCreatePostSocket().subscribe((post: Post) => {
+    console.log(`Create ${post.id} Post socket received`);
+    this.getPosts(...);
+  });
+ 
+  this.postSocketService.receiveUpdatePostSocket().subscribe((post: Post) => {
+    console.log(`Update ${post.id} Post socket received`);
+    this.getPosts(...);
+  });
+ 
+  this.postSocketService.receiveDeletePostSocket().subscribe((post: Post) => {
+    console.log(`Delete ${post.id} Post socket received`);
+    this.getPosts(...);
+  });
+}
