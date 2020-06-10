@@ -28,4 +28,25 @@
     width: 100%;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
   }
+
+  .example-card {
+    width: 30%;
+    margin: 40px;
+
+  }
+
+  .cards {
+    width: 400px;
+  }
+
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .card-image {
+    width: 100%;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  }
   
