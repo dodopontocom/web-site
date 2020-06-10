@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { PostListComponent } from "./posts/post-list/post-list.component";
-import { PostPublicListComponent } from "./posts/post-public-list/post-public-list.component";
 import { PostCreateComponent } from "./posts/post-create/post-create.component";
 import { AuthGuard } from "./auth/auth.guard";
 
