@@ -76,10 +76,11 @@
                 <ul><li>{{ item.city }}</li></ul>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button
-                        color="accent">Gostei</button>
-                <button mat-raised-button
-                        color="accent">Compartilhar</button>
+                <button mat-icon-button class="shadow" color="warn">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+                <button mat-stroked-button
+                        color="primary">Compartilhar</button>
             </mat-card-actions>
         <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">
             Nenhum Imóvel foi adicionado ainda!
