@@ -47,7 +47,8 @@ executor.GAE_Deploy_App() {
         cd ${APP_PATH}/backend
         gcp.gae.deploy "app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
-        gcp.auth.revokeSA "${GOOGLE_APPLICATION_CREDENTIALS}"
+        #gcp.auth.revokeSA "${GOOGLE_APPLICATION_CREDENTIALS}"
+        gcloud auth revoke "${GCLOUD_SA_EMAIL}"
         rm -vfr "${GOOGLE_APPLICATION_CREDENTIALS}"
 
         message=$(gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION})

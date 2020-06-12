@@ -54,7 +54,7 @@ executor.GCP_Deploy_App() {
         app_url="$(kubectl get services -l label-key='deployment' -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')"
         echoInfo "http://${app_url}"
 
-        gcp.auth.revokeSA "${GOOGLE_APPLICATION_CREDENTIALS}"
+        gcloud auth revoke "${GCLOUD_SA_EMAIL}"
         rm -vfr "${GOOGLE_APPLICATION_CREDENTIALS}"
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"
