@@ -48,4 +48,7 @@ executor.GCP_GKE_Provisioning() {
         integrations.slack.sendMessageToChannel "bashlibs" "Terraform was not executed on job: ${CIRCLE_JOB}"
     
     fi
+
+    rm -vfr "${GOOGLE_APPLICATION_CREDENTIALS}"
+    
 }

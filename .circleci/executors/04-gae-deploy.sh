@@ -47,6 +47,9 @@ executor.GAE_Deploy_App() {
         cd ${APP_PATH}/backend
         gcp.gae.deploy "app.yaml" "${GAE_DEPLOYMENT_VERSION}"
 
+        gcp.auth.revokeSA "${GOOGLE_APPLICATION_CREDENTIALS}"
+        rm -vfr "${GOOGLE_APPLICATION_CREDENTIALS}"
+
         message=$(gcloud app browse --no-launch-browser -s backend -v ${GAE_DEPLOYMENT_VERSION})
 
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Application deployment done on job: ${CIRCLE_JOB}"

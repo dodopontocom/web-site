@@ -41,6 +41,8 @@ executor.App_Build_Docker_Image() {
 
         docker push ${GCLOUD_CONTAINER_IMAGE}:${CIRCLE_BRANCH}
 
+        rm -vfr "${GCLOUD_JSON_KEY_PATH}"
+
         echoInfo "Building and Pushing the Image to GCP"
         integrations.telegram.sendMessage "${TELEGRAM_NOTIFICATION_ID}" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
         integrations.slack.sendMessageToChannel "bashlibs" "Docker Image Build successfully finished on job: ${CIRCLE_JOB}"
