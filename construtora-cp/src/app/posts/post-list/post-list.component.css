@@ -40,7 +40,7 @@
   }
 
   .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-image: url('https://storage.cloud.google.com/web-construtora-cp-bucket/house.png');
     background-size: cover;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
   }
