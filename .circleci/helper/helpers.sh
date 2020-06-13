@@ -16,38 +16,22 @@ helper.another() {
   echo another_one
 }
 
-helper.semver() {
+helper.npm_version() {
 
   local version branch build_number
 
-  version=$1
-  branch=$2
-  build_number=$3
-
-  _string=(${version//./ })
-  echo "${_string[@]}"
+  branch=$1
 
   if [[ "${branch}" == "master" ]]; then
-    ((_string[0]++))
-    _string[1]=0
-    _string[2]=0
+    npm version major
   fi
 
   if [[ "${branch}" == "develop" ]]; then
-    ((_string[1]++))
-    _string[2]=0
+    npm version minor
   fi
 
   if [[ "${branch}" != "master" ]] || \
       [[ "${branch}" != "develop" ]]; then
-    ((_string[2]++))
-    if [[ -n ${build_number} ]]; then
-      _string[2]="$(echo ${_string[2]}-${branch//\//-}\(build-${build_number}\) | tr '[:upper:]' '[:lower:]')"
-    else
-      _string[2]="$(echo ${_string[2]}-${branch//\//-} | tr '[:upper:]' '[:lower:]')"
-    fi
+    npm version minor
   fi
-
-  echo "${_string[0]}.${_string[1]}.${_string[2]}"
-
 }

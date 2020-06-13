@@ -2,7 +2,7 @@
 #
 
 # APPLICATION INFO
-export APP_NAME="web-site"
+export APP_NAME="construtora-cp"
 
 export GCLOUD_APP_BUCKET_NAME="web-construtora-cp-bucket"
 export GCLOUD_APP_BUCKET_CLASS="standard"

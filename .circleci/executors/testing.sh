@@ -3,7 +3,11 @@
 
 executor.Circle_Testing() {
     echoInfo "This is a circle testing message"
-    helper.semver 0.0.0 ${CIRCLE_BRANCH} ${CIRCLE_BUILD_NUM}
+    PACKAGE_VERSION=$(cat ${ROOT_DIT}/${APP_NAME}/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
+    echo ${PACKAGE_VERSION}
+    helper.npm_version ${CIRCLE_BRANCH}
+    PACKAGE_VERSION=$(cat ${ROOT_DIT}/${APP_NAME}/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')
+    echo ${PACKAGE_VERSION}
     integrations.slack.sendMessageToChannel "bashlibs" "Hello from testing job: ${CIRCLE_JOB}"
 }
 
