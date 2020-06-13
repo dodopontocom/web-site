@@ -18,6 +18,7 @@ export GCLOUD_SA_NAME="devops-sa"
 export GCLOUD_SA_EMAIL="${GCLOUD_SA_NAME}@${GCLOUD_PROJECT_ID}.iam.gserviceaccount.com"
 export GCLOUD_CONTAINER_REGISTRY_BUCKET="us.artifacts.${GCLOUD_PROJECT_ID}.appspot.com"
 export GCLOUD_CONTAINER_IMAGE="us.gcr.io/${GCLOUD_PROJECT_ID}/${APP_NAME}"
+export GCLOUD_GAE_SA_EMAIL="${GCLOUD_PROJECT_ID}@appspot.gserviceaccount.com"
 
 # Terraform variables
 export TF_VAR_tf_backend_bucket_name="${GCLOUD_TF_BUCKET_NAME}"
