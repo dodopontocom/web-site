@@ -18,20 +18,21 @@ helper.another() {
 
 helper.npm_version() {
 
-  local version branch build_number
+  local branch directory
 
   branch=$1
+  directory=$2
 
   if [[ "${branch}" == "master" ]]; then
-    npm version major
+    npm version major --prefix ${directory}
   fi
 
   if [[ "${branch}" == "develop" ]]; then
-    npm version minor
+    npm version minor --prefix ${directory}
   fi
 
   if [[ "${branch}" != "master" ]] || \
       [[ "${branch}" != "develop" ]]; then
-    npm version minor
+    npm version patch --prefix ${directory}
   fi
 }
