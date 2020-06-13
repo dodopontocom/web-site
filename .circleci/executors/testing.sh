@@ -3,6 +3,7 @@
 
 executor.Circle_Testing() {
     echoInfo "This is a circle testing message"
+    helper.semver 0.0.0 ${CIRCLE_BRANCH} ${CIRCLE_BUILD_NUM}
     integrations.slack.sendMessageToChannel "bashlibs" "Hello from testing job: ${CIRCLE_JOB}"
 }
 
