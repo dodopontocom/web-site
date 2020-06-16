@@ -15,3 +15,24 @@ helper.gitDirChanges() {
 helper.another() {
   echo another_one
 }
+
+helper.npm_version() {
+
+  local branch directory
+
+  branch=$1
+  directory=$2
+
+  if [[ "${branch}" == "master" ]]; then
+    npm version major --prefix ${directory}
+  fi
+
+  if [[ "${branch}" == "develop" ]]; then
+    npm version minor --prefix ${directory}
+  fi
+
+  if [[ "${branch}" != "master" ]] || \
+      [[ "${branch}" != "develop" ]]; then
+    npm version patch --prefix ${directory}
+  fi
+}
