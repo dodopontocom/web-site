@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class PostCreateComponent implements OnInit, OnDestroy {
   
   enteredTitle = "";
-  enteredpPrice = "";
+  enteredPrice = "";
   enteredCity = "";
   enteredAddress = "";
   enteredMetragem = "";
