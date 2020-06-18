@@ -19,7 +19,7 @@ executor.GAE_Deploy_App() {
 
         echoInfo "Deploying Application in Google App Engine"
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
-        
+
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
 
         cd ${APP_PATH}
@@ -33,17 +33,17 @@ executor.GAE_Deploy_App() {
         echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_KEYFILE=\"${GCLOUD_JSON_KEY_PATH}\"" >> ${APP_PATH}/backend/.env
-    
-        GAE_DEPLOYMENT_VERSION="feature-123"
-        # if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
-        #     GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
-        # fi
-        # if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
-        #     GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
-        # fi
-        # if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
-        #     GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        # fi
+        
+        GAE_DEPLOYMENT_VERSION=""
+        if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
+            GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
+        fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+        fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        fi
 
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcloud config set gcloudignore/enabled false
