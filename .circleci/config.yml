@@ -98,6 +98,4 @@ workflows:
           requires:
             - GCP_GKE_Provisioning
       - GAE_Deploy_App:
-          <<: *only-releasable
-      - GAE_Deploy_App:
           <<: *non-releasable
