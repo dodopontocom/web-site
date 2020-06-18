@@ -1,16 +1,17 @@
 /**
  * Upload file to Google Cloud Storage
  */
-
+const path = require("path");
 const getFile = require("./file");
-
-console.log(getFile.filename);
-
-const bucketName = "web-construtora-cp-bucket";
-const filename = "../images/carregar-1592486549323.png";
-
 const { Storage } = require("@google-cloud/storage");
-const file = require("./file");
+require('dotenv').config();
+
+//console.log(getFile.filename);
+
+const bucketName = process.env.GCLOUD_APP_BUCKET_NAME
+console.log(bucketName);
+//GCLOUD_PROJECT_ID="${GCLOUD_PROJECT_ID}"
+const filename = "backend/images/a.png";
 
 const gcStorage = new Storage();
 
