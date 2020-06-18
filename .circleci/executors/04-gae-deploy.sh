@@ -39,7 +39,7 @@ executor.GAE_Deploy_App() {
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
         fi
         if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM//\//-}"
         fi
         if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
