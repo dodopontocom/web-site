@@ -42,7 +42,7 @@ exports.createPost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
-    const url = req.protocol + "://" + req.get("host");
+    //const url = req.protocol + "://" + req.get("host");
     imagePath = process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCLOUD_APP_BUCKET_NAME + "/" + req.file.filename;
   }
   const post = new Post({

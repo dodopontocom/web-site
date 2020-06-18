@@ -5,6 +5,8 @@
 export APP_NAME="construtora-cp"
 
 export GCLOUD_APP_BUCKET_CLASS="standard"
+export GCLOUD_STORAGE_BASE_URL="https://storage.cloud.google.com"
+export GCLOUD_APP_BUCKET_NAME="web-construtora-cp-bucket"
 
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="continual-voice-276914"
