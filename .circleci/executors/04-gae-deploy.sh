@@ -32,7 +32,13 @@ executor.GAE_Deploy_App() {
         echo "REF_IMOVEL_PREFIX=\"${REF_IMOVEL_PREFIX}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
-        #echo "GCS_KEYFILE=\"${GCLOUD_JSON_KEY_PATH}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_KEYFILE="/root/keys/keyfile.json" >> ${APP_PATH}/backend/.env
+
+        # TODO: use credentials in production
+        ### https://cloud.google.com/docs/authentication/production
+        ### Google\Auth\Credentials\AppIdentityCredentials
+        ### https://github.com/googleapis/google-auth-library-nodejs/tree/master/samples
+        ### https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/appengine/storage/standard
         
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
