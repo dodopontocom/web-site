@@ -35,13 +35,13 @@ executor.GAE_Deploy_App() {
         echo "GCS_KEYFILE=\"${GCLOUD_JSON_KEY_PATH}\"" >> ${APP_PATH}/backend/.env
         
         GAE_DEPLOYMENT_VERSION=""
-        if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
+        if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
         fi
-        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" != "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM//\//-}"
         fi
-        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" == "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         fi
 
