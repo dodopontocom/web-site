@@ -81,8 +81,7 @@ jobs:
           command: "./.circleci/cicd-executor.sh"
           
 workflows:
-  version: 2.1
-  
+  version: 2.1  
   gcloud_workflow:
     jobs:
       - Circle_Testing:
