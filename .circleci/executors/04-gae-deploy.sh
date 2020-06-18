@@ -29,8 +29,12 @@ executor.GAE_Deploy_App() {
         
         echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/backend/.env
         echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/backend/.env
-        ls -lrta ${APP_PATH}/backend
-
+        echo "GCLOUD_STORAGE_BASE_URL=\"${GCLOUD_STORAGE_BASE_URL}\"" >> ${APP_PATH}/backend/.env
+        echo "REF_IMOVEL_PREFIX=\"${REF_IMOVEL_PREFIX}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
+        echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_KEYFILE=\"${GCLOUD_JSON_KEY_PATH}\"" >> ${APP_PATH}/backend/.env
+        
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"

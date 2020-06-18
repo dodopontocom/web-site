@@ -1,4 +1,7 @@
 const multer = require("multer");
+const multerGoogleStorage = require("multer-google-storage");
+
+require('dotenv').config();
 
 const MIME_TYPE_MAP = {
   "image/png": "png",
@@ -29,4 +32,12 @@ const storage = multer.diskStorage({
     cb(null, name + "-" + Date.now() + "." + ext);
   }
 });
-module.exports = multer({ storage: storage }).single("image");
+
+const uploadHandler = multer({
+  storage: multerGoogleStorage.storageEngine({
+    acl: "publicread"
+  })
+});
+
+//module.exports = multer({ storage: storage }).single("image");
+module.exports = uploadHandler.single("image");

@@ -11,6 +11,8 @@ export GCLOUD_APP_BUCKET_NAME="web-construtora-cp-bucket"
 # GCLOUD ENV VARS
 export GCLOUD_PROJECT_ID="continual-voice-276914"
 export GCLOUD_JSON_KEY_PATH="${CIRCLE_WORKING_DIRECTORY}/cloud/credentials/credential.json"
+export REF_IMOVEL_PREFIX="ref20"
+
 export GCLOUD_TF_BUCKET_NAME="tf-bkend"
 export GCLOUD_PROJECT_REGION="us-central1"
 
