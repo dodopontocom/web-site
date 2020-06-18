@@ -39,12 +39,12 @@ executor.GAE_Deploy_App() {
         if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
         fi
-        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
             GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
         fi
-        #if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
-        #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        #fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        fi
 
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcloud config set gcloudignore/enabled false
