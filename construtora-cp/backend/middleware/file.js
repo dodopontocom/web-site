@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "/tmp");
+    cb(error, "backend/images");
     // TODO
     // upload the file to tmp and then save to google storage and work properly with image url in google storage
     //https://stackoverflow.com/questions/36661795/how-to-upload-an-image-to-google-cloud-storage-from-an-image-url-in-node

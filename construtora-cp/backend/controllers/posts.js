@@ -1,8 +1,9 @@
 const Post = require("../models/post");
+require('dotenv').config();
 
 exports.createPost = (req, res, next) => {
-  const refRandom = "ref20" + Math.floor((Math.random()*100000)+1);
-  const url = req.protocol + "://" + req.get("host");
+  const refRandom = process.env.REF_IMOVEL_PREFIX + Math.floor((Math.random()*100000)+1);
+  //const url = req.protocol + "://" + req.get("host");
   const post = new Post({
     
     title: req.body.title,
@@ -19,7 +20,7 @@ exports.createPost = (req, res, next) => {
     description: req.body.description,
     refNumber: refRandom,
          
-    imagePath: url + "/images/" + req.file.filename,
+    imagePath: process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCLOUD_APP_BUCKET_NAME + "/" + req.file.filename,
     creator: req.userData.userId
   });
   post.save().then(createdPost => {
@@ -42,7 +43,7 @@ exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
-    imagePath = url + "/images/" + req.file.filename;
+    imagePath = process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCLOUD_APP_BUCKET_NAME + "/" + req.file.filename;
   }
   const post = new Post({
     _id: req.body.id,
