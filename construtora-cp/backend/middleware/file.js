@@ -35,7 +35,6 @@ const storage = multer.diskStorage({
 
 const uploadHandler = multer({
   storage: multerGoogleStorage.storageEngine({
-    keyFilename: "",
     acl: "publicread"
   })
 });
