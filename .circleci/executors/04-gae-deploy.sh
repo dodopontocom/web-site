@@ -32,11 +32,14 @@ executor.GAE_Deploy_App() {
         echo "REF_IMOVEL_PREFIX=\"${REF_IMOVEL_PREFIX}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
-        echo "GCS_KEYFILE=\"/root/keys/keyfile.json\"" >> ${APP_PATH}/backend/.env
+        # echo "GCS_KEYFILE=\"/root/keys/keyfile.json\"" >> ${APP_PATH}/backend/.env
 
         # TODO: use credentials in production
         ### https://cloud.google.com/docs/authentication/production
         ### Google\Auth\Credentials\AppIdentityCredentials
+        # credentials = google.oauth2.service_account.from_service_account_file(
+        # './Peepl-cb1dac99bdc0.json',
+        # scopes=['https://www.googleapis.com/auth/cloud-platform'])
         ### https://github.com/googleapis/google-auth-library-nodejs/tree/master/samples
         ### https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/appengine/storage/standard
         
@@ -45,7 +48,7 @@ executor.GAE_Deploy_App() {
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
         fi
         if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" != "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM//\//-}"
+            GAE_DEPLOYMENT_VERSION="$(echo ${CIRCLE_BRANCH//\//-}-build-${CIRCLE_BUILD_NUM} | tr '[:upper:]' '[:lower:]')"
         fi
         if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" == "master" ]]; then
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
