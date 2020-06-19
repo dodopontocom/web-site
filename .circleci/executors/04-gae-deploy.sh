@@ -35,15 +35,6 @@ executor.GAE_Deploy_App() {
         echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_KEYFILE=\"./keyfile.json\"" >> ${APP_PATH}/backend/.env
-
-        # TODO: use credentials in production
-        ### https://cloud.google.com/docs/authentication/production
-        ### Google\Auth\Credentials\AppIdentityCredentials
-        # credentials = google.oauth2.service_account.from_service_account_file(
-        # './Peepl-cb1dac99bdc0.json',
-        # scopes=['https://www.googleapis.com/auth/cloud-platform'])
-        ### https://github.com/googleapis/google-auth-library-nodejs/tree/master/samples
-        ### https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/appengine/storage/standard
         
         GAE_DEPLOYMENT_VERSION=""
         if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
