@@ -120,7 +120,10 @@ export class PostsService {
     postData.append("description", description);
     postData.append("refNumber", refNumber);
 
-    postData.append("image", image, title);
+    postData.append("image", image, title
+      .toLowerCase()
+      .split(" ")
+      .join("-"));
     this.http
       .post<{ message: string, post: Post }>(
         BACKEND_URL,
@@ -167,7 +170,10 @@ export class PostsService {
       postData.append("description", description);
       postData.append("refNumber", refNumber);
 
-      postData.append("image", image, title);
+      postData.append("image", image, title
+      .toLowerCase()
+      .split(" ")
+      .join("-"));
     } else {
       postData = {
         id: id,
