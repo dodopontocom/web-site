@@ -20,8 +20,9 @@ executor.GAE_Deploy_App() {
         echoInfo "Deploying Application in Google App Engine"
         gcp.auth.useSA ${GOOGLE_APPLICATION_CREDENTIALS}
 
-        
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
+
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${APP_PATH}/backend/keyfile.json
 
         cd ${APP_PATH}
         echo n | npm install
@@ -29,18 +30,22 @@ executor.GAE_Deploy_App() {
         
         echo "MONGO_ATLAS_STRING=\"${MONGO_ATLAS_STRING}\"" > ${APP_PATH}/backend/.env
         echo "JWT_KEY=\"${JWT_KEY}\"" >> ${APP_PATH}/backend/.env
-        ls -lrta ${APP_PATH}/backend
-
+        echo "GCLOUD_STORAGE_BASE_URL=\"${GCLOUD_STORAGE_BASE_URL}\"" >> ${APP_PATH}/backend/.env
+        echo "REF_IMOVEL_PREFIX=\"${REF_IMOVEL_PREFIX}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
+        echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_KEYFILE=\"./keyfile.json\"" >> ${APP_PATH}/backend/.env
+        
         GAE_DEPLOYMENT_VERSION=""
-        if [[ "${CIRCLE_BRANCH}" -eq "develop" ]]; then
+        if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
             GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
         fi
-        if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="build-${CIRCLE_BUILD_NUM}"
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" != "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="$(echo ${CIRCLE_BRANCH//\//-}-build-${CIRCLE_BUILD_NUM} | tr '[:upper:]' '[:lower:]')"
         fi
-        #if [[ -z ${K8S_DEPLOYMENT_TAG} ]] && [[ "${CIRCLE_BRANCH}" -eq "master" ]]; then
-        #    GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        #fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        fi
 
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcloud config set gcloudignore/enabled false
