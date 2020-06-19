@@ -22,6 +22,8 @@ executor.GAE_Deploy_App() {
 
         APP_PATH="${CIRCLE_WORKING_DIRECTORY}/construtora-cp"
 
+        echo ${DODRONES_GCP_MY_LABS_SA} > ${APP_PATH}/backend/keyfile.json
+
         cd ${APP_PATH}
         echo n | npm install
         npm run build -- --configuration production
@@ -32,7 +34,7 @@ executor.GAE_Deploy_App() {
         echo "REF_IMOVEL_PREFIX=\"${REF_IMOVEL_PREFIX}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_BUCKET=\"${GCLOUD_APP_BUCKET_NAME}\"" >> ${APP_PATH}/backend/.env
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
-        echo "GCS_KEYFILE=\"${GOOGLE_APPLICATION_CREDENTIALS}\"" >> ${APP_PATH}/backend/.env
+        echo "GCS_KEYFILE=\"./keyfile.json\"" >> ${APP_PATH}/backend/.env
 
         # TODO: use credentials in production
         ### https://cloud.google.com/docs/authentication/production
