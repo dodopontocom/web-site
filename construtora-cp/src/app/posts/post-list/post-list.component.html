@@ -69,9 +69,9 @@
 
 <div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
     <div *ngFor="let item of posts">
-        <mat-card class="example-card" *ngIf="posts.length > 0 && !isLoading">
+        <mat-card class="flex-card shadow" *ngIf="posts.length > 0 && !isLoading">
             <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
+                <div mat-card-avatar class="card-header-image shadow"></div>
                 <mat-card-title>{{ item.title }}</mat-card-title>
                 <mat-card-subtitle>{{ item.refNumber }}</mat-card-subtitle>
             </mat-card-header>
@@ -84,6 +84,7 @@
                 </p>
                 <ul><li> R$ {{ item.price }}</li></ul>
                 <ul><li>{{ item.city }}</li></ul>
+                <ul><li>{{ item.metragem }}</li></ul>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-icon-button class="shadow" color="warn">
@@ -98,14 +99,15 @@
         Nenhum Imóvel foi adicionado ainda!
     </p>
 </div>
-<mat-paginator
+
+<!-- <mat-paginator
     [hidePageSize]="true"
     [length]="totalPosts"
     [pageSize]="postsPerPage"
     [pageSizeOptions]="pageSizeOptions"
     (page)="onChangedPage($event)"
     *ngIf="posts.length > 0">
-</mat-paginator>
+</mat-paginator> -->
 
 <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">
     Nenhum Imóvel foi adicionado ainda!
