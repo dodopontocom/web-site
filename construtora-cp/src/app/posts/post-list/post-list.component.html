@@ -1,6 +1,7 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div mat-dialog-actions align="end"
+<!-- align="end" -->
+<div mat-dialog-actions
         *ngIf="userIsAuthenticated"
         routerLink="/adicionar" routerLinkActive="mat-accent">
     <button mat-raised-button
@@ -11,11 +12,12 @@
 
 <mat-accordion
             multi="true"
-            *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated">
+            *ngIf="posts.length > 0 && !isLoading">
+            <!-- *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated"> -->
     <mat-expansion-panel *ngFor="let item of posts">
         <mat-expansion-panel-header>
-            <mat-panel-title>
-                {{ item.title }}
+            <mat-panel-title><h3>
+                {{ item.title }} </h3>
             </mat-panel-title>
             <mat-panel-description>
                 {{ item.refNumber }}
@@ -24,33 +26,31 @@
             
         </mat-expansion-panel-header>
         
-        <p>Fotos do Anúncio</p>
-        <hr>
+        <h3>Fotos do Anúncio</h3>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
         </div>
-        <p>Preço:</p>
-        <p>{{ item.price }}</p>
+        <h3> Valor: </h3> {{ item.price }}
         <hr>
-        <p>{{ item.city }}</p>
+        <h3> Cidade: </h3> {{ item.city }}
         <hr>
-        <p>{{ item.address }}</p>
+        <h3> Logradouro </h3> {{ item.address }}
         <hr>
-        <p>{{ item.metragem }}</p>
+        <h3> Metragem </h3> {{ item.metragem }}
         <hr>
-        <p>{{ item.rooms }}</p>
+        <h3> Quartos </h3> {{ item.rooms }}
         <hr>
-        <p>{{ item.baths }}</p>
+        <h3> Banheiros </h3> {{ item.baths }}
         <hr>
-        <p>{{ item.permuta }}</p>
+        <h3> Aceita Permuta: </h3> {{ item.permuta }}
         <hr>
-        <p>{{ item.type }}</p>
+        <h3> Tipo de Construção: </h3> {{ item.type }}
         <hr>
-        <p>{{ item.owner }}</p>
+        <h3> Proprietário: </h3> {{ item.owner }}
         <hr>
-        <p>{{ item.contact }}</p>
+        <h3> Contato: </h3> {{ item.contact }}
         <hr>
-        <p>{{ item.description }}</p>
+        <h3> Descrição do Imóvel: </h3> {{ item.description }}
         
         <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
             <button 
@@ -67,7 +67,7 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
+<!-- <div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
     <div *ngFor="let item of posts">
         <mat-card class="flex-card shadow" *ngIf="posts.length > 0 && !isLoading">
             <mat-card-header>
@@ -98,7 +98,7 @@
     <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">
         Nenhum Imóvel foi adicionado ainda!
     </p>
-</div>
+</div> -->
 
 <!-- <mat-paginator
     [hidePageSize]="true"
