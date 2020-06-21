@@ -44,7 +44,6 @@ exports.updatePost = (req, res, next) => {
   if (req.file) {
     //const url = req.protocol + "://" + req.get("host");
     imagePath = req.file.filename;
-    // imagePath = process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCS_BUCKET + "/" + req.file.filename;
   }
   const post = new Post({
     _id: req.body.id,
