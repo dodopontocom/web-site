@@ -19,3 +19,16 @@ input[type="file"] {
 .image-preview img {
   height: 100%;
 }
+
+.mat-options {
+  width: 40%;
+  /* width: 300px; */
+  margin: 5px;
+}
+
+.mat-options-less {
+  width: 26.3%;
+  /* width: 300px; */
+  margin: 5px;
+}
+
