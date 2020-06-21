@@ -1,4 +1,11 @@
-<mat-card>
+<div mat-dialog-actions
+        routerLink="/" routerLinkActive="mat-accent">
+    <button mat-raised-button
+        color="accent">
+        Cancelar - Voltar à página inicial!
+    </button>
+</div>
+<mat-card>    
     <mat-spinner *ngIf="isLoading"></mat-spinner>
     <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
         <mat-form-field appearance='fill'>
@@ -11,7 +18,7 @@
         </mat-form-field>
 
         <mat-form-field appearance='fill'>
-            <mat-label>Preço do imóvel</mat-label>
+            <mat-label>Valor do imóvel</mat-label>
             <input
                 matInput
                 type="text"
@@ -50,7 +57,7 @@
             <mat-label>Quantidade de quartos</mat-label>
             <input
                 matInput
-                type="text"
+                type="number"
                 formControlName="rooms">
                 <mat-error *ngIf="form.get('rooms').invalid">Descreva uma chamada para o Anúncio</mat-error>
         </mat-form-field>
@@ -59,18 +66,20 @@
             <mat-label>Quantidade de banheiros</mat-label>
             <input
                 matInput
-                type="text"
+                type="number"
                 formControlName="baths">
                 <mat-error *ngIf="form.get('baths').invalid">Inserir o preço total do imóvel ou valor do aluguel</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance='fill'>
             <mat-label>Aceita Permuta</mat-label>
-            <input
-                matInput
-                type="text"
+            <select
+                matNativeControl
                 formControlName="permuta">
-                <mat-error *ngIf="form.get('permuta').invalid">Cidade do imóvel</mat-error>
+                <option>Sim</option>
+                <option>Não</option>
+                <mat-error *ngIf="form.get('permuta').invalid">Informe se proprietário aceita permuta</mat-error>
+            </select>
         </mat-form-field>
 
         <mat-form-field appearance='fill'>
