@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3000/api/v1"
+  apiUrl: "http://localhost:3000/api/v1",
+  GCLOUD_APP_BUCKET: "https://storage.cloud.google.com/web-construtora-cp-bucket/"
 };
 
 /*

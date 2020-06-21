@@ -8,8 +8,7 @@ import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 
 const BACKEND_URL = environment.apiUrl + "/posts/";
-//const BACKEND_URL = process.env.BACKEND_URL;
-//const BACKEND_URL = environment.apiUrl;
+const GCP_BUCKET_URL = environment.GCLOUD_APP_BUCKET;
 
 @Injectable({ providedIn: "root" })
 export class PostsService {
@@ -44,7 +43,7 @@ export class PostsService {
                 description: post.description,
                 refNumber: post.refNumber,
                 
-                imagePath: post.imagePath,
+                imagePath: GCP_BUCKET_URL + post.imagePath,
                 creator: post.creator
               };
             }),
