@@ -260,7 +260,7 @@
             <button mat-stroked-button type="button"
             color="primary"
             (click)="filePicker.click()">Carregar Imagens</button>
-            <input type="file" multiple #filePicker (change)="onImagePicked($event)">
+            <input type="file" #filePicker (change)="onImagePicked($event)">
         </div>
         <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
             <img [src]="imagePreview" [alt]="form.value.name">
