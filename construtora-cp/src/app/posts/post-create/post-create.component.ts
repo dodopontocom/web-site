@@ -166,6 +166,10 @@ export class PostCreateComponent implements OnInit, OnDestroy {
                   contactTelTwo: this.post.contactTelTwo,
                   contactNameTwo: this.post.contactNameTwo,
 
+                  owner: this.post.contactNameTwo,
+                  telOwner: this.post.contactNameTwo,
+                  emailOwner: this.post.contactNameTwo,
+
                   image: this.post.imagePath
                 });
             });

@@ -67,7 +67,7 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
+<!-- <div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
     <div *ngFor="let item of posts">
         <mat-card class="flex-card shadow" *ngIf="posts.length > 0 && !isLoading">
             <mat-card-header>
@@ -107,7 +107,7 @@
     [pageSizeOptions]="pageSizeOptions"
     (page)="onChangedPage($event)"
     *ngIf="posts.length > 0">
-</mat-paginator>
+</mat-paginator> -->
 
 <div *ngIf="posts.length <= 0 && !isLoading">
     <p class="info-text mat-body-1">
