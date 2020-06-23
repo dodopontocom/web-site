@@ -2,8 +2,9 @@
         routerLink="/" routerLinkActive="mat-accent">
     <button mat-raised-button
         color="accent">
-        Cancelar - Voltar à página inicial!
+        Cancelar!
     </button>
+    Voltar à página inicial!
 </div>
 <mat-card class="shadow">
     <mat-spinner *ngIf="isLoading"></mat-spinner>
@@ -20,6 +21,19 @@
                 type="text"
                 formControlName="title">
                 <mat-error *ngIf="form.get('title').invalid">Descreva uma chamada para o Anúncio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance='fill'>
+            <mat-label>Opções do Anúncio</mat-label>
+            <select
+                matNativeControl
+                formControlName="diferencialOpt">
+                <option>Destaque</option>
+                <option>Exclusividade</option>
+                <option>Oportunidade</option>
+                <option>Vendido</option>
+                <option>Nenhum</option>
+                <mat-error *ngIf="form.get('diferencialOpt').invalid">Informe se proprietário aceita permuta</mat-error>
+            </select>
         </mat-form-field>
         <mat-form-field appearance='fill'>
             <mat-label>Descrição detalhada do Imóvel</mat-label>
@@ -43,7 +57,7 @@
             <input
                 matInput
                 type="text"
-                formControlName="price"
+                formControlName="condPrice"
                 placeholder="Inserir o valor do condomínio se houver">
         </mat-form-field>
         <mat-form-field appearance='fill'>
@@ -51,7 +65,7 @@
             <input
                 matInput
                 type="text"
-                formControlName="price"
+                formControlName="iptuPrice"
                 placeholder="Inserir o valor do IPTU se houver">
         </mat-form-field>
         <mat-form-field appearance='fill'>
@@ -62,7 +76,7 @@
                 <option>Casa</option>
                 <option>Chácara</option>
                 <option>Terreno</option>
-                <mat-error *ngIf="form.get('permuta').invalid">Informe se proprietário aceita permuta</mat-error>
+                <mat-error *ngIf="form.get('type').invalid">Escolher um tipo para o anúncio</mat-error>
             </select>
         </mat-form-field>
 
@@ -86,10 +100,10 @@
             <mat-label>Em Condomínio?</mat-label>
             <select
                 matNativeControl
-                formControlName="permuta">
+                formControlName="emCondominio">
                 <option>Sim</option>
                 <option>Não</option>
-                <mat-error *ngIf="form.get('permuta').invalid">Informe se é em condomínio/residencial ou não</mat-error>
+                <mat-error *ngIf="form.get('emCondominio').invalid">Informe se é em condomínio/residencial ou não</mat-error>
             </select>
         </mat-form-field>
         <mat-form-field class="mat-options" appearance='fill'>
@@ -97,8 +111,8 @@
             <input
                 matInput
                 type="text"
-                formControlName="address">
-                <mat-error *ngIf="form.get('address').invalid">Inserir o Bairro (ou Condomínio/Residencial) do anúncio</mat-error>
+                formControlName="addressRef">
+                <mat-error *ngIf="form.get('addressRef').invalid">Inserir o Bairro (ou Condomínio/Residencial) do anúncio</mat-error>
         </mat-form-field>
         <p>
         <mat-form-field class="mat-options" appearance='fill'>
@@ -106,16 +120,16 @@
             <input
                 matInput
                 type="number"
-                formControlName="metragem">
-                <mat-error *ngIf="form.get('metragem').invalid">Inserir a metragem total do terreno</mat-error>
+                formControlName="metragemTerreno">
+                <mat-error *ngIf="form.get('metragemTerreno').invalid">Inserir a metragem total do terreno</mat-error>
         </mat-form-field>
         <mat-form-field class="mat-options" appearance='fill'>
             <mat-label>Metragem da Construção</mat-label>
             <input
                 matInput
                 type="number"
-                formControlName="metragem">
-                <mat-error *ngIf="form.get('metragem').invalid">Inserir a metragem total construída</mat-error>
+                formControlName="metragemConstrucao">
+                <mat-error *ngIf="form.get('metragemConstrucao').invalid">Inserir a metragem total construída</mat-error>
         </mat-form-field>
         </p>
         <mat-form-field class="mat-options-less" appearance='fill'>
@@ -123,8 +137,8 @@
             <input
                 matInput
                 type="number"
-                formControlName="rooms">
-                <mat-error *ngIf="form.get('rooms').invalid">Inserir quantidade disponível de vaga de garagem</mat-error>
+                formControlName="vagas">
+                <mat-error *ngIf="form.get('vagas').invalid">Inserir quantidade disponível de vaga de garagem</mat-error>
         </mat-form-field>
         <mat-form-field class="mat-options-less" appearance='fill'>
             <mat-label>Quartos</mat-label>
@@ -157,10 +171,10 @@
             <mat-label>Aceita Financiamento?</mat-label>
             <select
                 matNativeControl
-                formControlName="permuta">
+                formControlName="financiamento">
                 <option>Sim</option>
                 <option>Não</option>
-                <mat-error *ngIf="form.get('permuta').invalid">Informe se anúncio aceita financiamento</mat-error>
+                <mat-error *ngIf="form.get('financiamento').invalid">Informe se anúncio aceita financiamento</mat-error>
             </select>
         </mat-form-field>
         </p>
@@ -174,16 +188,32 @@
             <input
                 matInput
                 type="text"
-                formControlName="owner">
-                <mat-error *ngIf="form.get('owner').invalid">Nome do corretor</mat-error>
+                formControlName="contactNameOne">
+                <mat-error *ngIf="form.get('contactNameOne').invalid">Nome do corretor</mat-error>
         </mat-form-field>
         <mat-form-field class="mat-options" appearance='fill'>
             <mat-label>WhatsApp do Corretor</mat-label>
             <input
                 matInput
+                type="number"
+                formControlName="contactTelOne">
+                <mat-error *ngIf="form.get('contactTelOne').invalid">Inserir WhatsApp do corretor</mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-options" appearance='fill'>
+            <mat-label>Nome do Corretor 2</mat-label>
+            <input
+                matInput
                 type="text"
-                formControlName="owner">
-                <mat-error *ngIf="form.get('owner').invalid">Inserir WhatsApp do corretor</mat-error>
+                formControlName="contactNameTwo">
+                <mat-error *ngIf="form.get('contactNameTwo').invalid">Nome do corretor</mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-options" appearance='fill'>
+            <mat-label>WhatsApp do Corretor 2</mat-label>
+            <input
+                matInput
+                type="number"
+                formControlName="contactTelTwo">
+                <mat-error *ngIf="form.get('contactTelTwo').invalid">Inserir WhatsApp do corretor</mat-error>
         </mat-form-field>
         <mat-card-header>
             <mat-card-title>Informações do Proprietário</mat-card-title>
@@ -202,20 +232,20 @@
             <mat-label>WhatsApp do Proprietário</mat-label>
             <input
                 matInput
-                type="text"
-                formControlName="owner">
-                <mat-error *ngIf="form.get('owner').invalid">Inserir WhatsApp do proprietário</mat-error>
+                type="number"
+                formControlName="telOwner">
+                <mat-error *ngIf="form.get('telOwner').invalid">Inserir WhatsApp do proprietário</mat-error>
         </mat-form-field>
         <mat-form-field class="mat-options-less" appearance='fill'>
             <mat-label>Email do Proprietário</mat-label>
             <input
                 matInput
-                type="text"
-                formControlName="owner">
-                <mat-error *ngIf="form.get('owner').invalid">Inserir email do proprietário</mat-error>
+                type="email"
+                formControlName="emailOwner">
+                <mat-error *ngIf="form.get('emailOwner').invalid">Inserir email do proprietário</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance='fill'>
+        <!-- <mat-form-field appearance='fill'>
             <mat-label>Contato Corretor / WhatsApp</mat-label>
             <input
                 matInput
@@ -224,9 +254,7 @@
                 placeholder="(__) ____-____"
                 formControlName="contact">
                 <mat-error *ngIf="form.get('contact').invalid">padrão: (15) 9977 33 22</mat-error>
-        </mat-form-field>
-
-        
+        </mat-form-field> -->
 
         <div>
             <button mat-stroked-button type="button"

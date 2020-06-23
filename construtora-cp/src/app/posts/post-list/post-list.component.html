@@ -109,6 +109,19 @@
     *ngIf="posts.length > 0">
 </mat-paginator> -->
 
-<p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">
-    Nenhum Imóvel foi adicionado ainda!
-</p>
+<div *ngIf="posts.length <= 0 && !isLoading">
+    <p class="info-text mat-body-1">
+        Nenhum Imóvel foi adicionado ainda!
+    </p>
+    <div style="margin: 15px;" mat-dialog-actions
+            *ngIf="!userIsAuthenticated"
+            routerLink="/auth/login" routerLinkActive="mat-accent">
+        <button mat-raised-button
+                color="accent">
+                Entrar!
+        </button>
+        <p class="mat-body-1">
+            Para criar Novos Anúncios!!!
+        </p>
+    </div>
+</div>

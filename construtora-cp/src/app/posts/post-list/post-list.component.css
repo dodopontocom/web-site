@@ -39,7 +39,7 @@
   }
 
   .card-header-image {
-    background-image: url('https://storage.cloud.google.com/web-construtora-cp-bucket/house.png');
+    background-image: src('../../assets/imgs/house.png');
     background-size: cover;
   }
 
