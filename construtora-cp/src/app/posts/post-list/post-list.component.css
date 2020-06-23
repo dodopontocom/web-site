@@ -39,7 +39,7 @@
   }
 
   .card-header-image {
-    background-image: src('../../assets/imgs/house.png');
+    background-image: url('../../../assets/imgs/house.png');
     background-size: cover;
   }
 

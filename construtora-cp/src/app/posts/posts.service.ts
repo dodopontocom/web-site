@@ -163,7 +163,7 @@ export class PostsService {
     postData.append("address", address);
     postData.append("emCondominio", emCondominio);
     postData.append("addressRef", addressRef);
-    postData.append("metragemTerrano", metragemTerreno);
+    postData.append("metragemTerreno", metragemTerreno);
     postData.append("metragemConstrucao", metragemConstrucao);
     postData.append("vagas", vagas);
     postData.append("rooms", rooms);
@@ -244,7 +244,7 @@ export class PostsService {
       postData.append("address", address);
       postData.append("emCondominio", emCondominio);
       postData.append("addressRef", addressRef);
-      postData.append("metragemTerrano", metragemTerreno);
+      postData.append("metragemTerreno", metragemTerreno);
       postData.append("metragemConstrucao", metragemConstrucao);
       postData.append("vagas", vagas);
       postData.append("rooms", rooms);
