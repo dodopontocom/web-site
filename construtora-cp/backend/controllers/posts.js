@@ -7,20 +7,35 @@ exports.createPost = (req, res, next) => {
   const post = new Post({
     
     title: req.body.title,
+    diferencialOpt: req.body.diferencialOpt,
+    description: req.body.description,
     price: req.body.price,
+    condPrice: req.body.condPrice,
+    iptuPrice: req.body.iptuPrice,
+    type: req.body.type,
     city: req.body.city,
     address: req.body.address,
-    metragem: req.body.metragem,
+    emCondominio: req.body.emCondominio,
+    addressRef: req.body.addressRef,
+    metragemTerreno: req.body.metragemTerreno,
+    metragemConstrucao: req.body.metragemConstrucao,
+    vagas: req.body.vagas,
     rooms: req.body.rooms,
     baths: req.body.baths,
     permuta: req.body.permuta,
-    type: req.body.type,
+    financiamento: req.body.financiamento,
+    
+    contactTelOne: req.body.contactTelOne,
+    contactNameOne: req.body.contactNameOne,
+    contactTelTwo: req.body.contactTelTwo,
+    contactNameTwo: req.body.contactNameTwo,
+    
     owner: req.body.owner,
-    contact: req.body.contact,
-    description: req.body.description,
-    refNumber: refRandom,
-         
-    imagePath: process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCS_BUCKET + "/" + req.file.filename,
+    telOwner: req.body.telOwner,
+    emailOwner: req.body.emailOwner,
+    
+    refNumber: refRandom,         
+    imagePath: req.file.filename,
     creator: req.userData.userId
   });
   post.save().then(createdPost => {
@@ -33,6 +48,7 @@ exports.createPost = (req, res, next) => {
     });
   })
   .catch(error => {
+    console.log(error)
     res.status(500).json({
       message: "Erro ao criar anúncio!"
     })
@@ -43,25 +59,40 @@ exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     //const url = req.protocol + "://" + req.get("host");
-    imagePath = process.env.GCLOUD_STORAGE_BASE_URL + "/" + process.env.GCS_BUCKET + "/" + req.file.filename;
+    imagePath = req.file.filename;
   }
   const post = new Post({
     _id: req.body.id,
     
     title: req.body.title,
+    diferencialOpt: req.body.diferencialOpt,
+    description: req.body.description,
     price: req.body.price,
+    condPrice: req.body.condPrice,
+    iptuPrice: req.body.iptuPrice,
+    type: req.body.type,
     city: req.body.city,
     address: req.body.address,
-    metragem: req.body.metragem,
+    emCondominio: req.body.emCondominio,
+    addressRef: req.body.addressRef,
+    metragemTerreno: req.body.metragemTerreno,
+    metragemConstrucao: req.body.metragemConstrucao,
+    vagas: req.body.vagas,
     rooms: req.body.rooms,
     baths: req.body.baths,
     permuta: req.body.permuta,
-    type: req.body.type,
+    financiamento: req.body.financiamento,
+    
+    contactTelOne: req.body.contactTelOne,
+    contactNameOne: req.body.contactNameOne,
+    contactTelTwo: req.body.contactTelTwo,
+    contactNameTwo: req.body.contactNameTwo,
+    
     owner: req.body.owner,
-    contact: req.body.contact,
-    description: req.body.description,
-    refNumber: req.body.refRandom,
+    telOwner: req.body.telOwner,
+    emailOwner: req.body.emailOwner,
 
+    refNumber: req.body.refRandom,
     imagePath: imagePath,
     creator: req.userData.userId
   });
