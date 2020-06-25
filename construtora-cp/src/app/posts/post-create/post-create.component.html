@@ -223,12 +223,14 @@
                     <mat-error *ngIf="form.get('contactTelOne').invalid">Inserir WhatsApp do corretor</mat-error>
             </mat-form-field>
             <mat-form-field class="mat-options" appearance='fill'>
+                <!-- https://stackblitz.com/edit/angular-disable-form-field-on-select-value?file=app%2Fform-field-overview-example.ts -->
                 <mat-label>Nome do Corretor 2</mat-label>
                 <input
                     matInput
                     type="text"
                     formControlName="contactNameTwo">
                     <mat-error *ngIf="form.get('contactNameTwo').invalid">Nome do corretor</mat-error>
+                    
             </mat-form-field>
             <mat-form-field class="mat-options" appearance='fill'>
                 <mat-label>WhatsApp do Corretor 2</mat-label>
@@ -238,6 +240,10 @@
                     formControlName="contactTelTwo">
                     <mat-error *ngIf="form.get('contactTelTwo').invalid">Inserir WhatsApp do corretor</mat-error>
             </mat-form-field>
+            <div>
+                <mat-slide-toggle color="primary">Adicionar mais um corretor?</mat-slide-toggle>
+            </div>
+            <p></p>
             <div>
                 <button mat-raised-button type="button" matStepperPrevious>Voltar</button>
                 <button mat-raised-button type="button" matStepperNext>Avançar</button>

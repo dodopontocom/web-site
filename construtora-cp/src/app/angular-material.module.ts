@@ -10,6 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatStepperModule } from '@angular/material/stepper';
 
@@ -28,6 +29,7 @@ import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
     MatDialogModule,
     FlexLayoutModule,
     MatStepperModule,
+    MatSlideToggleModule,
     
     CarouselModule,
     WavesModule
