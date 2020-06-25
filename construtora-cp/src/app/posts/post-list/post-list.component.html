@@ -32,14 +32,13 @@
                 {{ item.title }} </h3>
             </mat-panel-title>
             <!-- TODO: style in css -->
-            <mat-panel-description style="flex: 0 0 auto;">
-                {{ item.refNumber }}
-
+            <mat-panel-description style="flex: 0 0 auto; opacity:0.9;">
+                {{ item.refNumber }}  <!--there is a white space here, bad practice-->
                 <!-- TODO: melhorar isso!!! -->
                 <mat-icon *ngIf="item.creator === '5eecfe6fd0b9a4000aee8596'"
-                style="background-image: url('../../../assets/imgs/pedro.png'); background-size: cover;"></mat-icon>
+                style="background-image: url('../../../assets/imgs/pedro.png'); background-size: cover; border-radius: 25px;"></mat-icon>
                 <mat-icon *ngIf="item.creator === '5eeea4421208bc0cf8f89a3b'"
-                style="background-image: url('../../../assets/imgs/lala.png'); background-size: cover;"></mat-icon>
+                style="background-image: url('../../../assets/imgs/lala.png'); background-size: cover; border-radius: 25px;"></mat-icon>
             </mat-panel-description>
         </mat-expansion-panel-header>
         
@@ -47,11 +46,25 @@
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
         </div>
+        <h3> Diferencial: </h3> {{ item.diferencialOpt }}
+        <hr>
+        <h3> Descrição do Imóvel: </h3> {{ item.description }}
+        <hr>
         <h3> Valor: </h3> {{ item.price }}
+        <hr>
+        <h3> Valor do Condomínio: </h3> {{ item.condPrice }}
+        <hr>
+        <h3> Valor do IPTU: </h3> {{ item.iptuPrice }}
+        <hr>
+        <h3> Tipo de Construção: </h3> {{ item.type }}
         <hr>
         <h3> Cidade: </h3> {{ item.city }}
         <hr>
-        <h3> Bairro </h3> {{ item.address }}
+        <h3> Bairro: </h3> {{ item.address }}
+        <hr>
+        <h3> Em Condomínio: </h3> {{ item.emCondominio }}
+        <hr>
+        <h3> Localização/Referência: </h3> {{ item.addressRef }}
         <hr>
         <h3> Metragem do Terreno </h3> {{ item.metragemTerreno }}
         <hr>
@@ -65,23 +78,23 @@
         <hr>
         <h3> Aceita Permuta: </h3> {{ item.permuta }}
         <hr>
-        <h3> Tipo de Construção: </h3> {{ item.type }}
+        <h3> Aceita Financiamento: </h3> {{ item.financiamento }}
         <hr>
         <h3> Proprietário: </h3> {{ item.owner }}
         <hr>
-        <h3> Contato: </h3> {{ item.contact }}
+        <h3> Contato do Proprietário: </h3> {{ item.telOwner }}
         <hr>
-        <h3> Descrição do Imóvel: </h3> {{ item.description }}
+        <h3> E-mail do Proprietário: </h3> {{ item.emailOwner }}
         
         <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
             <button 
-                mat-button
+                mat-raised-button
                 color="primary"
                 [routerLink]="['/edit', item.id]">EDITAR</button>
             <button
-                mat-fab
-                color="warn" (click)="onDelete(item.id)">
-                <mat-icon>delete</mat-icon>
+                mat-raised-button
+                color="warn" (click)="onDelete(item.id)">Arquivar
+                <!-- <mat-icon>delete</mat-icon> -->
             </button>
         </mat-action-row>
 
