@@ -11,9 +11,9 @@
 <form [formGroup]="form" (ngSubmit)="onSavePost()" *ngIf="!isLoading">
     <mat-vertical-stepper>
         <mat-step [stepControl]="form">
+            <ng-template matStepLabel><b>Detalhes do Anúncio</b></ng-template>
             <p>Inserir com as informações do Anúncio</p>
                 <mat-form-field>
-                    <ng-template matStepLabel><b>Detalhes do Anúncio</b></ng-template>
                     <mat-label>Título para o Anúncio</mat-label>
                     <input
                         matInput
@@ -41,7 +41,7 @@
                     <textarea 
                         matInput
                         required
-                        rows="4"
+                        rows="3"
                         formControlName="description" 
                         placeholder="Descrição do imóvel"></textarea>
                         <mat-error *ngIf="form.get('description').invalid">Escreva uma mensagem</mat-error>
@@ -66,6 +66,7 @@
                     <input type="file" #filePicker (change)="onImagePicked($event)">
                 </div>
                 <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+                    <!-- https://stackoverflow.com/questions/59929615/how-to-show-a-selected-file-preview-in-a-pop-up-window -->
                     <img [src]="imagePreview" [alt]="form.value.name">
                 </div>
                 <p></p>
@@ -74,9 +75,9 @@
                 </div>  
         </mat-step>
         <mat-step>
+            <ng-template matStepLabel><b>Detalhes do Imóvel</b></ng-template>
             <p>Inserir com as informações do imóvel/terreno</p>
-            <mat-form-field>
-                <ng-template matStepLabel><b>Detalhes do Imóvel</b></ng-template>
+            <mat-form-field>                
                 <mat-label>Valor do imóvel</mat-label>
                 <input
                     matInput
@@ -204,9 +205,9 @@
             </div>
         </mat-step>
         <mat-step>
+            <ng-template matStepLabel><b>Detalhes da Captação</b></ng-template>
             <p>Informações do corretor</p>
             <mat-form-field class="mat-options">
-                <ng-template matStepLabel><b>Detalhes da Captação</b></ng-template>
                 <mat-label>Nome do Corretor</mat-label>
                 <input
                     matInput
@@ -250,9 +251,9 @@
             </div>
         </mat-step>
         <mat-step>
+            <ng-template matStepLabel><b>Detalhes do Proprietário</b></ng-template>
             <p>Informações do corretor</p>
             <mat-form-field class="mat-options-less">
-                <ng-template matStepLabel><b>Detalhes do Proprietário</b></ng-template>
                 <mat-label>Nome do Proprietário</mat-label>
                 <input
                     matInput
