@@ -10,6 +10,18 @@
     </button>
 </div>
 
+<div>
+<mat-paginator
+    class="paginator--left"
+    [hidePageSize]="true"
+    [length]="totalPosts"
+    [pageSize]="postsPerPage"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onChangedPage($event)"
+    *ngIf="posts.length > 0">
+</mat-paginator>
+</div>
+
 <mat-accordion
             multi="true"
             *ngIf="posts.length > 0 && !isLoading">
@@ -19,11 +31,16 @@
             <mat-panel-title><h3>
                 {{ item.title }} </h3>
             </mat-panel-title>
-            <mat-panel-description>
+            <!-- TODO: style in css -->
+            <mat-panel-description style="flex: 0 0 auto;">
                 {{ item.refNumber }}
-                <mat-icon>account_circle</mat-icon>
+
+                <!-- TODO: melhorar isso!!! -->
+                <mat-icon *ngIf="item.creator === '5eecfe6fd0b9a4000aee8596'"
+                style="background-image: url('../../../assets/imgs/pedro.png'); background-size: cover;"></mat-icon>
+                <mat-icon *ngIf="item.creator === '5eeea4421208bc0cf8f89a3b'"
+                style="background-image: url('../../../assets/imgs/lala.png'); background-size: cover;"></mat-icon>
             </mat-panel-description>
-            
         </mat-expansion-panel-header>
         
         <h3>Fotos do Anúncio</h3>
@@ -34,9 +51,13 @@
         <hr>
         <h3> Cidade: </h3> {{ item.city }}
         <hr>
-        <h3> Logradouro </h3> {{ item.address }}
+        <h3> Bairro </h3> {{ item.address }}
         <hr>
-        <h3> Metragem </h3> {{ item.metragem }}
+        <h3> Metragem do Terreno </h3> {{ item.metragemTerreno }}
+        <hr>
+        <h3> Metragem da Construção </h3> {{ item.metragemConstrucao }}
+        <hr>
+        <h3> Vagas </h3> {{ item.vagas }}
         <hr>
         <h3> Quartos </h3> {{ item.rooms }}
         <hr>
@@ -100,15 +121,6 @@
     </p>
 </div>
  -->
-<mat-paginator
-    [hidePageSize]="true"
-    [length]="totalPosts"
-    [pageSize]="postsPerPage"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="onChangedPage($event)"
-    *ngIf="posts.length > 0">
-</mat-paginator>
-
 
 <div *ngIf="posts.length <= 0 && !isLoading">
     <p class="info-text mat-body-1">
