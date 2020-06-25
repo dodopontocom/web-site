@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 
 import { PostsService } from "../posts.service";
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/auth/auth.service';
     styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
-  
+
   enteredTitle = "";
   enteredDiferencialOpt = "";
   enteredDescription = "";
@@ -54,7 +54,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     constructor(
         public postsService: PostsService,
         public route: ActivatedRoute,
-        private authService: AuthService
+        private authService: AuthService,
+        private _formBuilder: FormBuilder
     ) {}
 
     ngOnInit() {
@@ -63,6 +64,11 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             this.isLoading = false;
           }
         );
+
+        this.form = this._formBuilder.group({
+          title: [null, Validators.required]
+        });
+
         this.form = new FormGroup({
 
           title: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
@@ -196,6 +202,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
           return;
         }
         this.isLoading = true;
+        console.log(this.form.value.title);
         if (this.mode === "adicionar") {
           this.postsService.addPost(
             
@@ -267,6 +274,10 @@ export class PostCreateComponent implements OnInit, OnDestroy {
           );
         }
         this.form.reset();
+      }
+
+      stepChanged(event, stepper){
+        stepper.selected.interacted = false;
       }
 
       ngOnDestroy() {

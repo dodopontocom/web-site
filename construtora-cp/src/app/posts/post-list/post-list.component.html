@@ -99,7 +99,7 @@
         Nenhum Imóvel foi adicionado ainda!
     </p>
 </div>
-
+ -->
 <mat-paginator
     [hidePageSize]="true"
     [length]="totalPosts"
@@ -107,7 +107,7 @@
     [pageSizeOptions]="pageSizeOptions"
     (page)="onChangedPage($event)"
     *ngIf="posts.length > 0">
-</mat-paginator> -->
+</mat-paginator>
 
 
 <div *ngIf="posts.length <= 0 && !isLoading">

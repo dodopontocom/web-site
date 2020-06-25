@@ -11,6 +11,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { MatStepperModule } from '@angular/material/stepper';
+
 import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
 
 @NgModule({
@@ -25,6 +27,7 @@ import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
     MatPaginatorModule,
     MatDialogModule,
     FlexLayoutModule,
+    MatStepperModule,
     
     CarouselModule,
     WavesModule
