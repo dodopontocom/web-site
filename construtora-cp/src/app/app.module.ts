@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
+import { VersionComponent } from './version/version.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -19,6 +20,7 @@ import { PostsModule } from './posts/posts.module';
   declarations: [
     AppComponent,
     HeaderComponent,
+    VersionComponent,
     ErrorComponent
   ],
   imports: [

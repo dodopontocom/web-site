@@ -24,6 +24,19 @@ executor.GAE_Deploy_App() {
 
         echo ${DODRONES_GCP_MY_LABS_SA} > ${APP_PATH}/backend/keyfile.json
 
+        GAE_DEPLOYMENT_VERSION=""
+        if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
+            GAE_DEPLOYMENT_VERSION="${CIRCLE_BRANCH}-build-${CIRCLE_BUILD_NUM}"
+        fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" != "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="$(echo ${CIRCLE_BRANCH//\//-}-build-${CIRCLE_BUILD_NUM} | tr '[:upper:]' '[:lower:]')"
+        fi
+        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
+        fi
+
+        sed -i 's#GAE_DEPLOYMENT_VERSION#'${GAE_DEPLOYMENT_VERSION}# "${APP_PATH}/src/app/version.component.html"
+
         cd ${APP_PATH}
         echo n | npm install
         npm run build -- --configuration production
@@ -36,17 +49,6 @@ executor.GAE_Deploy_App() {
         echo "GCLOUD_PROJECT=\"${GCLOUD_PROJECT_ID}\"" >> ${APP_PATH}/backend/.env
         echo "GCS_KEYFILE=\"./keyfile.json\"" >> ${APP_PATH}/backend/.env
         
-        GAE_DEPLOYMENT_VERSION=""
-        if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
-            GAE_DEPLOYMENT_VERSION="develop-${CIRCLE_BUILD_NUM}"
-        fi
-        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" != "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="$(echo ${CIRCLE_BRANCH//\//-}-build-${CIRCLE_BUILD_NUM} | tr '[:upper:]' '[:lower:]')"
-        fi
-        if [[ -z ${GAE_DEPLOYMENT_VERSION} ]] && [[ "${CIRCLE_BRANCH}" == "master" ]]; then
-            GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
-        fi
-
         gcp.useProject "${GCLOUD_PROJECT_ID}"
         gcloud config set gcloudignore/enabled false
         cd ${APP_PATH}/backend
