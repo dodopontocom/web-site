@@ -35,7 +35,7 @@ executor.GAE_Deploy_App() {
             GAE_DEPLOYMENT_VERSION="prod-${CIRCLE_BUILD_NUM}"
         fi
 
-        sed -i 's#GAE_DEPLOYMENT_VERSION#'${GAE_DEPLOYMENT_VERSION}# "${APP_PATH}/src/app/version.component.html"
+        sed -i 's#GAE_DEPLOYMENT_VERSION#'${GAE_DEPLOYMENT_VERSION}# "${APP_PATH}/src/app/version/version.component.html"
 
         cd ${APP_PATH}
         echo n | npm install
