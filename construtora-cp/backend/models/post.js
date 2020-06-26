@@ -25,8 +25,8 @@ const postSchema = mongoose.Schema({
     // Contatos
     contactTelOne: { type: String, required: true },
     contactNameOne: { type: String, required: true },
-    contactTelTwo: { type: String, required: true },
-    contactNameTwo: { type: String, required: true },
+    contactTelTwo: { type: String},
+    contactNameTwo: { type: String},
     
     owner: { type: String, required: true },
     telOwner: { type: String, required: true },
