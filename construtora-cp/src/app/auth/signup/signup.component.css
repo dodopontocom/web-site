@@ -5,3 +5,10 @@ mat-form-field {
 mat-spinner {
   margin: auto;
 }
+
+.card-align {
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
