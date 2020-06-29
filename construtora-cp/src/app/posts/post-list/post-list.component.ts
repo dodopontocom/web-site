@@ -5,7 +5,7 @@ import { Subscription } from "rxjs";
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
 import { AuthService } from "../../auth/auth.service";
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({

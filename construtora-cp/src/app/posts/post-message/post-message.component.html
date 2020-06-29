@@ -24,10 +24,10 @@
                 matInput
                 required
                 rows="5"
-                formControlName="message"
+                formControlName="content"
                 placeholder="Olá! Eu gostei deste anúncio. Pode me contatar pelo telefone fornecido à cima.">
             </textarea>
-                <mat-error *ngIf="messageForm.get('message').invalid">Escrever uma mensagem</mat-error>
+                <mat-error *ngIf="messageForm.get('content').invalid">Escrever uma mensagem</mat-error>
     </mat-form-field>
     </div>
     <button

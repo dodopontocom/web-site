@@ -21,11 +21,11 @@
     *ngIf="posts.length > 0">
 </mat-paginator>
 </div>
-
+<!-- 
 <button 
     mat-raised-button
     color="primary"
-    (click)="onSendMessage()">Enviar Mensagem!</button>
+    (click)="onSendMessage()">Enviar Mensagem!</button> -->
 
 <mat-accordion
             multi="true"
@@ -92,6 +92,13 @@
         <h3> E-mail do Proprietário: </h3> {{ item.emailOwner }}
         
         <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
+            <div routerLink="/mensagem" routerLinkActive="mat-accent">
+                <button 
+                    mat-raised-button
+                    color="primary"
+                    (click)="onSendMessage()">Enviar Mensagem!
+                </button>
+            </div>
             <button 
                 mat-raised-button
                 color="primary"
@@ -101,6 +108,9 @@
                 color="warn" (click)="onDelete(item.id)">Arquivar
                 <!-- <mat-icon>delete</mat-icon> -->
             </button>
+            
+
+        
         </mat-action-row>
         <!-- <mat-action-row *ngIf="!userIsAuthenticated">
             <button 
