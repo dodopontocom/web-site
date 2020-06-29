@@ -4,7 +4,8 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-post-message',
-    templateUrl: './post-message.component.html'
+    templateUrl: './post-message.component.html',
+    styleUrls: ['./post-message.component.css']
 })
 export class PostMessageComponent implements OnInit, OnDestroy {
 

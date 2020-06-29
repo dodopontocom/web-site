@@ -71,7 +71,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     console.log("oi")
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "75%";
+    dialogConfig.width = "60%";
     this.dialog.open(PostMessageComponent, dialogConfig);
 
   }
