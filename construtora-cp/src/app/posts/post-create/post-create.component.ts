@@ -58,8 +58,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   constructor(
       public postsService: PostsService,
       public route: ActivatedRoute,
-      private authService: AuthService,
-      private _formBuilder: FormBuilder
+      private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -68,10 +67,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
-
-    this.form = this._formBuilder.group({
-      title: [null, Validators.required]
-    });
 
     this.form = new FormGroup({
 

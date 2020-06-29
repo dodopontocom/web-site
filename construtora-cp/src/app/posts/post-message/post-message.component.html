@@ -1,18 +1,21 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <form [formGroup]="messageForm" (ngSubmit)="onSaveMessage()" *ngIf="!isLoading">
     <div>
     <mat-form-field floatLabel='always' appearance='fill'>
         <mat-label>Nome:</mat-label>
         <input
-            formControlName=""
+            formControlName="name"
             matInput
             required>
+            <mat-error *ngIf="messageForm.get('name').invalid">Informar o nome</mat-error>
     </mat-form-field>
     <mat-form-field floatLabel='always' appearance='fill'>
         <mat-label>Telefone:</mat-label>
         <input
-            formControlName=""
+            formControlName="phone"
             matInput
             required>
+            <mat-error *ngIf="messageForm.get('phone').invalid">Informar o telefone para contato</mat-error>
     </mat-form-field>
     <mat-form-field appearance='fill'>
         <mat-label>Mensagem</mat-label>
@@ -20,9 +23,11 @@
                 style="width: 100%;"
                 matInput
                 required
-                rows="3"
-                formControlName=""
-                value="Olá! Eu gostei deste anúncio. Pode me contatar pelo telefone fornecido à cima."></textarea>
+                rows="5"
+                formControlName="message"
+                placeholder="Olá! Eu gostei deste anúncio. Pode me contatar pelo telefone fornecido à cima.">
+            </textarea>
+                <mat-error *ngIf="messageForm.get('message').invalid">Escrever uma mensagem</mat-error>
     </mat-form-field>
     </div>
     <button
