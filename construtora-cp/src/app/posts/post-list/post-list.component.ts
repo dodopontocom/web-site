@@ -5,6 +5,8 @@ import { Subscription } from "rxjs";
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
 import { AuthService } from "../../auth/auth.service";
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
   selector: "app-post-list",
@@ -25,7 +27,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   constructor(
     public postsService: PostsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -62,6 +65,15 @@ export class PostListComponent implements OnInit, OnDestroy {
     }, () =>  {
       this.isLoading = false;
     });
+  }
+
+  onSendMessage() {
+    console.log("oi")
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "75%";
+    this.dialog.open(PostMessageComponent, dialogConfig);
+
   }
 
   ngOnDestroy() {

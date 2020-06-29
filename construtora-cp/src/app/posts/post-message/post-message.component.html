@@ -1,0 +1,46 @@
+<form [formGroup]="messageForm" (ngSubmit)="onSaveMessage()" *ngIf="!isLoading">
+    <mat-grid-list cols="2" rowHeight="300px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field appearance='fill'>
+                <mat-label>Nome:</mat-label>
+                <input
+                    formControlName=""
+                    matInput
+                    required>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field appearance='fill'>
+                <mat-label>Telefone:</mat-label>
+                <input
+                    formControlName=""
+                    matInput
+                    required>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field appearance='fill'>
+                    <mat-label>Mensagem</mat-label>
+                    <textarea
+                        style="width: 100%;"
+                        matInput
+                        required
+                        rows="3"
+                        formControlName=""
+                        value="Olá! Eu gostei deste anúncio. Pode me contatar pelo telefone fornecido à cima."></textarea>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <button
+    mat-raised-button
+    color="accent"
+    type="submit">Enviar
+    </button>
+</form>

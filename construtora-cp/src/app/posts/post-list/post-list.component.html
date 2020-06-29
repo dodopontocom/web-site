@@ -22,6 +22,11 @@
 </mat-paginator>
 </div>
 
+<button 
+    mat-raised-button
+    color="primary"
+    (click)="onSendMessage()">Enviar Mensagem!</button>
+
 <mat-accordion
             multi="true"
             *ngIf="posts.length > 0 && !isLoading">
@@ -97,6 +102,12 @@
                 <!-- <mat-icon>delete</mat-icon> -->
             </button>
         </mat-action-row>
+        <!-- <mat-action-row *ngIf="!userIsAuthenticated">
+            <button 
+                mat-raised-button
+                color="primary"
+                (click)="onSendMessage()">Enviar Mensagem!</button>
+        </mat-action-row> -->
 
     </mat-expansion-panel>
 </mat-accordion>

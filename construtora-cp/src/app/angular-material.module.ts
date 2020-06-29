@@ -11,6 +11,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { MatStepperModule } from '@angular/material/stepper';
 
@@ -30,6 +31,7 @@ import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
     FlexLayoutModule,
     MatStepperModule,
     MatSlideToggleModule,
+    MatGridListModule,
     
     CarouselModule,
     WavesModule
