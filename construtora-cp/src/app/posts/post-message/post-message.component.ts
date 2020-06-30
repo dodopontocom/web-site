@@ -37,9 +37,6 @@ export class PostMessageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    console.log("Mode: " + this.mode);
-    console.log("Form: " + this.messageForm);
-
     this.authStatusSub = this.autService.getAuthStatusListener().subscribe(
       authStatus => {
         this.isLoading = false;
@@ -47,8 +44,8 @@ export class PostMessageComponent implements OnInit, OnDestroy {
     );
 
     this.messageForm = new FormGroup({
-      name: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
-      phone: new FormControl(null, { validators: [Validators.required, Validators.minLength(1)] }),
+      name: new FormControl(null, { validators: [Validators.required] }),
+      phone: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(this.textareaPlaceHolder, { validators: [Validators.required] })
     });
 
@@ -58,7 +55,7 @@ export class PostMessageComponent implements OnInit, OnDestroy {
   }
 
   onSaveMessage() {
-    console.log(this.messageForm.value);
+    
     this.isLoading = true;
     if (this.messageForm.invalid) {
       return;

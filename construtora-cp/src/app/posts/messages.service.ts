@@ -20,21 +20,19 @@ export class MessagesService {
           phone: string,
           content: string) {
 
-    const postData = new FormData();
+    const postDataMessage = new FormData();
     
-    postData.append("name", name);
-    postData.append("phone", phone);
-    postData.append("content", content);
+    postDataMessage.append("name", name);
+    postDataMessage.append("phone", phone);
+    postDataMessage.append("content", content);
 
     console.log("--------> " + name);
+    console.log("--------> " + phone);
+    console.log("--------> " + content);
     
-    console.log("--------> " + BACKEND_URL);
-    console.log("--------> " + this.router);
-
-    this.http
-      .post<{ message: string, post: Message[] }>(
+    this.http.post<{ message: string, post: Message }>(
         BACKEND_URL,
-        postData
+        postDataMessage
       )
       .subscribe(responseData => {
         this.router.navigate(["/"]);
