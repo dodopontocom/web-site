@@ -55,6 +55,8 @@ export class PostMessageComponent implements OnInit, OnDestroy {
   }
 
   onSaveMessage() {
+
+    // https://github.com/alex60217101990/Soccets/blob/850302f939524b123a241665ab59399207a5a45f/angular/app/app.component.ts
     
     this.isLoading = true;
     if (this.messageForm.invalid) {
