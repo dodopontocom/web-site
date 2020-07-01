@@ -3,7 +3,9 @@ import { PageEvent } from "@angular/material/paginator";
 import { Subscription } from "rxjs";
 
 import { Post } from "../post.model";
+import { Message } from "../message.model";
 import { PostsService } from "../posts.service";
+import { MessagesService } from "../messages.service";
 import { AuthService } from "../../auth/auth.service";
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PostMessageComponent } from '../post-message/post-message.component';
@@ -25,8 +27,11 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postsSub: Subscription;
   private authStatusSub: Subscription;
 
+  message: Message;
+
   constructor(
     public postsService: PostsService,
+    public messagesService: MessagesService,
     private authService: AuthService,
     private dialog: MatDialog
   ) {}
@@ -67,15 +72,23 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSendMessage() {
-    console.log("oi")
+  openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
-    this.dialog.open(PostMessageComponent, dialogConfig);
+
+    dialogConfig.data = {
+      nome: String,
+      phone: String,
+      content: String
+    };
+
+    let dialogRef = this.dialog.open(PostMessageComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe()
 
   }
-
+  
   ngOnDestroy() {
     this.postsSub.unsubscribe();
     this.authStatusSub.unsubscribe();

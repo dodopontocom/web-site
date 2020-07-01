@@ -5,7 +5,7 @@ exports.createMessage = (req, res, next) => {
   
   const msg = new Message({
     
-    name: req.body.name,
+    nome: req.body.nome,
     phone: req.body.phone,
     content: req.body.content
 

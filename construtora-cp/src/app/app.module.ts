@@ -16,7 +16,8 @@ import { ErrorComponent } from "./error/error.component";
 import { AngularMaterialModule } from './angular-material.module';
 import { PostsModule } from './posts/posts.module';
 
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PostMessageComponent } from './posts/post-message/post-message.component';
 
 @NgModule({
   declarations: [
@@ -38,10 +39,11 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: MatDialogRef, useValue:{ } },
+    { provide: MAT_DIALOG_DATA, useValue: { }},
+    { provide: MatDialogRef, useValue: { }},
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, PostMessageComponent]
 
 })
 export class AppModule { }

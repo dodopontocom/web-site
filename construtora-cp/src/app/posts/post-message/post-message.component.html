@@ -1,13 +1,13 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<form [formGroup]="messageForm" (ngSubmit)="onSaveMessage()" *ngIf="!isLoading">
+<form [formGroup]="messageForm" (ngSubmit)="close(messageForm.value)" *ngIf="!isLoading">
     <div>
     <mat-form-field floatLabel='always' appearance='fill'>
         <mat-label>Nome:</mat-label>
         <input
-            formControlName="name"
+            formControlName="nome"
             matInput
             required>
-            <mat-error *ngIf="messageForm.get('name').invalid">Informar o nome</mat-error>
+            <mat-error *ngIf="messageForm.get('nome').invalid">Informar o nome</mat-error>
     </mat-form-field>
     <mat-form-field floatLabel='always' appearance='fill'>
         <mat-label>Telefone:</mat-label>

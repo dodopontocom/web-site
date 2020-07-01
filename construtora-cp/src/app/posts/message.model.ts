@@ -1,6 +1,6 @@
 export interface Message {
     id: string;
-    name: string;
+    nome: string;
     phone: string;
     content: string;
   }
