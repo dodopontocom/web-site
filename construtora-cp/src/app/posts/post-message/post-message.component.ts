@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Post } from "../post.model";
+import { PostsService } from "../posts.service";
 import { MessagesService } from "../messages.service";
 import { Message } from "../message.model";
 import { Subscription } from 'rxjs';
@@ -21,6 +23,9 @@ export class PostMessageComponent implements OnInit, OnDestroy {
   isLoading = false;
   messageForm: FormGroup;
 
+  posts: Post[] = [];
+  private postsSub: Subscription;
+
   private mode = "mensagem";
   private authStatusSub: Subscription;
 
@@ -28,6 +33,7 @@ export class PostMessageComponent implements OnInit, OnDestroy {
 
   constructor(
     public messagesService: MessagesService,
+    public postsService: PostsService,
     public route: ActivatedRoute,
     private autService: AuthService,
     public dialogRef: MatDialogRef<PostMessageComponent>,
@@ -35,6 +41,15 @@ export class PostMessageComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
+
+    this.postsService.getPosts();
+
+    this.postsSub = this.postsService
+      .getPostUpdateListener()
+      .subscribe((postData: { posts: Post[]; postCount: number }) => {
+        this.isLoading = false;
+        this.posts = postData.posts;
+      });
 
     this.authStatusSub = this.autService.getAuthStatusListener().subscribe(
       authStatus => {

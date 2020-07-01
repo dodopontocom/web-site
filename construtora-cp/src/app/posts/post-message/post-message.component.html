@@ -1,6 +1,10 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<h2 mat-dialog-title>Enviar Mensagem referente ao anúncio xxx</h2>
+
 <form [formGroup]="messageForm" (ngSubmit)="close(messageForm.value)" *ngIf="!isLoading">
+    <div *ngFor="let item of posts">
+        <h2 mat-dialog-title>Enviar Mensagem referente ao anúncio {{ item.refNumber }}</h2>
+    </div>
+    
     <div>
     <mat-form-field floatLabel='always' appearance='fill'>
         <mat-label>Nome:</mat-label>
