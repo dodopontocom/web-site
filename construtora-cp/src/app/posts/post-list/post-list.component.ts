@@ -72,10 +72,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDialog(ref: any) {
+  openDialog(ref: string) {
     console.log("ref: " + ref);
     // TODO - USAR ESSE REF AQUI PARA SALVAR QUAL EH O REFNUMBER
     const dialogConfig = new MatDialogConfig();
+    
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
     dialogConfig.width = "75%";
