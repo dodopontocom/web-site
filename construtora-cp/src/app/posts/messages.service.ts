@@ -10,7 +10,6 @@ const BACKEND_URL = environment.apiUrl + "/messages/";
 
 @Injectable({ providedIn: "root" })
 export class MessagesService {
-  private messages: Message[] = [];
   private messagesUpdated = new Subject<{messages: Message[]; postCount: number}>();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -19,17 +18,7 @@ export class MessagesService {
           nome: string,
           phone: string,
           content: string) {
-
-    // const postDataMessage = new FormData();
-    
-    // postDataMessage.append("nome", nome);
-    // postDataMessage.append("phone", phone);
-    // postDataMessage.append("content", content);
-
-    console.log("--------> " + nome);
-    console.log("--------> " + phone);
-    console.log("--------> " + content);
-    
+            
     this.http.post<{ message: string, post: Message }>(
         BACKEND_URL,
         {

@@ -1,4 +1,5 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
+<h2 mat-dialog-title>Enviar Mensagem referente ao anúncio xxx</h2>
 <form [formGroup]="messageForm" (ngSubmit)="close(messageForm.value)" *ngIf="!isLoading">
     <div>
     <mat-form-field floatLabel='always' appearance='fill'>
@@ -33,6 +34,17 @@
     <button
     mat-raised-button
     color="accent"
+    [disabled]="messageForm.invalid"
     type="submit">Enviar
     </button>
+    <p></p>
+    <div routerLink="/" routerLinkActive="mat-accent">
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="onNoClick()"
+            type="submit">Cancelar
+        </button>
+    </div>
+    
 </form>

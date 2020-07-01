@@ -18,6 +18,7 @@ import { PostsModule } from './posts/posts.module';
 
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostMessageComponent } from './posts/post-message/post-message.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PostMessageComponent } from './posts/post-message/post-message.componen
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MAT_DIALOG_DATA, useValue: { }},
     { provide: MatDialogRef, useValue: { }},
+    { provide: MatSnackBar, useValue: { }},
   ],
   bootstrap: [AppComponent],
   entryComponents: [ErrorComponent, PostMessageComponent]
