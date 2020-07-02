@@ -17,6 +17,9 @@ import { PostMessageComponent } from '../post-message/post-message.component';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
+
+  messages: Message[] = [];
+  
   isLoading = false;
   totalPosts = 0;
   postsPerPage = 5;
@@ -25,9 +28,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   userId: string;
   private postsSub: Subscription;
+  private messagesSub: Subscription;
   private authStatusSub: Subscription;
-
-  message: Message;
 
   constructor(
     public postsService: PostsService,
@@ -38,8 +40,19 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    
+    this.messagesService.getMessages();
+    console.log("00000> " + this.messagesService);
+    this.messagesSub = this.messagesService
+      .getMessageUpdateListener()
+      .subscribe((messageData: { messages: Message[] }) => {
+        this.isLoading = false;
+        this.messages = messageData.messages;
+      });
+    
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.userId = this.authService.getUserId();
+    
     this.postsSub = this.postsService
       .getPostUpdateListener()
       .subscribe((postData: { posts: Post[]; postCount: number }) => {
@@ -47,7 +60,8 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.totalPosts = postData.postCount;
         this.posts = postData.posts;
       });
-    this.userIsAuthenticated = this.authService.getIsAuth();
+    
+      this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
@@ -95,6 +109,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   
   ngOnDestroy() {
     this.postsSub.unsubscribe();
+    this.messagesSub.unsubscribe();
     this.authStatusSub.unsubscribe();
   }
 }

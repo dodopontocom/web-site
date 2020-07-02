@@ -47,6 +47,13 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         
+
+        <div *ngFor="let p of messages">
+            <div *ngIf="item.refNumber === p.phone">
+                <h3>Mensagens do Anúncio</h3>
+                <p>{{ p.content }}</p>
+            </div>
+        </div>
         <h3>Fotos do Anúncio</h3>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
