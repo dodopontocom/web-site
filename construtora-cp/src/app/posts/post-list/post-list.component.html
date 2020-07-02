@@ -49,11 +49,24 @@
         
 
         <div *ngFor="let p of messages">
+            <h3>Mensagens do Anúncio</h3>
             <div *ngIf="item.refNumber === p.ref">
-                <h3>Mensagens do Anúncio</h3>
-                <p>{{ p.content }}</p>
+                <ul>
+                    <li><strong>Telefone:</strong>
+                        <a
+                            mat-mini-fab
+                            color="primary"
+                            href="https://api.whatsapp.com/send?phone=55{{ p.phone }}">
+                            <mat-icon>message</mat-icon>
+                            
+                    </a> {{ p.phone }}
+                    </li>
+                    <li><strong>Nome:</strong> {{ p.nome}}</li>
+                    <li><strong>Mensagem:</strong> {{ p.content }}</li>
+                </ul>
             </div>
         </div>
+
         <h3>Fotos do Anúncio</h3>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
