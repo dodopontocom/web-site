@@ -63,14 +63,20 @@
                 </mat-form-field>
                
                 <div>
+                    <form [formGroup]="newForm" *ngIf="!isLoading">
                     <b>Não se esqueça de inserir as fotos do Anúncio! (máximo 10 fotos) </b>
                     <button mat-raised-button type="button"
                     color="accent"
                     required
                     (click)="filePicker.click()">Carregar Imagens</button>
-                    <input type="file" #filePicker (change)="onImagePicked($event)">
+                    <input type="file"
+                        multiple="multiple"
+                        #filePicker
+                        (change)="onImagePicked($event)"
+                        accept="image/*">
+                    </form>
                 </div>
-                <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+                <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && newForm.get('items').valid">
                     <!-- https://stackoverflow.com/questions/59929615/how-to-show-a-selected-file-preview-in-a-pop-up-window -->
                     <img [src]="imagePreview" [alt]="form.value.name">
                 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from "@angular/forms";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 
 import { PostsService } from "../posts.service";
@@ -47,7 +47,12 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   post: Post;
   isLoading = false;
   form: FormGroup;
-  imagePreview: string;
+  newForm: FormGroup;
+  items: FormArray
+
+  imagePreview: string | ArrayBuffer;
+
+  private files: any;
 
   corretorToggleUseDefault = false;
 
@@ -58,8 +63,9 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   constructor(
       public postsService: PostsService,
       public route: ActivatedRoute,
-      private authService: AuthService
-  ) {}
+      private authService: AuthService,
+      private formBuilder: FormBuilder)
+    {}
 
   ngOnInit() {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
@@ -98,11 +104,16 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       telOwner: new FormControl(null, { validators: [Validators.required] }),
       emailOwner: new FormControl(null, { validators: [Validators.required] }),                 
 
-      image: new FormControl(null, {
-        validators: [Validators.required],
-        asyncValidators: [mimeType]
-      })
+      // image: new FormControl(null, {
+      //   validators: [Validators.required],
+      //   asyncValidators: [mimeType]
+      // })
     });
+
+    this.newForm = this.formBuilder.group({
+      items: this.formBuilder.array([]),
+    });
+
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
         this.mode = "edit";
@@ -185,15 +196,52 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ image: file });
-    this.form.get("image").updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+  
+// onImagePicked(event: Event) {
+//   const file = (event.target as HTMLInputElement).files[0];
+//   this.form.patchValue({ image: file });
+//   this.form.get("image").updateValueAndValidity();
+//   const reader = new FileReader();
+//   reader.onload = () => {
+//     this.imagePreview = reader.result as string;
+//   };
+//   reader.readAsDataURL(file);
+// }
+
+  createItem(data): FormGroup {
+    return this.formBuilder.group(data);
+  }
+  get photos(): FormArray {
+    return this.newForm.get('items') as FormArray;
+  };
+
+  public onImagePicked(event: Event): void {
+    
+    const _files = (event.target as HTMLInputElement).files;
+    console.log(_files);
+    if (_files && _files.length) {
+      this.files = (event.target as HTMLInputElement).files;
+
+    }
+    for (let i = 0; i < this.files.length; i++) {
+
+      let file = this.files[i];
+      const reader = new FileReader();
+      
+      // this.newForm.patchValue({ items: file });
+      // this.newForm.setValue({ items: file });
+      this.newForm.get("items").updateValueAndValidity();
+          
+      reader.onload = (e: any) => {
+        this.photos.push(this.createItem({
+          file,
+          url: e.target.result
+        }))
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd" + this.newForm);
   }
 
   onSavePost() {
