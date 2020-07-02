@@ -28,7 +28,8 @@ exports.createMessage = (req, res, next) => {
     
     nome: req.body.nome,
     phone: req.body.phone,
-    content: req.body.content
+    content: req.body.content,
+    ref: req.body.ref,
 
   });
   

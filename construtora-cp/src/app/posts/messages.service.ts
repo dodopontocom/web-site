@@ -28,7 +28,8 @@ export class MessagesService {
                 id: message._id,
                 nome: message.nome,
                 phone: message.phone,
-                content: message.content
+                content: message.content,
+                ref: message.ref
               };
             }),
 
@@ -46,14 +47,16 @@ export class MessagesService {
   addMessage(
           nome: string,
           phone: string,
-          content: string) {
+          content: string,
+          ref: string) {
             
     this.http.post<{ message: string, post: Message }>(
         BACKEND_URL,
         {
           nome,
           phone,
-          content
+          content,
+          ref
         }
       )
       .subscribe(responseData => {

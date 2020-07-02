@@ -98,7 +98,8 @@ export class PostListComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       nome: String,
       phone: String,
-      content: String
+      content: String,
+      ref: ref
     };
     console.log("ref: " + ref);
 
