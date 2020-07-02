@@ -29,7 +29,7 @@
 
 <mat-accordion
             multi="true"
-            *ngIf="posts.length > 0 && !isLoading">
+            *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated">
             <!-- *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated"> -->
     <mat-expansion-panel *ngFor="let item of posts">
         <mat-expansion-panel-header>
@@ -94,13 +94,15 @@
         <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
             <div routerLink="/mensagem" routerLinkActive="mat-accent">
                 <button 
-                    mat-raised-button
-                    color="primary"
-                    (click)="openDialog(item.refNumber)">Enviar Mensagem!
+                    mat-fab
+                    color="accent"
+
+                    (click)="openDialog(item.refNumber)">
+                    <mat-icon>message</mat-icon>
                 </button>
             </div>
             <button 
-                mat-raised-button
+                mat-stroked-button
                 color="primary"
                 [routerLink]="['/edit', item.id]">EDITAR</button>
             <button
@@ -122,7 +124,7 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<!-- <div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
+<div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
     <div *ngFor="let item of posts">
         <mat-card class="flex-card shadow" *ngIf="posts.length > 0 && !isLoading">
             <mat-card-header>
@@ -147,6 +149,13 @@
                 </button>
                 <button mat-stroked-button
                         color="primary">Compartilhar</button>
+                <button routerLink="/mensagem" routerLinkActive="mat-accent"
+                    mat-mini-fab
+                    color="accent"
+
+                    (click)="openDialog(item.refNumber)">
+                    <mat-icon>message</mat-icon>
+                </button>
             </mat-card-actions>
         </mat-card>
     </div>
@@ -154,7 +163,6 @@
         Nenhum Imóvel foi adicionado ainda!
     </p>
 </div>
- -->
 
 <div *ngIf="posts.length <= 0 && !isLoading">
     <p class="info-text mat-body-1">
