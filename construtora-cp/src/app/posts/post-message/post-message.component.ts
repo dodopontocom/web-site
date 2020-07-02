@@ -22,6 +22,9 @@ export class PostMessageComponent implements OnInit, OnDestroy {
   message: Message;
   isLoading = false;
   messageForm: FormGroup;
+  
+  postsPerPage = 5;
+  currentPage = 1;
 
   posts: Post[] = [];
   private postsSub: Subscription;
@@ -41,8 +44,8 @@ export class PostMessageComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
-    this.postsService.getPosts();
+    
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
 
     this.postsSub = this.postsService
       .getPostUpdateListener()
