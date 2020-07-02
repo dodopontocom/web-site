@@ -4,6 +4,7 @@ const MessageController = require("../controllers/messages");
 const router = express.Router();
 
 router.post("", checkAuth, MessageController.createMessage);
+router.get("", MessageController.getMessages);
 
 module.exports = router;
 
@@ -17,8 +18,6 @@ module.exports = router;
 // router.post("", checkAuth, extractFile, PostController.createPost);
 
 // router.put("/:id", checkAuth, extractFile, PostController.updatePost);
-
-// router.get("", PostController.getPosts);
 
 // router.get("/:id", PostController.getPost);
 

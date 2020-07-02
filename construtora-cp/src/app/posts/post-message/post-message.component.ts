@@ -26,6 +26,8 @@ export class PostMessageComponent implements OnInit, OnDestroy {
   postsPerPage = 5;
   currentPage = 1;
 
+  ref: string;
+
   posts: Post[] = [];
   private postsSub: Subscription;
 
@@ -40,8 +42,10 @@ export class PostMessageComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     private autService: AuthService,
     public dialogRef: MatDialogRef<PostMessageComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Message,
-    private _snackBar: MatSnackBar) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _snackBar: MatSnackBar) {
+      this.ref = data.ref;
+    }
 
   ngOnInit() {
     
@@ -84,10 +88,13 @@ export class PostMessageComponent implements OnInit, OnDestroy {
     if (this.messageForm.invalid) {
       return;
     }
+
+    console.log("--ref----->" + this.ref);
     this.messagesService.addMessage(
       mensagem.nome,
       mensagem.phone,
-      mensagem.content
+      mensagem.content,
+      this.ref
     );
     this.isLoading = false;
     this.messageForm.reset();    

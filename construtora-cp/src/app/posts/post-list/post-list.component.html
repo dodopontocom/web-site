@@ -47,6 +47,29 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         
+
+        <div *ngIf="messages.length > 0">
+            <h3>Mensagens do Anúncio</h3>
+            <div *ngFor="let p of messages">
+                <div *ngIf="item.refNumber === p.ref">
+                    <ul>
+                        <li><strong>Telefone:</strong>
+                            <a
+                                mat-mini-fab
+                                color="primary"
+                                href="https://api.whatsapp.com/send?phone=55{{ p.phone }}"
+                                target="_blank">
+                                <mat-icon>message</mat-icon>
+                                
+                        </a> {{ p.phone }}
+                        </li>
+                        <li><strong>Nome:</strong> {{ p.nome}}</li>
+                        <li><strong>Mensagem:</strong> {{ p.content }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <h3>Fotos do Anúncio</h3>
         <div class="post-image">
             <img [src]="item.imagePath" [alt]="item.title">
@@ -143,12 +166,13 @@
                 <ul><li>{{ item.city }}</li></ul>
                 <ul><li>{{ item.metragemTerreno }}</li></ul>
             </mat-card-content>
-            <mat-card-actions>
+            <mat-card-actions class="mat-actions">
                 <button mat-icon-button class="shadow" color="warn">
                     <mat-icon>favorite</mat-icon>
                 </button>
                 <button mat-stroked-button
                         color="primary">Compartilhar</button>
+                <div fxFlex></div>
                 <button routerLink="/mensagem" routerLinkActive="mat-accent"
                     mat-mini-fab
                     color="accent"

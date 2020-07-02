@@ -3,5 +3,6 @@ export interface Message {
     nome: string;
     phone: string;
     content: string;
+    ref: string;
   }
   
