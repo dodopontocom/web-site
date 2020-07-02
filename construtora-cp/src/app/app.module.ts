@@ -16,6 +16,10 @@ import { ErrorComponent } from "./error/error.component";
 import { AngularMaterialModule } from './angular-material.module';
 import { PostsModule } from './posts/posts.module';
 
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PostMessageComponent } from './posts/post-message/post-message.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,14 +34,18 @@ import { PostsModule } from './posts/posts.module';
     RouterModule,
     AppRoutingModule,
     AngularMaterialModule,
-    PostsModule
+    PostsModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: MAT_DIALOG_DATA, useValue: { }},
+    { provide: MatDialogRef, useValue: { }},
+    { provide: MatSnackBar, useValue: { }},
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, PostMessageComponent]
 
 })
 export class AppModule { }

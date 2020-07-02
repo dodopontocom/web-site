@@ -3,8 +3,12 @@ import { PageEvent } from "@angular/material/paginator";
 import { Subscription } from "rxjs";
 
 import { Post } from "../post.model";
+import { Message } from "../message.model";
 import { PostsService } from "../posts.service";
+import { MessagesService } from "../messages.service";
 import { AuthService } from "../../auth/auth.service";
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
   selector: "app-post-list",
@@ -23,9 +27,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postsSub: Subscription;
   private authStatusSub: Subscription;
 
+  message: Message;
+
   constructor(
     public postsService: PostsService,
-    private authService: AuthService
+    public messagesService: MessagesService,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -64,6 +72,27 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
+  openDialog(ref: any) {
+    console.log("ref: " + ref);
+    // TODO - USAR ESSE REF AQUI PARA SALVAR QUAL EH O REFNUMBER
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
+    dialogConfig.width = "75%";
+
+    dialogConfig.data = {
+      nome: String,
+      phone: String,
+      content: String
+    };
+    console.log("ref: " + ref);
+
+    let dialogRef = this.dialog.open(PostMessageComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe()
+
+  }
+  
   ngOnDestroy() {
     this.postsSub.unsubscribe();
     this.authStatusSub.unsubscribe();

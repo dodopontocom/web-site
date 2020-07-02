@@ -1,0 +1,54 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<form [formGroup]="messageForm" (ngSubmit)="close(messageForm.value)" *ngIf="!isLoading">
+    <div *ngFor="let item of posts">
+        <h2 mat-dialog-title>Enviar Mensagem referente ao anúncio {{ item.refNumber }}</h2>
+    </div>
+    
+    <div>
+    <mat-form-field floatLabel='always' appearance='fill'>
+        <mat-label>Nome:</mat-label>
+        <input
+            formControlName="nome"
+            matInput
+            required>
+            <mat-error *ngIf="messageForm.get('nome').invalid">Informar o nome</mat-error>
+    </mat-form-field>
+    <mat-form-field floatLabel='always' appearance='fill'>
+        <mat-label>Telefone:</mat-label>
+        <input
+            formControlName="phone"
+            matInput
+            required>
+            <mat-error *ngIf="messageForm.get('phone').invalid">Informar o telefone para contato</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance='fill'>
+        <mat-label>Mensagem</mat-label>
+            <textarea
+                style="width: 100%;"
+                matInput
+                required
+                rows="5"
+                formControlName="content"
+                placeholder="Olá! Eu gostei deste anúncio. Pode me contatar pelo telefone fornecido à cima.">
+            </textarea>
+                <mat-error *ngIf="messageForm.get('content').invalid">Escrever uma mensagem</mat-error>
+    </mat-form-field>
+    </div>
+    <button
+    mat-raised-button
+    color="accent"
+    [disabled]="messageForm.invalid"
+    type="submit">Enviar
+    </button>
+    <p></p>
+    <div routerLink="/" routerLinkActive="mat-accent">
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="onNoClick()"
+            type="submit">Cancelar
+        </button>
+    </div>
+    
+</form>
