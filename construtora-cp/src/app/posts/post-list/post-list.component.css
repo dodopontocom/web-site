@@ -52,12 +52,37 @@
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
   }
 
-  .flex-card {
+  
+  .flex-card{
+    flex-flow: row wrap;
+    width: 280px;
+    margin: 10px;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .mat-actions {
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  /* .flex-card {
     display: inline-flex;
     flex-flow: row wrap;
     width: 200px;
     margin: 10px;
-  }
+  } */
+/* 
+  .flex-card{
+    width: 350px;
+    height: 400px;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;  
+    vertical-align:middle;
+  } */
 
   mat-paginator.mat-paginator.paginator--left {
     display: flex;
