@@ -159,10 +159,10 @@
                     
                 </mat-card-subtitle>
             <div>
-                <a class="whatsapp-logo"
+                <a
                 href="https://api.whatsapp.com/send?phone=55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
                 target="_blank">
-                <mat-icon></mat-icon>
+                <i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i>
                 </a>
             </div>
             </mat-card-header>
@@ -174,12 +174,12 @@
                 {{ item.description | slice:0:250 }}
                 </p>
                 <ul class="ul1">
-                    <li><i class="fa fa-dollar"></i> {{ item.price }}</li>
-                    <li><i class="fa fa-map-marker"></i> {{ item.city }}</li>
-                    <li><i class="fa fa-home"></i> {{ item.metragemConstrucao }}m²</li>
-                    <li><i class="fa fa-bath"></i> {{ item.baths }}</li>
-                    <li><i class="fa fa-bed"></i> {{ item.rooms }}</li>                    
-                    <li><i class="fa fa-book"></i> {{ item.contactTelOne }}</li>
+                    <li><i class="fa fa-dollar fa-lg"></i> {{ item.price }}</li>
+                    <li><i class="fa fa-map-marker fa-lg"></i> {{ item.city }}</li>
+                    <li><i class="fa fa-home fa-lg"></i> {{ item.metragemConstrucao }}m²</li>
+                    <li><i class="fa fa-bath fa-lg"></i> {{ item.baths }}</li>
+                    <li><i class="fa fa-bed fa-lg"></i> {{ item.rooms }}</li>                    
+                    <li><i class="fa fa-car fa-lg"></i> {{ item.vagas }}</li>
                 </ul>
             </mat-card-content>
             <mat-card-actions class="mat-actions">
