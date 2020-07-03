@@ -155,9 +155,7 @@
                 <div mat-card-avatar class="card-header-image shadow"></div>
                 <mat-card-title>{{ item.title }}</mat-card-title>
                 
-                <mat-card-subtitle>{{ item.refNumber }}
-                    
-                </mat-card-subtitle>
+                <mat-card-subtitle>{{ item.refNumber }}</mat-card-subtitle>
             <div>
                 <a
                 href="https://api.whatsapp.com/send?phone=55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
@@ -166,17 +164,29 @@
                 </a>
             </div>
             </mat-card-header>
-            <div>
-                <img class="card-image" [src]="item.imagePath" [alt]="item.title">
-            </div>
+
+                <div>
+                <div class="container">
+                    <a href="#">
+                        <img class="card-image img-responsive" [src]="item.imagePath" [alt]="item.title" />
+                        <h5 class="cima"><span class="refspan">R$ {{ item.price }}</span></h5>
+                        <h5 class="local"><span class="refspan">{{ item.address }}</span></h5>
+                    </a>
+                </div>
+                </div>
+
+                
             <mat-card-content>
                 <p>
                 {{ item.description | slice:0:250 }}
                 </p>
                 <ul class="ul1">
-                    <li><i class="fa fa-dollar fa-lg"></i> {{ item.price }}</li>
+                    <li *ngIf="(item.financiamento | uppercase) === 'SIM'">
+                        <i class="fa fa-check-square-o fa-lg"></i> 
+                        Doc. OK
+                    </li>
                     <li><i class="fa fa-map-marker fa-lg"></i> {{ item.city }}</li>
-                    <li><i class="fa fa-home fa-lg"></i> {{ item.metragemConstrucao }}m²</li>
+                    <li><i class="fa fa-home fa-lg"></i> {{ item.metragemConstrucao }} m²</li>
                     <li><i class="fa fa-bath fa-lg"></i> {{ item.baths }}</li>
                     <li><i class="fa fa-bed fa-lg"></i> {{ item.rooms }}</li>                    
                     <li><i class="fa fa-car fa-lg"></i> {{ item.vagas }}</li>

@@ -106,10 +106,12 @@
 
   ul {
     list-style-type: none;
+    width: 100%;
   }
-  
+
   .ul1 {
     column-count: 2;
+    justify-content: space-around;
   }
 
   /* https://astronautweb.co/snippet/font-awesome/ */
@@ -121,3 +123,42 @@
     margin-left: -1.3em; /* same as padding-left set on li
     width: 1.3em; /* same as padding-left set on li
   } */
+
+  .container {
+    position: relative;
+  }
+
+  .refspan {
+    color: white;
+    font: bold 16px/20px Helvetica, Sans-Serif;
+    letter-spacing: -1px;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.7);
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  .cima {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .refspan:hover {
+    padding: 7px;
+    color: orange;
+  }
+
+  .local {
+    position: absolute;
+    top: 100px;
+    right: 0;
+    width: 100%;
+  }
+
+  .img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
