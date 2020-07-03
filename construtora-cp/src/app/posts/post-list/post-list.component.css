@@ -76,6 +76,10 @@
     margin-right:auto;
   }
 
+  .mat-action-row {
+    place-content: space-between;
+  }
+
   /* .flex-card {
     display: inline-flex;
     flex-flow: row wrap;
@@ -98,3 +102,22 @@
     color: red;
   } 
   /* https://webdesign.tutsplus.com/tutorials/solving-problems-with-css-grid-and-flexbox-the-card-ui--cms-27468 */
+
+
+  ul {
+    list-style-type: none;
+  }
+  
+  .ul1 {
+    column-count: 2;
+  }
+
+  /* https://astronautweb.co/snippet/font-awesome/ */
+  /* li:before {
+    /* content: icon;
+    font-family: FontAwesome;
+    content: "\f02d";    
+    display: inline-block;
+    margin-left: -1.3em; /* same as padding-left set on li
+    width: 1.3em; /* same as padding-left set on li
+  } */
