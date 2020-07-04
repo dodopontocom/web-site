@@ -149,12 +149,10 @@
 <!-- Show in CARDS if user is NOT authenticated -->
 <div class="content"
     fxLayout="row wrap"
-    fxLayoutGap="10px grid"
-    *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
+    fxLayoutGap="10px grid" *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
     <div fxFlex="33%"
         fxFlex.xs="100%"
-        fxFlex.sm="60%"
-        *ngFor="let item of posts">
+        fxFlex.sm="60%" *ngFor="let item of posts">
         <mat-card class="shadow" *ngIf="posts.length > 0 && !isLoading">
             <!-- [style.background]="item.diferencialOpt === 'Destaque' ? '#FF4136':''"> -->
             <mat-card-header>
@@ -164,8 +162,7 @@
                 <mat-card-subtitle>{{ item.refNumber }}</mat-card-subtitle>
             <div><div>
                 <a
-                href="https://api.whatsapp.com/send?phone
-                =55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
+                href="https://api.whatsapp.com/send?phone=55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
                 target="_blank">
                 <i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i>
                 </a>
