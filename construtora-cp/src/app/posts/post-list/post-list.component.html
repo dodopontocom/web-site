@@ -147,22 +147,29 @@
 </mat-accordion>
 
 <!-- Show in CARDS if user is NOT authenticated -->
-<div *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
-    <div *ngFor="let item of posts">
-        <mat-card class="flex-card shadow" *ngIf="posts.length > 0 && !isLoading">
+<div class="content"
+    fxLayout="row wrap"
+    fxLayoutGap="10px grid"
+    *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
+    <div fxFlex="33%"
+        fxFlex.xs="100%"
+        fxFlex.sm="60%"
+        *ngFor="let item of posts">
+        <mat-card class="shadow" *ngIf="posts.length > 0 && !isLoading">
             <!-- [style.background]="item.diferencialOpt === 'Destaque' ? '#FF4136':''"> -->
             <mat-card-header>
                 <div mat-card-avatar class="card-header-image shadow"></div>
                 <mat-card-title>{{ item.title }}</mat-card-title>
                 
                 <mat-card-subtitle>{{ item.refNumber }}</mat-card-subtitle>
-            <div>
+            <div><div>
                 <a
-                href="https://api.whatsapp.com/send?phone=55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
+                href="https://api.whatsapp.com/send?phone
+                =55{{ item.contactTelOne }}&text=Olá, eu gostei do anúncio {{ item.refNumber }}"
                 target="_blank">
                 <i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i>
                 </a>
-            </div>
+            </div></div>
             </mat-card-header>
 
                 <div>
