@@ -39,8 +39,21 @@
   }
 
   .card-header-image {
-    background-image: url('../../../assets/imgs/house.png');
+    background-image: url('../../../assets/imgs/logo.png');
     background-size: cover;
+  }
+
+  .fa-whatsapp:before{
+    /* content:url('../../../assets/imgs/whats.png');
+    content: '';
+    background-image:url("https://lh3.googleusercontent.com/-VPr8buUo47w/VjMsRPIzr-I/AAAAAAAAAL4/AYBtvlNCQiw/s64-Ic42/clouds_social_media_icons_set_64x64_0000_facebook.png"); */
+    background-image:url('../../../assets/imgs/whats.png');
+    background-size: cover;
+    background-clip: padding-box;
+    /* width:64px;
+    height:64px;  
+    display:inline-block; */
+  
   }
 
   .whatsapp-logo {

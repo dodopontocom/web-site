@@ -8,6 +8,9 @@
     Voltar à página inicial!
 </div>
 
+
+{{ form.valid }}
+{{ form.value | json}}
 <form [formGroup]="form" (ngSubmit)="onSavePost()" *ngIf="!isLoading">
     <mat-vertical-stepper>
         <mat-step [stepControl]="form">
