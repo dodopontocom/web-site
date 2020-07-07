@@ -30,6 +30,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   private postsSub: Subscription;
   private messagesSub: Subscription;
   private authStatusSub: Subscription;
+  public number = Math.floor(Math.random() * 10) + 1
 
   constructor(
     public postsService: PostsService,

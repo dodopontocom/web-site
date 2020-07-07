@@ -1,39 +1,68 @@
 <section class="hero is-primary is-bold is-fullheight">
-    <div class="hero-body">
+    <div class="hero-body" *ngIf="!userIsAuthenticated">
       <div class="container has-text-centered">
 
 
-
-        <div class="tile is-ancestor">
+        <div>
+        <div *ngFor="let item of posts" class="tile is-ancestor">
             <div class="tile is-vertical is-8">
               <div class="tile">
-                <div *ngfor="let item of posts" 
+                <div
                     class="tile is-parent is-vertical">
-                  <article class="tile is-child notification is-primary">
-                    <p class="title">Vertical... {{ item.price }}</p>
-                    <p class="subtitle">Top tile</p>
+                  <article class="tile is-child notification is-primary box">
+                    <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
+                    <p class="subtitle">{{ item.title }}
+                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                    <span class="icon has-text-info">
+                      <i class="fa fa-bath"></i>
+                    </span>{{ item.baths }}
                   </article>
                   <article class="tile is-child notification is-warning">
-                    <p class="title">...tiles</p>
-                    <p class="subtitle">Bottom tile</p>
+                    <p class="title">R$ {{ item.price }}</p>
+                    <p class="subtitle">{{ item.title }}
+                      <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                      <span class="icon has-text-info">
+                        <i class="fa fa-bath"></i>
+                      </span>{{ item.baths }}
                   </article>
                 </div>
                 <div class="tile is-parent">
                   <article class="tile is-child notification is-info">
-                    <p class="title">Middle tile</p>
-                    <p class="subtitle">With an image</p>
-                    <figure class="image is-4by3">
-                      <img src="https://bulma.io/images/placeholders/640x480.png">
+                    <p class="title">R$ {{ item.price }}</p>
+                    <p class="subtitle">{{ item.title }}
+                      <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                    <figure class="image is-4by3 shadow">
+                      <img [src]="item.imagePath" [alt]="item.title" />
+                      <!-- <img src="../../../assets/imgs/front6.jpg"> -->
                     </figure>
                   </article>
                 </div>
               </div>
               <div class="tile is-parent">
                 <article class="tile is-child notification is-danger">
-                  <p class="title">Wide tile</p>
-                  <p class="subtitle">Aligned with the right tile</p>
-                  <div class="content">
+                  <p class="title">R$ {{ item.price }}</p>
+                  <p class="subtitle">{{ item.title }}
+                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                  <div class="columns content">
                     <!-- Content -->
+                    <div class="column">
+                      <figure class="image is-3by2 shadow">
+                        <img [src]="item.imagePath" [alt]="item.title" />
+                        <!-- <img src="../../../assets/imgs/front6.jpg"> -->
+                      </figure>
+                    </div>
+                    <div class="column">
+                      <p class="subtitle">Quartos: {{ item.rooms }}</p>
+                      <span class="icon has-text-info">
+                        <i class="fa fa-bath"></i>
+                      </span>{{ item.baths }}
+                    </div>
+                    <div class="column">
+                      <figure class="image is-3by2 shadow">
+                        <img [src]="item.imagePath" [alt]="item.title" />
+                        <!-- <img src="../../../assets/imgs/front6.jpg"> -->
+                      </figure>
+                    </div>
                   </div>
                 </article>
               </div>
@@ -41,15 +70,21 @@
             <div class="tile is-parent">
               <article class="tile is-child notification is-success">
                 <div class="content">
-                  <p class="title">Tall tile</p>
-                  <p class="subtitle">With even more content</p>
+                  <p class="title">R$ {{ item.price }}</p>
+                  <p class="subtitle">{{ item.title }}
+                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
                   <div class="content">
                     <!-- Content -->
+                    <figure class="image is-4by3 shadow">
+                      <img [src]="item.imagePath" [alt]="item.title" />
+                      <!-- <img src="../../../assets/imgs/front6.jpg"> -->
+                    </figure>
                   </div>
                 </div>
               </article>
             </div>
           </div>
+        </div>
 
           
         
