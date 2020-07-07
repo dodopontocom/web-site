@@ -1,237 +1,57 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-
-<!-- align="end" -->
-<div style="margin: 15px;" mat-dialog-actions
-        *ngIf="userIsAuthenticated"
-        routerLink="/adicionar" routerLinkActive="mat-accent">
-    <button mat-raised-button
-            color="accent">
-            Adicionar Novo Anúncio!!!
-    </button>
-</div>
-
-<div>
-<mat-paginator
-    class="paginator--left"
-    [hidePageSize]="true"
-    [length]="totalPosts"
-    [pageSize]="postsPerPage"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="onChangedPage($event)"
-    *ngIf="posts.length > 0">
-</mat-paginator>
-</div>
-<!-- 
-<button 
-    mat-raised-button
-    color="primary"
-    (click)="onSendMessage()">Enviar Mensagem!</button> -->
+<section class="hero is-primary is-bold is-fullheight">
+    <div class="hero-body">
+      <div class="container has-text-centered">
 
 
-<!-- Show ACCORDION if user is authenticated -->
-<mat-accordion
-            multi="true"
-            *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated">
-            <!-- *ngIf="posts.length > 0 && !isLoading && userIsAuthenticated"> -->
-    <mat-expansion-panel *ngFor="let item of posts">
-        <mat-expansion-panel-header>
-            <mat-panel-title><h3>
-                {{ item.title }} </h3>
-            </mat-panel-title>
-            <!-- TODO: style in css -->
-            <mat-panel-description style="flex: 0 0 auto; opacity:0.9;">
-                {{ item.refNumber }}  <!--there is a white space here, bad practice-->
-                <!-- TODO: melhorar isso!!! -->
-                <mat-icon *ngIf="item.creator === '5eecfe6fd0b9a4000aee8596'"
-                style="background-image: url('../../../assets/imgs/pedro.png'); background-size: cover; border-radius: 25px;"></mat-icon>
-                <mat-icon *ngIf="item.creator === '5eeea4421208bc0cf8f89a3b'"
-                style="background-image: url('../../../assets/imgs/lala.png'); background-size: cover; border-radius: 25px;"></mat-icon>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        
 
-        <div *ngIf="messages.length > 0">
-            <h3>Mensagens do Anúncio</h3>
-            <div *ngFor="let p of messages">
-                <div *ngIf="item.refNumber === p.ref">
-                    <ul>
-                        <li><strong>Telefone: </strong>
-                            <a class="whatsapp-logo"
-                                href="https://api.whatsapp.com/send?phone=55{{ p.phone }}"
-                                target="_blank">
-                                <mat-icon></mat-icon>    
-                            </a>{{ p.phone }}
-                        </li>
-                        <li><strong>Nome:</strong> {{ p.nome}}</li>
-                        <li><strong>Mensagem:</strong> {{ p.content }}</li>
-                    </ul>
+        <div class="tile is-ancestor">
+            <div class="tile is-vertical is-8">
+              <div class="tile">
+                <div class="tile is-parent is-vertical">
+                  <article class="tile is-child notification is-primary">
+                    <p class="title">Vertical...</p>
+                    <p class="subtitle">Top tile</p>
+                  </article>
+                  <article class="tile is-child notification is-warning">
+                    <p class="title">...tiles</p>
+                    <p class="subtitle">Bottom tile</p>
+                  </article>
                 </div>
+                <div class="tile is-parent">
+                  <article class="tile is-child notification is-info">
+                    <p class="title">Middle tile</p>
+                    <p class="subtitle">With an image</p>
+                    <figure class="image is-4by3">
+                      <img src="https://bulma.io/images/placeholders/640x480.png">
+                    </figure>
+                  </article>
+                </div>
+              </div>
+              <div class="tile is-parent">
+                <article class="tile is-child notification is-danger">
+                  <p class="title">Wide tile</p>
+                  <p class="subtitle">Aligned with the right tile</p>
+                  <div class="content">
+                    <!-- Content -->
+                  </div>
+                </article>
+              </div>
             </div>
-        </div>
-
-        <h3>Fotos do Anúncio</h3>
-        <div class="post-image">
-            <img [src]="item.imagePath" [alt]="item.title">
-        </div>
-        <h3> Diferencial: </h3> {{ item.diferencialOpt }}
-        <hr>
-        <h3> Descrição do Imóvel: </h3> {{ item.description }}
-        <hr>
-        <h3> Valor: </h3> {{ item.price }}
-        <hr>
-        <h3> Valor do Condomínio: </h3> {{ item.condPrice }}
-        <hr>
-        <h3> Valor do IPTU: </h3> {{ item.iptuPrice }}
-        <hr>
-        <h3> Tipo de Construção: </h3> {{ item.type }}
-        <hr>
-        <h3> Cidade: </h3> {{ item.city }}
-        <hr>
-        <h3> Bairro: </h3> {{ item.address }}
-        <hr>
-        <h3> Em Condomínio: </h3> {{ item.emCondominio }}
-        <hr>
-        <h3> Localização/Referência: </h3> {{ item.addressRef }}
-        <hr>
-        <h3> Metragem do Terreno </h3> {{ item.metragemTerreno }}
-        <hr>
-        <h3> Metragem da Construção </h3> {{ item.metragemConstrucao }}
-        <hr>
-        <h3> Vagas </h3> {{ item.vagas }}
-        <hr>
-        <h3> Quartos </h3> {{ item.rooms }}
-        <hr>
-        <h3> Banheiros </h3> {{ item.baths }}
-        <hr>
-        <h3> Aceita Permuta: </h3> {{ item.permuta }}
-        <hr>
-        <h3> Aceita Financiamento: </h3> {{ item.financiamento }}
-        <hr>
-        <h3> Proprietário: </h3> {{ item.owner }}
-        <hr>
-        <h3> Contato do Proprietário: </h3> {{ item.telOwner }}
-        <hr>
-        <h3> E-mail do Proprietário: </h3> {{ item.emailOwner }}
-        
-        <mat-action-row *ngIf="userIsAuthenticated && userId === item.creator">
-            <div routerLink="/mensagem" routerLinkActive="mat-accent">
-                <button 
-                    mat-fab
-                    color="accent"
-
-                    (click)="openDialog(item.refNumber)">
-                    <mat-icon>message</mat-icon>
-                </button>
+            <div class="tile is-parent">
+              <article class="tile is-child notification is-success">
+                <div class="content">
+                  <p class="title">Tall tile</p>
+                  <p class="subtitle">With even more content</p>
+                  <div class="content">
+                    <!-- Content -->
+                  </div>
+                </div>
+              </article>
             </div>
-            <button 
-                mat-stroked-button
-                color="primary"
-                [routerLink]="['/edit', item.id]">EDITAR</button>
-            <button
-                mat-raised-button
-                color="warn" (click)="onDelete(item.id)">Arquivar
-                <!-- <mat-icon>delete</mat-icon> -->
-            </button>
-            
+          </div>
 
+          
         
-        </mat-action-row>
-        <!-- <mat-action-row *ngIf="!userIsAuthenticated">
-            <button 
-                mat-raised-button
-                color="primary"
-                (click)="onSendMessage()">Enviar Mensagem!</button>
-        </mat-action-row> -->
-
-    </mat-expansion-panel>
-</mat-accordion>
-
-<!-- Show in CARDS if user is NOT authenticated -->
-<div class="content"
-    fxLayout="row wrap"
-    fxLayoutGap="10px grid" *ngIf="posts.length > 0 && !isLoading && !userIsAuthenticated">
-    <div fxFlex="33%"
-        fxFlex.xs="100%"
-        fxFlex.sm="60%" *ngFor="let item of posts">
-        <mat-card class="shadow" *ngIf="posts.length > 0 && !isLoading">
-            <!-- [style.background]="item.diferencialOpt === 'Destaque' ? '#FF4136':''"> -->
-            <mat-card-header>
-                <div mat-card-avatar class="card-header-image shadow"></div>
-                <mat-card-title>{{ item.title }}</mat-card-title>
-                
-                <mat-card-subtitle>{{ item.refNumber }}</mat-card-subtitle>
-            <div><div>
-                <a
-                href="https://api.whatsapp.com/send?phone=55{{ item.contactTelOne }}&text=Olá,eu gostei do anúncio *{{ item.refNumber }}*"
-                target="_blank">
-                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
-                </a>
-            </div></div>
-            </mat-card-header>
-
-                <div>
-                <div class="container">
-                    <a href="#">
-                        <img class="card-image img-responsive" [src]="item.imagePath" [alt]="item.title" />
-                        <h5 class="cima"><span class="refspan">R$ {{ item.price }}</span></h5>
-                        <h5 class="local"><span class="refspan">{{ item.address }}</span></h5>
-                    </a>
-                </div>
-                </div>
-
-                
-            <mat-card-content>
-                <p>
-                {{ item.description | slice:0:250 }}
-                </p>
-                <ul class="ul1">
-                    <li *ngIf="(item.financiamento | uppercase) === 'SIM'">
-                        <i class="fa fa-check-square-o fa-lg"></i> 
-                        Doc. OK
-                    </li>
-                    <li><i class="fa fa-map-marker fa-lg"></i> {{ item.city }}</li>
-                    <li><i class="fa fa-home fa-lg"></i> {{ item.metragemConstrucao }} m²</li>
-                    <li><i class="fa fa-bath fa-lg"></i> {{ item.baths }}</li>
-                    <li><i class="fa fa-bed fa-lg"></i> {{ item.rooms }}</li>                    
-                    <li><i class="fa fa-car fa-lg"></i> {{ item.vagas }}</li>
-                </ul>
-            </mat-card-content>
-            <mat-card-actions class="mat-actions">
-                <button mat-icon-button class="shadow" color="primary">
-                    <mat-icon>share</mat-icon>
-                </button>
-                <div fxFlex></div>
-                <button mat-stroked-button
-                        color="primary">Detalhes <mat-icon>more_horiz</mat-icon></button>
-                <div fxFlex></div>
-                <button routerLink="/mensagem" routerLinkActive="mat-accent"
-                    mat-mini-fab
-                    color="accent"
-
-                    (click)="openDialog(item.refNumber)">
-                    <mat-icon>mark_chat_unread</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
+      </div>
     </div>
-    <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">
-        Nenhum Imóvel foi adicionado ainda!
-    </p>
-</div>
-
-<div *ngIf="posts.length <= 0 && !isLoading">
-    <p class="info-text mat-body-1">
-        Nenhum Imóvel foi adicionado ainda!
-    </p>
-    <div style="margin: 15px;" mat-dialog-actions
-            *ngIf="!userIsAuthenticated"
-            routerLink="/auth/login" routerLinkActive="mat-accent">
-        <button mat-raised-button
-                color="accent">
-                Entrar!
-        </button>
-        <p class="mat-body-1">
-            Para criar Novos Anúncios!!!
-        </p>
-    </div>
-</div>
+  </section>
