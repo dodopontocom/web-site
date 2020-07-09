@@ -19,6 +19,7 @@ import { PostsModule } from './posts/posts.module';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostMessageComponent } from './posts/post-message/post-message.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     AppRoutingModule,
     AngularMaterialModule,
     PostsModule,
-    MatDialogModule
+    MatDialogModule,
+    FontAwesomeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
