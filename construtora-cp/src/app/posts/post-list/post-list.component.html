@@ -1,90 +1,94 @@
 <section class="hero is-primary is-bold is-fullheight">
     <div class="hero-body" *ngIf="!userIsAuthenticated">
       <div class="container has-text-centered">
-
-        <div>
-        <div *ngFor="let item of posts" class="tile is-ancestor">
-            <div class="tile is-vertical is-8">
-              <div class="tile">
-                <div
-                    class="tile is-parent is-vertical">
-                  <article class="tile is-child notification is-primary box">
-                    <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
-                    <p class="subtitle">{{ item.title }}
-                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                    <span class="icon has-text-info">
-                      <i class="fa fa-bath"></i>
-                    </span>{{ item.baths }}
-                  </article>
-                  <article class="tile is-child notification is-warning">
-                    <p class="title">R$ {{ item.price }}</p>
-                    <p class="subtitle">{{ item.title }}
-                      <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-bath"></i>
-                      </span>{{ item.baths }}
-                  </article>
-                </div>
-                <div class="tile is-parent">
-                  <article class="tile is-child notification is-info">
-                    <p class="title">R$ {{ item.price }}</p>
-                    <p class="subtitle">{{ item.title }}
-                      <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                    <figure class="image is-4by3 shadow">
-                      <img [src]="item.imagePath" [alt]="item.title" />
-                      <!-- <img src="../../../assets/imgs/front6.jpg"> -->
-                    </figure>
-                  </article>
-                </div>
-              </div>
+        <div class="tile is-ancestor">
+          <div class="tile is-vertical">
+            <div class="tile">
               <div class="tile is-parent">
-                <article class="tile is-child notification is-danger">
-                  <p class="title">R$ {{ item.price }}</p>
-                  <p class="subtitle">{{ item.title }}
-                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                  <div class="columns content">
-                    <!-- Content -->
-                    <div class="column">
-                      <figure class="image is-3by2 shadow">
-                        <img [src]="item.imagePath" [alt]="item.title" />
-                        <!-- <img src="../../../assets/imgs/front6.jpg"> -->
-                      </figure>
-                    </div>
-                    <div class="column">
-                      <p class="subtitle">Quartos: {{ item.rooms }}</p>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-bath"></i>
-                      </span>{{ item.baths }}
-                    </div>
-                    <div class="column">
-                      <figure class="image is-3by2 shadow">
-                        <img [src]="item.imagePath" [alt]="item.title" />
-                        <!-- <img src="../../../assets/imgs/front6.jpg"> -->
-                      </figure>
+                <article class="tile is-child notification is-success">
+                  <div class="content">
+                    <p class="title">Projetos e Construções</p>
+                    <p class="subtitle">Nossos destaques</p>
+                    <div class="content">
+                    
+                      <div class="container has-text-left">
+                      <mat-accordion>
+                        <mat-expansion-panel  (opened)="panelOpenState = true"
+                                              (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Sobre a Empresa e Valores
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <p>A Carvalho Pereira conta com mais de 20 anos de experiência no segmento da construção civil , com o objetivo de melhor administrar sua obra , investir seu dinheiro de uma forma precisa e segura tudo com total transparência assim podendo garantir a satisfação dos nossos clientes.</p>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                             (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Construção
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <p>Nós contamos com engenheiros qualificados e preparados para atendê-lo, aproveite e faça uma cotação sem compromisso entrando em contato conosco diretamente pelo whatsapp ou ligue.</p>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel  (opened)="panelOpenState = true"
+                                              (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Projetos
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <p>Que tal transformar sua idéia de imóvel em um projeto profissional contando com uma consultoria diferenciada!? Para mais detalhes ligue ou contate-nos através do whatsapp.</p>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                             (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Reformas
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <p>Não se preocupe com nada e deixe tudo com a gente !! Garantimos otimizar a sua reforma prezando uma ótima qualidade e rapidez no serviço. Seja uma reforma pequena ou grande estamos preparados para melhor atendê -lo. Para mais detalhes ente em contato conosco.</p>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel  (opened)="panelOpenState = true"
+                                              (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Legalização de Imóveis
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <p>Você sabia que para vender um imóvel financiado é necessário legalizá-lo junto à prefeitura e ao cartório de imóveis? Fazemos o serviço completo ou em etapas:</p>
+                            <ul>
+                              <li>Legalização junto a prefeitura</li>
+                                <li>Habite-se</li>
+                                  <li>Averbação</li>
+                            </ul>
+                          <p>Solicite um orçamento sem compromisso.</p>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                      </div>
+
+
+
+                      
                     </div>
                   </div>
                 </article>
               </div>
-            </div>
-            <div class="tile is-parent">
-              <article class="tile is-child notification is-success">
-                <div class="content">
-                  <p class="title">R$ {{ item.price }}</p>
+              <div class="tile is-parent is-vertical">
+                <article class="tile is-child notification is-primary box" *ngFor="let item of posts">
+                  <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
+                  <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'NENHUM'">R$ {{ item.price }}</p>
                   <p class="subtitle">{{ item.title }}
-                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                  <div class="content">
-                    <!-- Content -->
-                    <figure class="image is-4by3 shadow">
-                      <img [src]="item.imagePath" [alt]="item.title" />
-                      <!-- <img src="../../../assets/imgs/front6.jpg"> -->
-                    </figure>
-                  </div>
-                </div>
-              </article>
+                  <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                  <span class="icon has-text-info">
+                    <i class="fa fa-bath"></i>
+                  </span>{{ item.baths }}
+                </article>
+              </div>
+              
             </div>
           </div>
-        </div>
-        
+        </div>        
       </div>
     </div>
   </section>

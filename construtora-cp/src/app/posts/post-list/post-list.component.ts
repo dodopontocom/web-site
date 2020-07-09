@@ -19,6 +19,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
   messages: Message[] = [];
+
+  panelOpenState = false;
   
   isLoading = false;
   totalPosts = 0;
@@ -43,7 +45,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     
     this.messagesService.getMessages();
-    console.log("00000> " + this.messagesService);
     this.messagesSub = this.messagesService
       .getMessageUpdateListener()
       .subscribe((messageData: { messages: Message[] }) => {
