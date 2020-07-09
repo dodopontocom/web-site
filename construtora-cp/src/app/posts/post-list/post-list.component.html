@@ -8,7 +8,7 @@
                 <article class="tile is-child notification is-success">
                   <div class="content">
                     <p class="title">Projetos e Construções</p>
-                    <p class="subtitle">Nossos destaques</p>
+                    <!-- <p class="subtitle">Nossos destaques</p> -->
                     <div class="content">
                     
                       <div class="container has-text-left">
@@ -73,18 +73,36 @@
                     </div>
                   </div>
                 </article>
+                
               </div>
+
+              
+
+
               <div class="tile is-parent is-vertical">
+                
                 <article class="tile is-child notification is-primary box" *ngFor="let item of posts">
-                  <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
-                  <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'NENHUM'">R$ {{ item.price }}</p>
-                  <p class="subtitle">{{ item.title }}
-                  <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
-                  <span class="icon has-text-info">
-                    <i class="fa fa-bath"></i>
-                  </span>{{ item.baths }}
+                  
+                  <div class="content">
+                    <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
+                    <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'NENHUM'">R$ {{ item.price }}</p>
+                    <p class="subtitle">{{ item.title }}
+                    <span class="subtitle is-6 has-text-success-light">({{ item.refNumber }})</span></p>
+                    
+                      <figure *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">
+                        <div style='position:absolute; top:1px; left:1px;'>
+                          <img src='../../../assets/imgs/vend.png'>
+                        </div>
+                      </figure>
+                      <figure class="image is-3by2">
+                        <img [src]="item.imagePath" [alt]="item.title">
+                        
+                      </figure>
+                  </div>
                 </article>
               </div>
+
+              
               
             </div>
           </div>
