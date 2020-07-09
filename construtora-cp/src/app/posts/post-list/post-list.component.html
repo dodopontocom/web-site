@@ -76,13 +76,38 @@
                 
               </div>
 
-              
+              <div class="tile is-parent is-vertical">                
+                <article class="tile is-child notification is-primary box">
+                  <div class="content">
+                    <p class="title">TESTE LADO DIREITO</p>
+                    <p class="subtitle">Olá
+                    <span class="subtitle is-6 has-text-success-light">(testando aqui)</span></p>
+                    
+                      <figure>
+                        <div style='position:absolute; top:1px; left:1px;'>
+                          <img src='../../../assets/imgs/vend.png'>
+                        </div>
+                      </figure>
+                      <figure class="image is-3by2">
+                        <img src="../../../assets/imgs/front6.jpg">                        
+                      </figure>
+                  </div>
+                </article>
+              </div>
 
-
-              <div class="tile is-parent is-vertical">
-                
-                <article class="tile is-child notification is-primary box" *ngFor="let item of posts">
-                  
+            </div>
+          </div>
+        </div>        
+      </div>
+    </div>
+    
+    <div class="hero-body">
+      <div class="container has-text-left">
+        <div class="tile is-ancestor">
+          <div class="tile is-vertical">
+            <div class="tile">
+              <div class="tile is-parent" *ngFor="let item of posts">                      
+                <article class="tile is-child notification is-info box">                  
                   <div class="content">
                     <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'DESTAQUE'">R$ {{ item.price }}</p>
                     <p class="title" *ngIf="(item.diferencialOpt | uppercase) === 'NENHUM'">R$ {{ item.price }}</p>
@@ -96,17 +121,14 @@
                       </figure>
                       <figure class="image is-3by2">
                         <img [src]="item.imagePath" [alt]="item.title">
-                        
                       </figure>
                   </div>
                 </article>
               </div>
-
-              
-              
             </div>
           </div>
-        </div>        
+        </div>
       </div>
     </div>
   </section>
+  
