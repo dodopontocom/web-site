@@ -100,7 +100,7 @@
         </div>        
       </div>
     </div>
-    
+
     <div class="hero-body">
       <div class="container has-text-left">
         <div class="tile is-ancestor">
@@ -119,9 +119,29 @@
                           <img src='../../../assets/imgs/vend.png'>
                         </div>
                       </figure>
-                      <figure class="image is-3by2">
-                        <img [src]="item.imagePath" [alt]="item.title">
-                      </figure>
+                      <div class="columns">
+                        <div class="column is-half-desktop is-half-tablet">
+                          <figure class="image is-3by2">
+                            <img [src]="item.imagePath" [alt]="item.title">
+                          </figure>
+                        </div>
+                        <div class="column">
+                          <ul class="">
+                            <li class="">
+                              Quartos: {{ item.rooms }}
+                            </li>
+                            <li class="">
+                              Vagas Garagem: {{ item.vagas }}
+                            </li>
+                            <li class="">
+                              Construção: {{ item.metragemConstrucao }} m²
+                            </li>
+                            <li>
+                              Área total: {{ item.metragemTerreno }} m²
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                   </div>
                 </article>
               </div>
