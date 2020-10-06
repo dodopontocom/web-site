@@ -1,5 +1,4 @@
 version: 2.1
-
 defaults: &defaults
   working_directory: /root/app
 gcp-image: &gcp-image
