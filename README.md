@@ -6,4 +6,4 @@ Me myself Studying MEAN stack + k8s + Google Cloud + Terraform + CircleCi
 
 ## (to be edited)
 
-wip
+[wip]
